@@ -54,7 +54,16 @@ session_start();
 
 <?php
 
-if(isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"] == "ok"){
+// Si se intenta acceder al login, cerrar sesión primero
+if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
+  // Cerrar cualquier sesión activa
+  if(isset($_SESSION["iniciarSesion"])){
+    session_destroy();
+    session_start(); // Reiniciar sesión para el sistema de idiomas
+  }
+  include "modulos/login-panel.php";
+  
+}elseif(isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"] == "ok"){
   
   // Botón para ocultar/mostrar sidebar
   echo '<button id="btnToggleSidebar" class="sidebar-toggle" title="Mostrar/Ocultar menú">
@@ -86,7 +95,6 @@ if(isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"] == "ok"){
        $_GET["ruta"] == "especialidades" ||
        $_GET["ruta"] == "reportes" ||
        $_GET["ruta"] == "configuracion" ||
-       $_GET["ruta"] == "login" ||
        $_GET["ruta"] == "salir"){
       
       include "modulos/".$_GET["ruta"].".php";
@@ -113,13 +121,8 @@ if(isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"] == "ok"){
   
 }else{
   
-  // Si la ruta es 'login', mostrar el login del panel
-  if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
-    include "modulos/login-panel.php";
-  }else{
-    // Si no hay sesión y no es login, redirigir al login
-    echo '<script>window.location = "login";</script>';
-  }
+  // Si no hay sesión, redirigir al login
+  echo '<script>window.location = "login";</script>';
   
 }
 

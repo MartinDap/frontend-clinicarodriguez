@@ -9,8 +9,18 @@ require_once "controladores/usuarios.controlador.php";
 // Determinar si estamos en el panel administrativo o la página pública
 $ruta = isset($_GET['ruta']) ? $_GET['ruta'] : '';
 
+// Rutas públicas con contenido detallado
+if ($ruta == 'conocenos' || 
+    $ruta == 'especialidades-info' || 
+    $ruta == 'servicios-info' ||
+    $ruta == 'medicos-info' ||
+    $ruta == 'contacto') {
+    
+    // Cargar página pública detallada
+    include "vistas/modulos/" . $ruta . ".php";
+    
 // Si la ruta es 'dashboard' o cualquier ruta del panel, cargar plantilla del sistema
-if ($ruta == 'dashboard' || 
+} elseif ($ruta == 'dashboard' || 
     $ruta == 'pacientes' || 
     $ruta == 'medicos' || 
     $ruta == 'citas' ||

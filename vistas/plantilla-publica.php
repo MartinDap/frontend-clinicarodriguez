@@ -1,5 +1,9 @@
+<?php
+// Cargar sistema de idiomas
+require_once 'vistas/modulos/idiomas.php';
+?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="<?php echo idioma_actual(); ?>">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +27,7 @@
   <!-- Navbar Superior -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light-blue fixed-top">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="/">
+      <a class="navbar-brand fw-bold" href="http://localhost/pe/">
         <i class="bi bi-hospital fs-3 me-2"></i>
         CLÍNICA MÉDICA
       </a>
@@ -33,23 +37,35 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#conocenos">Conócenos</a>
+            <a class="nav-link" href="conocenos"><?php echo t('nav_conocenos'); ?></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#especialidades">Especialidades</a>
+            <a class="nav-link" href="especialidades-info"><?php echo t('nav_especialidades'); ?></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#servicios">Servicios</a>
+            <a class="nav-link" href="servicios-info"><?php echo t('nav_servicios'); ?></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#medicos">Médicos</a>
+            <a class="nav-link" href="medicos-info"><?php echo t('nav_medicos'); ?></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#contacto">Contacto</a>
+            <a class="nav-link" href="contacto"><?php echo t('nav_contacto'); ?></a>
           </li>
+          
+          <!-- Selector de idioma -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-globe"></i> <?php echo idioma_actual() === 'es' ? 'ES' : 'EN'; ?>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+              <li><a class="dropdown-item" href="?lang=es"><i class="bi bi-flag"></i> Español</a></li>
+              <li><a class="dropdown-item" href="?lang=en"><i class="bi bi-flag"></i> English</a></li>
+            </ul>
+          </li>
+          
           <li class="nav-item">
             <a class="btn btn-primary ms-2" href="login">
-              <i class="bi bi-box-arrow-in-right"></i> Acceso Personal
+              <i class="bi bi-box-arrow-in-right"></i> <?php echo t('nav_acceso_personal'); ?>
             </a>
           </li>
         </ul>
@@ -62,14 +78,14 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-6">
-          <h1 class="display-4 fw-bold mb-4">Bienvenido a Clínica Médica</h1>
-          <p class="lead mb-4">Atención médica integral con tecnología de punta y el mejor equipo de especialistas</p>
+          <h1 class="display-4 fw-bold mb-4"><?php echo t('hero_titulo'); ?></h1>
+          <p class="lead mb-4"><?php echo t('hero_descripcion'); ?></p>
           <div class="d-flex gap-3">
             <a href="#citas" class="btn btn-warning btn-lg">
-              <i class="bi bi-calendar-plus"></i> Compra una Cita aquí
+              <i class="bi bi-calendar-plus"></i> <?php echo t('hero_btn_cita'); ?>
             </a>
             <a href="#resultados" class="btn btn-outline-primary btn-lg">
-              <i class="bi bi-file-earmark-text"></i> Revisa tus resultados
+              <i class="bi bi-file-earmark-text"></i> <?php echo t('hero_btn_resultados'); ?>
             </a>
           </div>
         </div>
@@ -92,8 +108,8 @@
               <div class="icon-box mb-3">
                 <i class="bi bi-heart-pulse-fill text-primary fs-1"></i>
               </div>
-              <h5 class="card-title">Unidad de Apoyo al Diagnóstico</h5>
-              <p class="card-text">Tecnología actualizada y un equipo humano especializado para una experiencia técnica y científica constituyen el diagnóstico preciso para garantizar el seguimiento correspondiente.</p>
+              <h5 class="card-title"><?php echo t('servicio_diagnostico_titulo'); ?></h5>
+              <p class="card-text"><?php echo t('servicio_diagnostico_desc'); ?></p>
             </div>
           </div>
         </div>
@@ -105,8 +121,8 @@
               <div class="icon-box mb-3">
                 <i class="bi bi-heart text-danger fs-1"></i>
               </div>
-              <h5 class="card-title">Soporte Espiritual y Emocional</h5>
-              <p class="card-text">Acompañamiento y presencia en momentos difíciles, un apoyo para cada persona cuando más lo necesite. Una esperanza asegura sostenidos de Jesús hacia del altísimo.</p>
+              <h5 class="card-title"><?php echo t('servicio_espiritual_titulo'); ?></h5>
+              <p class="card-text"><?php echo t('servicio_espiritual_desc'); ?></p>
             </div>
           </div>
         </div>
@@ -118,8 +134,8 @@
               <div class="icon-box mb-3">
                 <i class="bi bi-activity text-info fs-1"></i>
               </div>
-              <h5 class="card-title">Unidades de Atención</h5>
-              <p class="card-text">Una amplia gama de especialidades y servicios médicos equipados con tecnología sofisticada, ofrecen una óptima experiencia.</p>
+              <h5 class="card-title"><?php echo t('servicio_atencion_titulo'); ?></h5>
+              <p class="card-text"><?php echo t('servicio_atencion_desc'); ?></p>
             </div>
           </div>
         </div>
@@ -131,8 +147,8 @@
               <div class="icon-box mb-3">
                 <i class="bi bi-clipboard2-plus text-success fs-1"></i>
               </div>
-              <h5 class="card-title">Servicios Adicionales</h5>
-              <p class="card-text">Diversos servicios adicionales puestos a tu disposición, contribuyen a brindar soluciones especiales.</p>
+              <h5 class="card-title"><?php echo t('servicio_adicionales_titulo'); ?></h5>
+              <p class="card-text"><?php echo t('servicio_adicionales_desc'); ?></p>
             </div>
           </div>
         </div>
@@ -144,8 +160,8 @@
               <div class="icon-box mb-3">
                 <i class="bi bi-building text-warning fs-1"></i>
               </div>
-              <h5 class="card-title">Hotelería Hospitalaria</h5>
-              <p class="card-text">Combinando confort, bienestar, seguridad, esperanza, innovación y tecnología en la calidad de atención para alcanzar la plena satisfacción en ti y tu familia.</p>
+              <h5 class="card-title"><?php echo t('servicio_hoteleria_titulo'); ?></h5>
+              <p class="card-text"><?php echo t('servicio_hoteleria_desc'); ?></p>
             </div>
           </div>
         </div>
@@ -157,8 +173,8 @@
               <div class="icon-box mb-3">
                 <i class="bi bi-truck text-secondary fs-1"></i>
               </div>
-              <h5 class="card-title">Productos Especiales</h5>
-              <p class="card-text">Convencidos que el bienestar de la salud familiar es importante, desarrollamos estrategias para lograr tu tranquilidad.</p>
+              <h5 class="card-title"><?php echo t('servicio_productos_titulo'); ?></h5>
+              <p class="card-text"><?php echo t('servicio_productos_desc'); ?></p>
             </div>
           </div>
         </div>
@@ -170,7 +186,7 @@
   <!-- Especialidades (Carrusel) -->
   <section id="especialidades" class="py-5">
     <div class="container">
-      <h2 class="text-center mb-5">Busca Especialidades (Carrusel)</h2>
+      <h2 class="text-center mb-5"><?php echo t('especialidades_titulo'); ?></h2>
       
       <div id="especialidadesCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
@@ -182,9 +198,9 @@
                 <div class="card especialidad-card bg-info text-white">
                   <div class="card-body">
                     <i class="bi bi-brain fs-1 mb-3"></i>
-                    <h5>Neurocirugía</h5>
-                    <p class="small">La neurocirugía es la especialidad médica dedicada al estudio, diagnóstico y tratamiento quirúrgico.</p>
-                    <span class="badge bg-light text-dark">1+ Doctor</span>
+                    <h5><?php echo t('especialidad_neurocirugia'); ?></h5>
+                    <p class="small"><?php echo t('especialidad_neurocirugia_desc'); ?></p>
+                    <span class="badge bg-light text-dark">1+ <?php echo t('especialidad_doctor'); ?></span>
                   </div>
                 </div>
               </div>
@@ -193,9 +209,9 @@
                 <div class="card especialidad-card">
                   <div class="card-body">
                     <i class="bi bi-gender-female fs-1 mb-3 text-primary"></i>
-                    <h5>Ginecología y Obstetricia</h5>
-                    <p class="small">La ginecología es la especialidad médica dedicada al cuidado integral de la salud femenina.</p>
-                    <span class="badge bg-primary">1+ Doctor</span>
+                    <h5><?php echo t('especialidad_ginecologia'); ?></h5>
+                    <p class="small"><?php echo t('especialidad_ginecologia_desc'); ?></p>
+                    <span class="badge bg-primary">1+ <?php echo t('especialidad_doctor'); ?></span>
                   </div>
                 </div>
               </div>
@@ -204,9 +220,9 @@
                 <div class="card especialidad-card">
                   <div class="card-body">
                     <i class="bi bi-lungs fs-1 mb-3 text-primary"></i>
-                    <h5>Neurología</h5>
-                    <p class="small">La neurología es la especialidad médica que se enfoca en la prevención, diagnóstico y tratamiento.</p>
-                    <span class="badge bg-primary">1+ Doctor</span>
+                    <h5><?php echo t('especialidad_neurologia'); ?></h5>
+                    <p class="small"><?php echo t('especialidad_neurologia_desc'); ?></p>
+                    <span class="badge bg-primary">1+ <?php echo t('especialidad_doctor'); ?></span>
                   </div>
                 </div>
               </div>
@@ -215,9 +231,9 @@
                 <div class="card especialidad-card">
                   <div class="card-body">
                     <i class="bi bi-capsule fs-1 mb-3 text-primary"></i>
-                    <h5>Endocronología</h5>
-                    <p class="small">La endocrinología es la especialidad médica dedicada al estudio, diagnóstico y tratamiento.</p>
-                    <span class="badge bg-primary">6+ Doctor</span>
+                    <h5><?php echo t('especialidad_endocrinologia'); ?></h5>
+                    <p class="small"><?php echo t('especialidad_endocrinologia_desc'); ?></p>
+                    <span class="badge bg-primary">6+ <?php echo t('especialidad_doctor'); ?></span>
                   </div>
                 </div>
               </div>
@@ -239,7 +255,7 @@
   <!-- Contacto -->
   <section id="contacto" class="py-5 bg-light">
     <div class="container">
-      <h2 class="text-center mb-5">Contáctanos</h2>
+      <h2 class="text-center mb-5"><?php echo t('contacto_titulo'); ?></h2>
       <div class="row g-4 justify-content-center">
         
         <div class="col-md-3 text-center">
@@ -247,7 +263,7 @@
             <div class="icon-circle bg-primary text-white mx-auto mb-3">
               <i class="bi bi-telephone-fill fs-3"></i>
             </div>
-            <h5>Teléfono</h5>
+            <h5><?php echo t('contacto_telefono'); ?></h5>
             <p>+51 987 654 321</p>
           </div>
         </div>
@@ -257,7 +273,7 @@
             <div class="icon-circle bg-primary text-white mx-auto mb-3">
               <i class="bi bi-envelope-fill fs-3"></i>
             </div>
-            <h5>Email</h5>
+            <h5><?php echo t('contacto_email'); ?></h5>
             <p>atencion-centro@clinica.com</p>
           </div>
         </div>
@@ -267,8 +283,8 @@
             <div class="icon-circle bg-primary text-white mx-auto mb-3">
               <i class="bi bi-clock-fill fs-3"></i>
             </div>
-            <h5>Atenciones</h5>
-            <p>Consultas entre desde<br>Lunes - Sabados 7:30 a 6:00<br>Emergencias las 24 horas</p>
+            <h5><?php echo t('contacto_atenciones'); ?></h5>
+            <p><?php echo t('contacto_horario'); ?></p>
           </div>
         </div>
         
@@ -286,39 +302,39 @@
             <i class="bi bi-hospital text-info"></i>
             Clínica Médica
           </h5>
-          <p class="small">CLÍNICA RODRIGUEZ Y ESPECIALISTAS formó la Clínica Rodríguez, ofreciendo RECURSOS, FEA, SOAT, SCTR, SALUD OCUPACIONAL, etc.</p>
+          <p class="small"><?php echo t('footer_clinica_desc'); ?></p>
         </div>
         
         <div class="col-md-2">
-          <h6>Servicios</h6>
+          <h6><?php echo t('footer_servicios'); ?></h6>
           <ul class="list-unstyled">
-            <li><a href="#" class="text-white-50">Hospitalización</a></li>
-            <li><a href="#" class="text-white-50">UVI</a></li>
-            <li><a href="#" class="text-white-50">Emergencia</a></li>
-            <li><a href="#" class="text-white-50">Laboratorio</a></li>
-            <li><a href="#" class="text-white-50">Sala de Operaciones</a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('footer_hospitalizacion'); ?></a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('footer_ubi'); ?></a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('footer_emergencia'); ?></a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('footer_laboratorio'); ?></a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('footer_sala_operaciones'); ?></a></li>
           </ul>
         </div>
         
         <div class="col-md-3">
-          <h6>Especialidades</h6>
+          <h6><?php echo t('footer_especialidades'); ?></h6>
           <ul class="list-unstyled">
-            <li><a href="#" class="text-white-50">Neurocirugía</a></li>
-            <li><a href="#" class="text-white-50">Ginecología y Obstetricia</a></li>
-            <li><a href="#" class="text-white-50">Neurología</a></li>
-            <li><a href="#" class="text-white-50">Endocronología</a></li>
-            <li><a href="#" class="text-white-50">Cardiología</a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('especialidad_neurocirugia'); ?></a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('especialidad_ginecologia'); ?></a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('especialidad_neurologia'); ?></a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('especialidad_endocrinologia'); ?></a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('footer_cardiologia'); ?></a></li>
           </ul>
         </div>
         
         <div class="col-md-2">
-          <h6>Otros Links</h6>
+          <h6><?php echo t('footer_otros_links'); ?></h6>
           <ul class="list-unstyled">
-            <li><a href="#" class="text-white-50">Nosotros</a></li>
-            <li><a href="#" class="text-white-50">Blogs</a></li>
-            <li><a href="#" class="text-white-50">Contáctanos</a></li>
-            <li><a href="#" class="text-white-50">Preguntas Frecuentes</a></li>
-            <li><a href="#" class="text-white-50">Políticas De Privacidad</a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('footer_nosotros'); ?></a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('footer_blogs'); ?></a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('footer_contactanos'); ?></a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('footer_faq'); ?></a></li>
+            <li><a href="#" class="text-white-50"><?php echo t('footer_privacidad'); ?></a></li>
           </ul>
         </div>
         
@@ -327,7 +343,7 @@
       <hr class="my-4 bg-secondary">
       
       <div class="text-center">
-        <p class="mb-0">&copy; 2025 CR Todos los derechos reservados</p>
+        <p class="mb-0">&copy; 2025 CR <?php echo t('footer_derechos'); ?></p>
       </div>
     </div>
   </footer>
