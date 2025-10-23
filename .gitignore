@@ -1,0 +1,22 @@
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración locales
+*.local
+
+# Archivos temporales
+*.tmp
+*.temp
+*.log
+
+# Carpetas de dependencias
+node_modules/
+vendor/
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
