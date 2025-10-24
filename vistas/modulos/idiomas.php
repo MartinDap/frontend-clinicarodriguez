@@ -1,5 +1,9 @@
 <?php
-// Sistema de gestión de idiomas para la página pública
+/**
+ * Sistema de Gestión de Idiomas
+ * Maneja la internacionalización (i18n) para la página pública
+ * Idiomas soportados: Español (es), Inglés (en)
+ */
 
 // Iniciar sesión si no está iniciada
 if (session_status() == PHP_SESSION_NONE) {
@@ -11,10 +15,11 @@ if (!isset($_SESSION['idioma'])) {
     $_SESSION['idioma'] = 'es'; // Español por defecto
 }
 
-// Cambiar idioma si se recibe el parámetro
+// Cambiar idioma si se recibe el parámetro (validado)
 if (isset($_GET['lang'])) {
-    $idioma_solicitado = $_GET['lang'];
-    if (in_array($idioma_solicitado, ['es', 'en'])) {
+    $idioma_solicitado = trim($_GET['lang']);
+    // Validar que el idioma solicitado esté en la lista de idiomas soportados
+    if (in_array($idioma_solicitado, ['es', 'en'], true)) {
         $_SESSION['idioma'] = $idioma_solicitado;
     }
 }
@@ -185,13 +190,20 @@ $traducciones_en = [
 // Seleccionar traducciones según idioma actual
 $traducciones = ($idioma_actual === 'en') ? $traducciones_en : $traducciones_es;
 
-// Función helper para obtener traducción
+/**
+ * Obtiene la traducción de una clave
+ * @param string $clave Clave de traducción
+ * @return string Texto traducido o la clave si no existe traducción
+ */
 function t($clave) {
     global $traducciones;
     return isset($traducciones[$clave]) ? $traducciones[$clave] : $clave;
 }
 
-// Función para obtener idioma actual
+/**
+ * Obtiene el idioma actual de la sesión
+ * @return string Código del idioma actual ('es' o 'en')
+ */
 function idioma_actual() {
     global $idioma_actual;
     return $idioma_actual;

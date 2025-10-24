@@ -16,6 +16,4 @@ $(document).ready(function() {
     });
   }
   
-  console.log('Módulo de Citas cargado');
-  
 });

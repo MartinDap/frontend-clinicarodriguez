@@ -3,7 +3,7 @@
   <!-- Título de la página -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2><i class="bi bi-speedometer2"></i> Dashboard</h2>
-    <span class="text-muted">Bienvenido, <?php echo $_SESSION["nombre"]; ?></span>
+    <span class="text-muted">Bienvenido, <?php echo obtener_nombre_usuario(); ?></span>
   </div>
   
   <!-- Tarjetas de estadísticas -->

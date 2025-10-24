@@ -15,6 +15,4 @@ $(document).ready(function() {
     });
   }
   
-  console.log('Módulo de Usuarios cargado');
-  
 });

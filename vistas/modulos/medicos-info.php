@@ -5,6 +5,7 @@ $titulo_pagina = idioma_actual() === 'es' ? 'Nuestros Médicos - Clínica Médic
 $pagina_activa = 'medicos-info';
 
 include 'vistas/modulos/componentes/head-publico.php';
+include 'vistas/modulos/componentes/topbar-publico.php';
 include 'vistas/modulos/componentes/navbar-publico.php';
 ?>
 

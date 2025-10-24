@@ -5,6 +5,7 @@ $titulo_pagina = idioma_actual() === 'es' ? 'Contacto - Clínica Médica' : 'Con
 $pagina_activa = 'contacto';
 
 include 'vistas/modulos/componentes/head-publico.php';
+include 'vistas/modulos/componentes/topbar-publico.php';
 include 'vistas/modulos/componentes/navbar-publico.php';
 ?>
 
@@ -148,7 +149,7 @@ include 'vistas/modulos/componentes/navbar-publico.php';
           <!-- Mapa -->
           <div class="card shadow-sm mt-4">
             <div class="card-body p-0">
-              <div style="width: 100%; height: 350px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white;">
+              <div style="width: 100%; height: 350px; background: linear-gradient(135deg, #38c3c4 0%, #2a0287 100%); display: flex; align-items: center; justify-content: center; color: white;">
                 <div class="text-center">
                   <i class="bi bi-geo-alt-fill" style="font-size: 4rem;"></i>
                   <h4 class="mt-3"><?php echo idioma_actual() === 'es' ? 'Mapa de ubicación' : 'Location map'; ?></h4>

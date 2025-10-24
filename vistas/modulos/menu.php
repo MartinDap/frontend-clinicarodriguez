@@ -13,7 +13,7 @@
     <?php
     
     // Menú para Administrador (perfil 1)
-    if ($_SESSION["perfil"] == "1") {
+    if (es_perfil("1")) {
       echo '
       <li>
         <a href="dashboard" class="' . ((!isset($_GET["ruta"]) || $_GET["ruta"] == "dashboard") ? 'active' : '') . '">
@@ -88,7 +88,7 @@
     }
     
     // Menú para Médico (perfil 2)
-    if ($_SESSION["perfil"] == "2") {
+    if (es_perfil("2")) {
       echo '
       <li>
         <a href="dashboard" class="' . ((!isset($_GET["ruta"]) || $_GET["ruta"] == "dashboard") ? 'active' : '') . '">
@@ -128,7 +128,7 @@
     }
     
     // Menú para Recepcionista (perfil 3)
-    if ($_SESSION["perfil"] == "3") {
+    if (es_perfil("3")) {
       echo '
       <li>
         <a href="dashboard" class="' . ((!isset($_GET["ruta"]) || $_GET["ruta"] == "dashboard") ? 'active' : '') . '">
@@ -161,7 +161,7 @@
         <i class="bi bi-person-circle"></i>
         <div class="ms-2">
           <small class="d-block text-white-50">Bienvenido</small>
-          <strong><?php echo $_SESSION["nombre"]; ?></strong>
+          <strong><?php echo obtener_nombre_usuario(); ?></strong>
         </div>
       </a>
     </li>

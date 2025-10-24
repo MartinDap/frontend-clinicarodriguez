@@ -6,29 +6,87 @@
 ?>
 <footer class="bg-dark text-white py-5">
   <div class="container">
-    <div class="row">
-      <div class="col-md-4">
-        <h5><i class="bi bi-hospital text-info"></i> Clínica Médica</h5>
-        <p class="small"><?php echo t('footer_clinica_desc'); ?></p>
+    
+    <!-- Información de contacto destacada -->
+    <div class="row g-4 justify-content-center mb-5 pb-4 border-bottom border-secondary border-opacity-10">
+      
+      <div class="col-md-4 text-center">
+        <div class="contact-item">
+          <div class="footer-contact-icon mx-auto mb-3">
+            <i class="bi bi-telephone-fill fs-2"></i>
+          </div>
+          <h5 class="text-white"><?php echo idioma_actual() === 'es' ? 'Teléfono' : 'Phone'; ?></h5>
+          <p class="text-white-50 mb-0">+51 997 753 923</p>
+        </div>
       </div>
-      <div class="col-md-4">
-        <h6><?php echo t('footer_otros_links'); ?></h6>
+      
+      <div class="col-md-4 text-center">
+        <div class="contact-item">
+          <div class="footer-contact-icon mx-auto mb-3">
+            <i class="bi bi-envelope-fill fs-2"></i>
+          </div>
+          <h5 class="text-white">Email</h5>
+          <p class="text-white-50 small mb-0">recepcion.centroneuroquirurgico@gmail.com</p>
+        </div>
+      </div>
+      
+      <div class="col-md-4 text-center">
+        <div class="contact-item">
+          <div class="footer-contact-icon mx-auto mb-3">
+            <i class="bi bi-clock-fill fs-2"></i>
+          </div>
+          <h5 class="text-white"><?php echo idioma_actual() === 'es' ? 'Atenciones' : 'Office Hours'; ?></h5>
+          <p class="text-white-50 mb-0"><?php echo idioma_actual() === 'es' ? 'Consultas entre desde<br>Lunes - Sabados 7:30 a 6:00<br>Emergencias las 24 horas' : 'Consultations from<br>Monday - Saturday 7:30 to 6:00<br>Emergencies 24 hours'; ?></p>
+        </div>
+      </div>
+      
+    </div>
+    
+    <div class="row">
+      
+      <!-- Logo -->
+      <div class="col-md-3 mb-4">
+        <img src="vistas/img/logo-fondo-blanco.png" alt="Logo Clínica" class="img-fluid mb-3" style="max-width: 180px;">
+        <p class="text-white-50 small"><?php echo idioma_actual() === 'es' ? 'Tu salud, nuestra prioridad' : 'Your health, our priority'; ?></p>
+      </div>
+      
+      <div class="col-md-3">
+        <h6><?php echo t('footer_servicios'); ?></h6>
         <ul class="list-unstyled">
-          <li><a href="conocenos" class="text-white-50"><?php echo t('footer_nosotros'); ?></a></li>
-          <li><a href="especialidades-info" class="text-white-50"><?php echo t('footer_especialidades'); ?></a></li>
-          <li><a href="servicios-info" class="text-white-50"><?php echo t('footer_servicios'); ?></a></li>
-          <li><a href="medicos-info" class="text-white-50"><?php echo t('nav_medicos'); ?></a></li>
+          <li><a href="#" class="text-white-50"><?php echo t('footer_hospitalizacion'); ?></a></li>
+          <li><a href="#" class="text-white-50"><?php echo t('footer_ubi'); ?></a></li>
+          <li><a href="#" class="text-white-50"><?php echo t('footer_emergencia'); ?></a></li>
+          <li><a href="#" class="text-white-50"><?php echo t('footer_laboratorio'); ?></a></li>
+          <li><a href="#" class="text-white-50"><?php echo t('footer_sala_operaciones'); ?></a></li>
         </ul>
       </div>
-      <div class="col-md-4">
-        <h6><?php echo t('contacto_titulo'); ?></h6>
-        <p class="small">
-          <i class="bi bi-telephone"></i> +51 987 654 321<br>
-          <i class="bi bi-envelope"></i> atencion-centro@clinica.com
-        </p>
+      
+      <div class="col-md-3">
+        <h6><?php echo t('footer_especialidades'); ?></h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white-50"><?php echo t('especialidad_neurocirugia'); ?></a></li>
+          <li><a href="#" class="text-white-50"><?php echo t('especialidad_ginecologia'); ?></a></li>
+          <li><a href="#" class="text-white-50"><?php echo t('especialidad_neurologia'); ?></a></li>
+          <li><a href="#" class="text-white-50"><?php echo t('especialidad_endocrinologia'); ?></a></li>
+          <li><a href="#" class="text-white-50"><?php echo t('footer_cardiologia'); ?></a></li>
+        </ul>
       </div>
+      
+      <div class="col-md-3">
+        <h6><?php echo t('footer_otros_links'); ?></h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white-50"><?php echo t('footer_nosotros'); ?></a></li>
+          <li><a href="#" class="text-white-50"><?php echo t('footer_blogs'); ?></a></li>
+          <li><a href="#" class="text-white-50"><?php echo t('footer_contactanos'); ?></a></li>
+          <li><a href="#" class="text-white-50"><?php echo t('footer_faq'); ?></a></li>
+          <li><a href="#" class="text-white-50"><?php echo t('footer_privacidad'); ?></a></li>
+        </ul>
+      </div>
+      
     </div>
-    <hr class="my-4">
+    
+    <hr class="my-4 bg-secondary">
+    
     <div class="text-center">
       <p class="mb-0">&copy; 2025 CR <?php echo t('footer_derechos'); ?></p>
     </div>

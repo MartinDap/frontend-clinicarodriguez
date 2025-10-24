@@ -1,0 +1,92 @@
+/* ===================================
+   COMPONENTES REUTILIZABLES
+   Estilos extraídos de inline styles
+   =================================== */
+
+/* ===================================
+   MISIÓN, VISIÓN Y VALORES
+   =================================== */
+.mision-vision-valores .card {
+  background: #f8f9fa;
+}
+
+.icon-box {
+  background: linear-gradient(135deg, rgba(56, 195, 196, 0.2), rgba(121, 130, 186, 0.2));
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mision-vision-valores h4 {
+  color: #1a1a5e;
+}
+
+/* ===================================
+   SECCIÓN DE UBICACIÓN
+   =================================== */
+.ubicacion-card {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.ubicacion-header {
+  background: linear-gradient(135deg, #38c3c4, #2a0287);
+}
+
+/* ===================================
+   FOOTER - ICONOS DE CONTACTO
+   =================================== */
+.footer-contact-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #38c3c4, #2a0287);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===================================
+   NAVBAR - POSICIÓN FIXED
+   =================================== */
+.navbar-fixed-custom {
+  top: 60px;
+}
+
+/* ===================================
+   ACORDEÓN PERSONALIZADO
+   =================================== */
+.accordion-elegirnos .accordion-item.active {
+  border-color: #dc3545;
+}
+
+.accordion-elegirnos .accordion-button:not(.collapsed) {
+  background-color: transparent;
+  border-color: #dc3545;
+}
+
+/* ===================================
+   SECCIÓN HERO
+   =================================== */
+.hero-section {
+  min-height: 300px;
+  padding: 80px 0;
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+@media (max-width: 768px) {
+  .icon-box {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .footer-contact-icon {
+    width: 60px;
+    height: 60px;
+  }
+}

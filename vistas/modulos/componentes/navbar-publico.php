@@ -9,11 +9,12 @@
 $pagina_activa = $pagina_activa ?? '';
 $ruta_actual = $_GET['ruta'] ?? '';
 ?>
-<nav class="navbar navbar-expand-lg navbar-light bg-light-blue fixed-top">
+
+<!-- Navbar Superior -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light-blue fixed-top navbar-fixed-custom">
   <div class="container">
     <a class="navbar-brand fw-bold" href="http://localhost/pe/">
-      <i class="bi bi-hospital fs-3 me-2"></i>
-      CLÍNICA MÉDICA
+      <img src="vistas/img/logo.png" alt="Logo Clínica" style="height: 50px; width: auto;" class="me-2">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>

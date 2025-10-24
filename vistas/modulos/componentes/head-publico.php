@@ -24,5 +24,6 @@ $titulo_pagina = $titulo_pagina ?? 'Clínica Médica';
   
   <!-- Estilos personalizados -->
   <link rel="stylesheet" href="vistas/css/estilos-publicos.css">
+  <link rel="stylesheet" href="vistas/css/componentes.css">
 </head>
 <body>

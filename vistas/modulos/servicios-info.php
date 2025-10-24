@@ -5,6 +5,7 @@ $titulo_pagina = idioma_actual() === 'es' ? 'Servicios - Clínica Médica' : 'Se
 $pagina_activa = 'servicios-info';
 
 include 'vistas/modulos/componentes/head-publico.php';
+include 'vistas/modulos/componentes/topbar-publico.php';
 include 'vistas/modulos/componentes/navbar-publico.php';
 ?>
 
@@ -22,73 +23,150 @@ include 'vistas/modulos/componentes/navbar-publico.php';
   <section class="py-5">
     <div class="container">
       <div class="row g-4">
-        <div class="col-md-6">
-          <div class="card h-100 shadow">
-            <div class="card-body p-4">
-              <div class="d-flex align-items-center mb-3">
-                <i class="bi bi-hospital text-primary fs-1 me-3"></i>
-                <h3 class="mb-0"><?php echo t('footer_hospitalizacion'); ?></h3>
+        
+        <!-- Hospitalizacion -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card especialidad-card text-center h-100">
+            <div class="card-body d-flex flex-column">
+              <div class="especialidad-icon mb-3">
+                <i class="bi bi-hospital text-primary"></i>
               </div>
-              <p><?php echo idioma_actual() === 'es' ? 'Habitaciones cómodas y equipadas con tecnología moderna para su recuperación' : 'Comfortable rooms equipped with modern technology for your recovery'; ?></p>
-              <ul>
-                <li><?php echo idioma_actual() === 'es' ? 'Habitaciones individuales y compartidas' : 'Single and shared rooms'; ?></li>
-                <li><?php echo idioma_actual() === 'es' ? 'Atención 24/7' : '24/7 care'; ?></li>
-                <li><?php echo idioma_actual() === 'es' ? 'Monitoreo constante' : 'Constant monitoring'; ?></li>
-              </ul>
+              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Hospitalización' : 'Hospitalization'; ?></h5>
+              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Hospitalización disponible las 24 horas del día' : 'Hospitalization available 24 hours a day'; ?></p>
             </div>
           </div>
         </div>
 
-        <div class="col-md-6">
-          <div class="card h-100 shadow">
-            <div class="card-body p-4">
-              <div class="d-flex align-items-center mb-3">
-                <i class="bi bi-heart-pulse-fill text-danger fs-1 me-3"></i>
-                <h3 class="mb-0"><?php echo t('footer_emergencia'); ?></h3>
+        <!-- UVI -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card especialidad-card text-center h-100">
+            <div class="card-body d-flex flex-column">
+              <div class="especialidad-icon mb-3">
+                <i class="bi bi-heart-pulse text-danger"></i>
               </div>
-              <p><?php echo idioma_actual() === 'es' ? 'Atención de emergencias médicas las 24 horas del día' : '24-hour emergency medical care'; ?></p>
-              <ul>
-                <li><?php echo idioma_actual() === 'es' ? 'Respuesta inmediata' : 'Immediate response'; ?></li>
-                <li><?php echo idioma_actual() === 'es' ? 'Ambulancia disponible' : 'Ambulance available'; ?></li>
-                <li><?php echo idioma_actual() === 'es' ? 'Personal especializado' : 'Specialized staff'; ?></li>
-              </ul>
+              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'UVI' : 'ICU'; ?></h5>
+              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Unidad de Vigilancia Intensiva totalmente equipada' : 'Fully equipped Intensive Care Unit'; ?></p>
             </div>
           </div>
         </div>
 
-        <div class="col-md-6">
-          <div class="card h-100 shadow">
-            <div class="card-body p-4">
-              <div class="d-flex align-items-center mb-3">
-                <i class="bi bi-eyedropper text-success fs-1 me-3"></i>
-                <h3 class="mb-0"><?php echo t('footer_laboratorio'); ?></h3>
+        <!-- Emergencia -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card especialidad-card text-center h-100">
+            <div class="card-body d-flex flex-column">
+              <div class="especialidad-icon mb-3">
+                <i class="bi bi-activity text-danger"></i>
               </div>
-              <p><?php echo idioma_actual() === 'es' ? 'Análisis clínicos con resultados rápidos y precisos' : 'Clinical analysis with fast and accurate results'; ?></p>
-              <ul>
-                <li><?php echo idioma_actual() === 'es' ? 'Análisis de sangre' : 'Blood tests'; ?></li>
-                <li><?php echo idioma_actual() === 'es' ? 'Exámenes de orina' : 'Urine tests'; ?></li>
-                <li><?php echo idioma_actual() === 'es' ? 'Microbiología' : 'Microbiology'; ?></li>
-              </ul>
+              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Emergencia' : 'Emergency'; ?></h5>
+              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Emergencias las 24 horas del día' : 'Emergencies 24 hours a day'; ?></p>
             </div>
           </div>
         </div>
 
-        <div class="col-md-6">
-          <div class="card h-100 shadow">
-            <div class="card-body p-4">
-              <div class="d-flex align-items-center mb-3">
-                <i class="bi bi-bandaid text-warning fs-1 me-3"></i>
-                <h3 class="mb-0"><?php echo t('footer_sala_operaciones'); ?></h3>
+        <!-- Laboratorio -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card especialidad-card text-center h-100">
+            <div class="card-body d-flex flex-column">
+              <div class="especialidad-icon mb-3">
+                <i class="bi bi-eyedropper text-info"></i>
               </div>
-              <p><?php echo idioma_actual() === 'es' ? 'Quirófanos modernos equipados con tecnología de última generación' : 'Modern operating rooms equipped with state-of-the-art technology'; ?></p>
-              <ul>
-                <li><?php echo idioma_actual() === 'es' ? 'Cirugías programadas' : 'Scheduled surgeries'; ?></li>
-                <li><?php echo idioma_actual() === 'es' ? 'Cirugías de emergencia' : 'Emergency surgeries'; ?></li>
-                <li><?php echo idioma_actual() === 'es' ? 'Equipos especializados' : 'Specialized equipment'; ?></li>
-              </ul>
+              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Laboratorio' : 'Laboratory'; ?></h5>
+              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Laboratorio 24 horas' : 'Laboratory 24 hours'; ?></p>
             </div>
           </div>
         </div>
+
+        <!-- Sala de Operaciones -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card especialidad-card text-center h-100">
+            <div class="card-body d-flex flex-column">
+              <div class="especialidad-icon mb-3">
+                <i class="bi bi-hospital-fill text-success"></i>
+              </div>
+              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Sala de Operaciones' : 'Operating Room'; ?></h5>
+              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Cirugías programadas y no programadas en el momento preciso' : 'Scheduled and unscheduled surgeries at the precise moment'; ?></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tomografía -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card especialidad-card text-center h-100">
+            <div class="card-body d-flex flex-column">
+              <div class="especialidad-icon mb-3">
+                <i class="bi bi-images text-primary"></i>
+              </div>
+              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Tomografía' : 'Tomography'; ?></h5>
+              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Tomografía Computarizada' : 'Computed Tomography'; ?></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Densitometría -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card especialidad-card text-center h-100">
+            <div class="card-body d-flex flex-column">
+              <div class="especialidad-icon mb-3">
+                <i class="bi bi-clipboard2-pulse text-warning"></i>
+              </div>
+              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Densitometría' : 'Densitometry'; ?></h5>
+              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Densitometría ósea' : 'Bone densitometry'; ?></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ecografía -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card especialidad-card text-center h-100">
+            <div class="card-body d-flex flex-column">
+              <div class="especialidad-icon mb-3">
+                <i class="bi bi-soundwave text-info"></i>
+              </div>
+              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Ecografía' : 'Ultrasound'; ?></h5>
+              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Ecografía de todo tipo' : 'All types of ultrasound'; ?></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Radiología -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card especialidad-card text-center h-100">
+            <div class="card-body d-flex flex-column">
+              <div class="especialidad-icon mb-3">
+                <i class="bi bi-x-lg text-secondary"></i>
+              </div>
+              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Radiología' : 'Radiology'; ?></h5>
+              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Rayos X computarizados' : 'Computerized X-rays'; ?></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Farmacia -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card especialidad-card text-center h-100">
+            <div class="card-body d-flex flex-column">
+              <div class="especialidad-icon mb-3">
+                <i class="bi bi-capsule text-success"></i>
+              </div>
+              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Farmacia' : 'Pharmacy'; ?></h5>
+              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Farmacia 24 horas' : 'Pharmacy 24 hours'; ?></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Banco de Sangre -->
+        <div class="col-md-6 col-lg-4">
+          <div class="card especialidad-card text-center h-100">
+            <div class="card-body d-flex flex-column">
+              <div class="especialidad-icon mb-3">
+                <i class="bi bi-droplet-fill text-danger"></i>
+              </div>
+              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Banco de Sangre' : 'Blood Bank'; ?></h5>
+              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Banco de Sangre Tipo I-B' : 'Blood Bank Type I-B'; ?></p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>

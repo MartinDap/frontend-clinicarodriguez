@@ -5,6 +5,7 @@ $titulo_pagina = idioma_actual() === 'es' ? 'Conócenos - Clínica Médica' : 'A
 $pagina_activa = 'conocenos';
 
 include 'vistas/modulos/componentes/head-publico.php';
+include 'vistas/modulos/componentes/topbar-publico.php';
 include 'vistas/modulos/componentes/navbar-publico.php';
 ?>
 
@@ -31,7 +32,7 @@ include 'vistas/modulos/componentes/navbar-publico.php';
       <!-- Nuestra Historia -->
       <div class="row mb-5">
         <div class="col-lg-6 mb-4">
-          <img src="https://via.placeholder.com/600x400/87CEEB/FFFFFF?text=Clinica" alt="Clínica" class="img-fluid rounded shadow">
+          <img src="vistas/img/logo.png" alt="Logo Clínica" class="img-fluid rounded shadow">
         </div>
         <div class="col-lg-6">
           <h2 class="mb-4"><?php echo idioma_actual() === 'es' ? 'Nuestra Historia' : 'Our Story'; ?></h2>
@@ -52,100 +53,84 @@ include 'vistas/modulos/componentes/navbar-publico.php';
         </div>
       </div>
 
-      <!-- Misión y Visión -->
+      <!-- Misión, Visión y Valores -->
       <div class="row g-4 mb-5">
-        <div class="col-md-6">
-          <div class="card h-100 shadow-sm">
-            <div class="card-body p-4">
-              <div class="mb-3">
-                <i class="bi bi-bullseye text-primary fs-1"></i>
-              </div>
-              <h3><?php echo idioma_actual() === 'es' ? 'Nuestra Misión' : 'Our Mission'; ?></h3>
-              <p>
-                <?php if(idioma_actual() === 'es'): ?>
-                  Brindar atención médica integral de calidad, combinando tecnología avanzada con calidez humana, para mejorar la salud y bienestar de nuestros pacientes y sus familias.
-                <?php else: ?>
-                  To provide comprehensive quality medical care, combining advanced technology with human warmth, to improve the health and well-being of our patients and their families.
-                <?php endif; ?>
-              </p>
-            </div>
-          </div>
-        </div>
         
-        <div class="col-md-6">
-          <div class="card h-100 shadow-sm">
+        <!-- Misión -->
+        <div class="col-lg-4">
+          <div class="card h-100 border-0 shadow-sm" style="background: #f8f9fa;">
             <div class="card-body p-4">
-              <div class="mb-3">
-                <i class="bi bi-eye text-info fs-1"></i>
+              <div class="d-flex align-items-start mb-3">
+                <div class="me-3">
+                  <div class="icon-box">
+                    <i class="bi bi-bullseye text-primary fs-1"></i>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="fw-bold mb-3" style="color: #1a1a5e;"><?php echo idioma_actual() === 'es' ? 'Misión' : 'Mission'; ?></h4>
+                  <p class="text-muted mb-0">
+                    <?php if(idioma_actual() === 'es'): ?>
+                      Brindar atención médica integral de calidad, con tecnología de vanguardia y un equipo de especialistas altamente calificados, garantizando el bienestar de nuestros pacientes a través de un servicio cálido, humano y comprometido con la excelencia en salud.
+                    <?php else: ?>
+                      To provide comprehensive quality medical care, with cutting-edge technology and a team of highly qualified specialists, guaranteeing the well-being of our patients through a warm, humane service committed to excellence in health.
+                    <?php endif; ?>
+                  </p>
+                </div>
               </div>
-              <h3><?php echo idioma_actual() === 'es' ? 'Nuestra Visión' : 'Our Vision'; ?></h3>
-              <p>
-                <?php if(idioma_actual() === 'es'): ?>
-                  Ser la clínica líder en servicios de salud, reconocida por nuestra excelencia médica, innovación tecnológica y compromiso con el bienestar integral de nuestros pacientes.
-                <?php else: ?>
-                  To be the leading health services clinic, recognized for our medical excellence, technological innovation and commitment to the comprehensive well-being of our patients.
-                <?php endif; ?>
-              </p>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Valores -->
-      <div class="row mb-5">
-        <div class="col-12">
-          <h2 class="text-center mb-4">
-            <?php echo idioma_actual() === 'es' ? 'Nuestros Valores' : 'Our Values'; ?>
-          </h2>
-        </div>
-        
-        <div class="col-md-3 mb-3">
-          <div class="text-center">
-            <div class="mb-3">
-              <i class="bi bi-heart-fill text-danger fs-1"></i>
+        <!-- Visión -->
+        <div class="col-lg-4">
+          <div class="card h-100 border-0 shadow-sm" style="background: #f8f9fa;">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-start mb-3">
+                <div class="me-3">
+                  <div class="icon-box">
+                    <i class="bi bi-eye text-info fs-1"></i>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="fw-bold mb-3" style="color: #1a1a5e;"><?php echo idioma_actual() === 'es' ? 'Visión' : 'Vision'; ?></h4>
+                  <p class="text-muted mb-0">
+                    <?php if(idioma_actual() === 'es'): ?>
+                      Ser reconocidos como la clínica líder en atención médica integral, destacando por nuestra innovación tecnológica, excelencia profesional y compromiso con la salud de la comunidad, siendo la primera opción en servicios de salud ocupacional y especializada.
+                    <?php else: ?>
+                      To be recognized as the leading clinic in comprehensive medical care, standing out for our technological innovation, professional excellence and commitment to the health of the community, being the first choice in occupational and specialized health services.
+                    <?php endif; ?>
+                  </p>
+                </div>
+              </div>
             </div>
-            <h5><?php echo idioma_actual() === 'es' ? 'Compromiso' : 'Commitment'; ?></h5>
-            <p class="small text-muted">
-              <?php echo idioma_actual() === 'es' ? 'Con la salud y bienestar de cada paciente' : 'To the health and well-being of each patient'; ?>
-            </p>
           </div>
         </div>
-        
-        <div class="col-md-3 mb-3">
-          <div class="text-center">
-            <div class="mb-3">
-              <i class="bi bi-shield-check text-success fs-1"></i>
+
+        <!-- Valores -->
+        <div class="col-lg-4">
+          <div class="card h-100 border-0 shadow-sm" style="background: #f8f9fa;">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-start mb-3">
+                <div class="me-3">
+                  <div class="icon-box">
+                    <i class="bi bi-gem text-success fs-1"></i>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="fw-bold mb-3" style="color: #1a1a5e;"><?php echo idioma_actual() === 'es' ? 'Valores' : 'Values'; ?></h4>
+                  <ul class="list-unstyled mb-0 text-muted">
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><?php echo idioma_actual() === 'es' ? 'Solidaridad' : 'Solidarity'; ?></li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><?php echo idioma_actual() === 'es' ? 'Puntualidad' : 'Punctuality'; ?></li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><?php echo idioma_actual() === 'es' ? 'Honestidad' : 'Honesty'; ?></li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><?php echo idioma_actual() === 'es' ? 'Compromiso' : 'Commitment'; ?></li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><?php echo idioma_actual() === 'es' ? 'Innovación' : 'Innovation'; ?></li>
+                  </ul>
+                </div>
+              </div>
             </div>
-            <h5><?php echo idioma_actual() === 'es' ? 'Calidad' : 'Quality'; ?></h5>
-            <p class="small text-muted">
-              <?php echo idioma_actual() === 'es' ? 'En todos nuestros servicios médicos' : 'In all our medical services'; ?>
-            </p>
           </div>
         </div>
-        
-        <div class="col-md-3 mb-3">
-          <div class="text-center">
-            <div class="mb-3">
-              <i class="bi bi-people-fill text-primary fs-1"></i>
-            </div>
-            <h5><?php echo idioma_actual() === 'es' ? 'Humanidad' : 'Humanity'; ?></h5>
-            <p class="small text-muted">
-              <?php echo idioma_actual() === 'es' ? 'Trato cálido y personalizado' : 'Warm and personalized treatment'; ?>
-            </p>
-          </div>
-        </div>
-        
-        <div class="col-md-3 mb-3">
-          <div class="text-center">
-            <div class="mb-3">
-              <i class="bi bi-lightbulb-fill text-warning fs-1"></i>
-            </div>
-            <h5><?php echo idioma_actual() === 'es' ? 'Innovación' : 'Innovation'; ?></h5>
-            <p class="small text-muted">
-              <?php echo idioma_actual() === 'es' ? 'Tecnología médica de vanguardia' : 'Cutting-edge medical technology'; ?>
-            </p>
-          </div>
-        </div>
+
       </div>
 
     </div>

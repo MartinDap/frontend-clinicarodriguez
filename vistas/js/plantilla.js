@@ -31,6 +31,4 @@ $(document).ready(function() {
     });
   }
   
-  console.log('Sistema Clínico - Plantilla cargada');
-  
 });

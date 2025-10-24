@@ -31,7 +31,7 @@
       <div class="dropdown">
         <button class="btn btn-link d-flex align-items-center" type="button" data-bs-toggle="dropdown">
           <i class="bi bi-person-circle fs-4 me-2"></i>
-          <span class="d-none d-md-inline"><?php echo $_SESSION["nombre"]; ?></span>
+          <span class="d-none d-md-inline"><?php echo obtener_nombre_usuario(); ?></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
           <li><h6 class="dropdown-header">Mi Cuenta</h6></li>

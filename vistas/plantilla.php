@@ -1,5 +1,11 @@
 <?php
-session_start();
+// Iniciar sesión si no está iniciada
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Cargar helper de sesión
+require_once 'vistas/modulos/session-helper.php';
 ?>
 
 <!DOCTYPE html>
@@ -54,16 +60,16 @@ session_start();
 
 <?php
 
-// Si se intenta acceder al login, cerrar sesión primero
+// Si se intenta acceder al login
 if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
   // Cerrar cualquier sesión activa
-  if(isset($_SESSION["iniciarSesion"])){
-    session_destroy();
+  if(tiene_sesion_activa()){
+    cerrar_sesion();
     session_start(); // Reiniciar sesión para el sistema de idiomas
   }
   include "modulos/login-panel.php";
   
-}elseif(isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"] == "ok"){
+}elseif(tiene_sesion_activa()){
   
   // Botón para ocultar/mostrar sidebar
   echo '<button id="btnToggleSidebar" class="sidebar-toggle" title="Mostrar/Ocultar menú">
@@ -85,30 +91,21 @@ if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
   
   if(isset($_GET["ruta"])){
     
-    if($_GET["ruta"] == "dashboard" ||
-       $_GET["ruta"] == "pacientes" ||
-       $_GET["ruta"] == "medicos" ||
-       $_GET["ruta"] == "citas" ||
-       $_GET["ruta"] == "historias-clinicas" ||
-       $_GET["ruta"] == "consultas" ||
-       $_GET["ruta"] == "usuarios" ||
-       $_GET["ruta"] == "especialidades" ||
-       $_GET["ruta"] == "reportes" ||
-       $_GET["ruta"] == "configuracion" ||
-       $_GET["ruta"] == "salir"){
-      
+    // Rutas permitidas del sistema
+    $rutas_permitidas = [
+      "dashboard", "pacientes", "medicos", "citas", 
+      "historias-clinicas", "consultas", "usuarios", 
+      "especialidades", "reportes", "configuracion", "salir"
+    ];
+    
+    if(in_array($_GET["ruta"], $rutas_permitidas)){
       include "modulos/".$_GET["ruta"].".php";
-      
     }else{
-      
       include "modulos/404.php";
-      
     }
     
   }else{
-    
     include "modulos/dashboard.php";
-    
   }
   
   echo '</main>';
@@ -120,10 +117,8 @@ if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
   echo '</div>';
   
 }else{
-  
   // Si no hay sesión, redirigir al login
-  echo '<script>window.location = "login";</script>';
-  
+  requerir_sesion();
 }
 
 ?>
