@@ -9,6 +9,7 @@ include 'vistas/modulos/componentes/topbar-publico.php';
 include 'vistas/modulos/componentes/navbar-publico.php';
 ?>
 
+  <!-- Hero Section -->
   <section class="hero-section" style="min-height: 300px;">
     <div class="container">
       <div class="row align-items-center">
@@ -20,110 +21,115 @@ include 'vistas/modulos/componentes/navbar-publico.php';
     </div>
   </section>
 
-  <section class="py-5">
+  <!-- Sección de Médicos -->
+  <section class="py-5 bg-light">
     <div class="container">
       <div class="row g-4">
-        <div class="col-md-6 col-lg-4">
-          <div class="card text-center shadow h-100">
-            <div class="card-body p-4">
-              <div class="mb-3">
-                <i class="bi bi-person-circle text-primary" style="font-size: 5rem;"></i>
-              </div>
-              <h4>Dr. Carlos Rodríguez</h4>
-              <p class="text-muted"><?php echo t('especialidad_neurocirugia'); ?></p>
-              <p class="small"><?php echo idioma_actual() === 'es' ? '15 años de experiencia en cirugía cerebral y columna vertebral' : '15 years of experience in brain and spine surgery'; ?></p>
-              <div class="mt-3">
-                <span class="badge bg-info me-1"><?php echo idioma_actual() === 'es' ? 'Especialista' : 'Specialist'; ?></span>
-                <span class="badge bg-secondary"><?php echo idioma_actual() === 'es' ? 'Certificado' : 'Certified'; ?></span>
-              </div>
+        
+        <!-- Médico 1 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card medico-card border-0 h-100">
+            <div class="medico-photo-wrapper">
+              <img src="vistas/img/doc-neurocirugia.jpg" alt="OSWALDO RODRIGUEZ MEDINA" class="medico-photo-img">
+            </div>
+            <div class="card-body text-center">
+              <h5 class="medico-nombre mb-1">OSWALDO RODRIGUEZ MEDINA</h5>
+              <p class="medico-especialidad mb-3"><?php echo t('especialidad_neurocirugia'); ?></p>
             </div>
           </div>
         </div>
 
-        <div class="col-md-6 col-lg-4">
-          <div class="card text-center shadow h-100">
-            <div class="card-body p-4">
-              <div class="mb-3">
-                <i class="bi bi-person-circle text-danger" style="font-size: 5rem;"></i>
-              </div>
-              <h4>Dra. María González</h4>
-              <p class="text-muted"><?php echo t('especialidad_ginecologia'); ?></p>
-              <p class="small"><?php echo idioma_actual() === 'es' ? '12 años de experiencia en salud reproductiva y obstetricia' : '12 years of experience in reproductive health and obstetrics'; ?></p>
-              <div class="mt-3">
-                <span class="badge bg-info me-1"><?php echo idioma_actual() === 'es' ? 'Especialista' : 'Specialist'; ?></span>
-                <span class="badge bg-secondary"><?php echo idioma_actual() === 'es' ? 'Certificado' : 'Certified'; ?></span>
-              </div>
+        <!-- Médico 2 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card medico-card border-0 h-100">
+            <div class="medico-photo-wrapper">
+              <img src="vistas/img/dco-ginecologia-obstetricia.jpg" alt="DANIELL VILLAMIZAR HERNANDEZ" class="medico-photo-img">
+            </div>
+            <div class="card-body text-center">
+              <h5 class="medico-nombre mb-1">DANIELL VILLAMIZAR HERNANDEZ</h5>
+              <p class="medico-especialidad mb-3"><?php echo t('especialidad_ginecologia'); ?></p>
             </div>
           </div>
         </div>
 
-        <div class="col-md-6 col-lg-4">
-          <div class="card text-center shadow h-100">
-            <div class="card-body p-4">
-              <div class="mb-3">
-                <i class="bi bi-person-circle text-success" style="font-size: 5rem;"></i>
-              </div>
-              <h4>Dr. Roberto Pérez</h4>
-              <p class="text-muted"><?php echo t('footer_cardiologia'); ?></p>
-              <p class="small"><?php echo idioma_actual() === 'es' ? '18 años de experiencia en cardiología clínica e intervencionista' : '18 years of experience in clinical and interventional cardiology'; ?></p>
-              <div class="mt-3">
-                <span class="badge bg-info me-1"><?php echo idioma_actual() === 'es' ? 'Especialista' : 'Specialist'; ?></span>
-                <span class="badge bg-secondary"><?php echo idioma_actual() === 'es' ? 'Certificado' : 'Certified'; ?></span>
-              </div>
+        <!-- Médico 3 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card medico-card border-0 h-100">
+            <div class="medico-photo-wrapper">
+              <img src="vistas/img/doc-neurologia.jpg" alt="MOISES RAFAEL ANGELES SOTELO" class="medico-photo-img">
+            </div>
+            <div class="card-body text-center">
+              <h5 class="medico-nombre mb-1">MOISES RAFAEL ANGELES SOTELO</h5>
+              <p class="medico-especialidad mb-3"><?php echo t('especialidad_neurologia'); ?></p>
             </div>
           </div>
         </div>
 
-        <div class="col-md-6 col-lg-4">
-          <div class="card text-center shadow h-100">
-            <div class="card-body p-4">
-              <div class="mb-3">
-                <i class="bi bi-person-circle text-warning" style="font-size: 5rem;"></i>
-              </div>
-              <h4>Dra. Ana Torres</h4>
-              <p class="text-muted"><?php echo idioma_actual() === 'es' ? 'Pediatría' : 'Pediatrics'; ?></p>
-              <p class="small"><?php echo idioma_actual() === 'es' ? '10 años de experiencia en atención pediátrica integral' : '10 years of experience in comprehensive pediatric care'; ?></p>
-              <div class="mt-3">
-                <span class="badge bg-info me-1"><?php echo idioma_actual() === 'es' ? 'Especialista' : 'Specialist'; ?></span>
-                <span class="badge bg-secondary"><?php echo idioma_actual() === 'es' ? 'Certificado' : 'Certified'; ?></span>
-              </div>
+        <!-- Médico 4 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card medico-card border-0 h-100">
+            <div class="medico-photo-wrapper">
+              <img src="vistas/img/doc-neumologia.jpg" alt="HYMAN TOM ROJAS NAVARRO" class="medico-photo-img">
+            </div>
+            <div class="card-body text-center">
+              <h5 class="medico-nombre mb-1">HYMAN TOM ROJAS NAVARRO</h5>
+              <p class="medico-especialidad mb-3"><?php echo t('footer_cardiologia'); ?></p>
             </div>
           </div>
         </div>
 
-        <div class="col-md-6 col-lg-4">
-          <div class="card text-center shadow h-100">
-            <div class="card-body p-4">
-              <div class="mb-3">
-                <i class="bi bi-person-circle text-info" style="font-size: 5rem;"></i>
-              </div>
-              <h4>Dr. Luis Martínez</h4>
-              <p class="text-muted"><?php echo t('especialidad_neurologia'); ?></p>
-              <p class="small"><?php echo idioma_actual() === 'es' ? '14 años de experiencia en trastornos neurológicos' : '14 years of experience in neurological disorders'; ?></p>
-              <div class="mt-3">
-                <span class="badge bg-info me-1"><?php echo idioma_actual() === 'es' ? 'Especialista' : 'Specialist'; ?></span>
-                <span class="badge bg-secondary"><?php echo idioma_actual() === 'es' ? 'Certificado' : 'Certified'; ?></span>
-              </div>
+        <!-- Médico 5 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card medico-card border-0 h-100">
+            <div class="medico-photo-wrapper">
+              <img src="vistas/img/doc-cirugia-general.jpg" alt="HECTOR MARTIN NUÑEZ DE LA CRUZ" class="medico-photo-img">
+            </div>
+            <div class="card-body text-center">
+              <h5 class="medico-nombre mb-1">HECTOR MARTIN NUÑEZ DE LA CRUZ</h5>
+              <p class="medico-especialidad mb-3"><?php echo idioma_actual() === 'es' ? 'Cirugía General' : 'General Surgery'; ?></p>
             </div>
           </div>
         </div>
 
-        <div class="col-md-6 col-lg-4">
-          <div class="card text-center shadow h-100">
-            <div class="card-body p-4">
-              <div class="mb-3">
-                <i class="bi bi-person-circle text-secondary" style="font-size: 5rem;"></i>
-              </div>
-              <h4>Dra. Patricia Sánchez</h4>
-              <p class="text-muted"><?php echo t('especialidad_endocrinologia'); ?></p>
-              <p class="small"><?php echo idioma_actual() === 'es' ? '11 años de experiencia en diabetes y trastornos hormonales' : '11 years of experience in diabetes and hormonal disorders'; ?></p>
-              <div class="mt-3">
-                <span class="badge bg-info me-1"><?php echo idioma_actual() === 'es' ? 'Especialista' : 'Specialist'; ?></span>
-                <span class="badge bg-secondary"><?php echo idioma_actual() === 'es' ? 'Certificado' : 'Certified'; ?></span>
-              </div>
+        <!-- Médico 6 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card medico-card border-0 h-100">
+            <div class="medico-photo-wrapper">
+              <img src="vistas/img/doc-dermatologia.jpg" alt="JOSE ONTON REYNAGA" class="medico-photo-img">
+            </div>
+            <div class="card-body text-center">
+              <h5 class="medico-nombre mb-1">JOSE ONTON REYNAGA</h5>
+              <p class="medico-especialidad mb-3"><?php echo idioma_actual() === 'es' ? 'Dermatología' : 'Dermatology'; ?></p>
             </div>
           </div>
         </div>
+
+        <!-- Médico 7 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card medico-card border-0 h-100">
+            <div class="medico-photo-wrapper">
+              <img src="vistas/img/doc-pediatria.jpg" alt="YENIFER ALEJANDRA PARRA BARBOZA" class="medico-photo-img">
+            </div>
+            <div class="card-body text-center">
+              <h5 class="medico-nombre mb-1">YENIFER ALEJANDRA PARRA BARBOZA</h5>
+              <p class="medico-especialidad mb-3"><?php echo idioma_actual() === 'es' ? 'Pediatría' : 'Pediatrics'; ?></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Médico 8 -->
+        <div class="col-md-6 col-lg-3">
+          <div class="card medico-card border-0 h-100">
+            <div class="medico-photo-wrapper">
+              <img src="vistas/img/doc-cirugia-general-roxana.jpg" alt="ROXANA ELIZABETH SOTELO DIESTRA" class="medico-photo-img">
+            </div>
+            <div class="card-body text-center">
+              <h5 class="medico-nombre mb-1">ROXANA ELIZABETH SOTELO DIESTRA</h5>
+              <p class="medico-especialidad mb-3"><?php echo t('especialidad_endocrinologia'); ?></p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>

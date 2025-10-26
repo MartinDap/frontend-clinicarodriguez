@@ -14,7 +14,8 @@ if ($ruta == 'conocenos' ||
     $ruta == 'especialidades-info' || 
     $ruta == 'servicios-info' ||
     $ruta == 'medicos-info' ||
-    $ruta == 'contacto') {
+    $ruta == 'contacto' ||
+    $ruta == 'agendar-cita') {
     
     // Cargar página pública detallada
     include "vistas/modulos/" . $ruta . ".php";

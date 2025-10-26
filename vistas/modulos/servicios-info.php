@@ -22,17 +22,17 @@ include 'vistas/modulos/componentes/navbar-publico.php';
 
   <section class="py-5">
     <div class="container">
-      <div class="row g-4">
+      <div class="row g-4 justify-content-center">
         
         <!-- Hospitalizacion -->
         <div class="col-md-6 col-lg-4">
           <div class="card especialidad-card text-center h-100">
-            <div class="card-body d-flex flex-column">
-              <div class="especialidad-icon mb-3">
+            <div class="card-body d-flex flex-column" style="padding: 2.5rem;">
+              <div class="especialidad-icon mb-4" style="font-size: 4rem;">
                 <i class="bi bi-hospital text-primary"></i>
               </div>
-              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Hospitalización' : 'Hospitalization'; ?></h5>
-              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Hospitalización disponible las 24 horas del día' : 'Hospitalization available 24 hours a day'; ?></p>
+              <h5 class="card-title" style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo idioma_actual() === 'es' ? 'Hospitalización' : 'Hospitalization'; ?></h5>
+              <p class="card-text flex-grow-1" style="font-size: 1rem;"><?php echo idioma_actual() === 'es' ? 'Hospitalización disponible las 24 horas del día' : 'Hospitalization available 24 hours a day'; ?></p>
             </div>
           </div>
         </div>
@@ -40,12 +40,12 @@ include 'vistas/modulos/componentes/navbar-publico.php';
         <!-- UVI -->
         <div class="col-md-6 col-lg-4">
           <div class="card especialidad-card text-center h-100">
-            <div class="card-body d-flex flex-column">
-              <div class="especialidad-icon mb-3">
+            <div class="card-body d-flex flex-column" style="padding: 2.5rem;">
+              <div class="especialidad-icon mb-4" style="font-size: 4rem;">
                 <i class="bi bi-heart-pulse text-danger"></i>
               </div>
-              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'UVI' : 'ICU'; ?></h5>
-              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Unidad de Vigilancia Intensiva totalmente equipada' : 'Fully equipped Intensive Care Unit'; ?></p>
+              <h5 class="card-title" style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo idioma_actual() === 'es' ? 'UVI' : 'ICU'; ?></h5>
+              <p class="card-text flex-grow-1" style="font-size: 1rem;"><?php echo idioma_actual() === 'es' ? 'Unidad de Vigilancia Intensiva totalmente equipada' : 'Fully equipped Intensive Care Unit'; ?></p>
             </div>
           </div>
         </div>
@@ -53,12 +53,12 @@ include 'vistas/modulos/componentes/navbar-publico.php';
         <!-- Emergencia -->
         <div class="col-md-6 col-lg-4">
           <div class="card especialidad-card text-center h-100">
-            <div class="card-body d-flex flex-column">
-              <div class="especialidad-icon mb-3">
+            <div class="card-body d-flex flex-column" style="padding: 2.5rem;">
+              <div class="especialidad-icon mb-4" style="font-size: 4rem;">
                 <i class="bi bi-activity text-danger"></i>
               </div>
-              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Emergencia' : 'Emergency'; ?></h5>
-              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Emergencias las 24 horas del día' : 'Emergencies 24 hours a day'; ?></p>
+              <h5 class="card-title" style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo idioma_actual() === 'es' ? 'Emergencia' : 'Emergency'; ?></h5>
+              <p class="card-text flex-grow-1" style="font-size: 1rem;"><?php echo idioma_actual() === 'es' ? 'Emergencias las 24 horas del día' : 'Emergencies 24 hours a day'; ?></p>
             </div>
           </div>
         </div>
@@ -66,12 +66,12 @@ include 'vistas/modulos/componentes/navbar-publico.php';
         <!-- Laboratorio -->
         <div class="col-md-6 col-lg-4">
           <div class="card especialidad-card text-center h-100">
-            <div class="card-body d-flex flex-column">
-              <div class="especialidad-icon mb-3">
+            <div class="card-body d-flex flex-column" style="padding: 2.5rem;">
+              <div class="especialidad-icon mb-4" style="font-size: 4rem;">
                 <i class="bi bi-eyedropper text-info"></i>
               </div>
-              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Laboratorio' : 'Laboratory'; ?></h5>
-              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Laboratorio 24 horas' : 'Laboratory 24 hours'; ?></p>
+              <h5 class="card-title" style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo idioma_actual() === 'es' ? 'Laboratorio' : 'Laboratory'; ?></h5>
+              <p class="card-text flex-grow-1" style="font-size: 1rem;"><?php echo idioma_actual() === 'es' ? 'Laboratorio 24 horas' : 'Laboratory 24 hours'; ?></p>
             </div>
           </div>
         </div>
@@ -79,12 +79,12 @@ include 'vistas/modulos/componentes/navbar-publico.php';
         <!-- Sala de Operaciones -->
         <div class="col-md-6 col-lg-4">
           <div class="card especialidad-card text-center h-100">
-            <div class="card-body d-flex flex-column">
-              <div class="especialidad-icon mb-3">
+            <div class="card-body d-flex flex-column" style="padding: 2.5rem;">
+              <div class="especialidad-icon mb-4" style="font-size: 4rem;">
                 <i class="bi bi-hospital-fill text-success"></i>
               </div>
-              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Sala de Operaciones' : 'Operating Room'; ?></h5>
-              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Cirugías programadas y no programadas en el momento preciso' : 'Scheduled and unscheduled surgeries at the precise moment'; ?></p>
+              <h5 class="card-title" style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo idioma_actual() === 'es' ? 'Sala de Operaciones' : 'Operating Room'; ?></h5>
+              <p class="card-text flex-grow-1" style="font-size: 1rem;"><?php echo idioma_actual() === 'es' ? 'Cirugías programadas y no programadas en el momento preciso' : 'Scheduled and unscheduled surgeries at the precise moment'; ?></p>
             </div>
           </div>
         </div>
@@ -92,12 +92,12 @@ include 'vistas/modulos/componentes/navbar-publico.php';
         <!-- Tomografía -->
         <div class="col-md-6 col-lg-4">
           <div class="card especialidad-card text-center h-100">
-            <div class="card-body d-flex flex-column">
-              <div class="especialidad-icon mb-3">
+            <div class="card-body d-flex flex-column" style="padding: 2.5rem;">
+              <div class="especialidad-icon mb-4" style="font-size: 4rem;">
                 <i class="bi bi-images text-primary"></i>
               </div>
-              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Tomografía' : 'Tomography'; ?></h5>
-              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Tomografía Computarizada' : 'Computed Tomography'; ?></p>
+              <h5 class="card-title" style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo idioma_actual() === 'es' ? 'Tomografía' : 'Tomography'; ?></h5>
+              <p class="card-text flex-grow-1" style="font-size: 1rem;"><?php echo idioma_actual() === 'es' ? 'Tomografía Computarizada' : 'Computed Tomography'; ?></p>
             </div>
           </div>
         </div>
@@ -105,12 +105,12 @@ include 'vistas/modulos/componentes/navbar-publico.php';
         <!-- Densitometría -->
         <div class="col-md-6 col-lg-4">
           <div class="card especialidad-card text-center h-100">
-            <div class="card-body d-flex flex-column">
-              <div class="especialidad-icon mb-3">
+            <div class="card-body d-flex flex-column" style="padding: 2.5rem;">
+              <div class="especialidad-icon mb-4" style="font-size: 4rem;">
                 <i class="bi bi-clipboard2-pulse text-warning"></i>
               </div>
-              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Densitometría' : 'Densitometry'; ?></h5>
-              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Densitometría ósea' : 'Bone densitometry'; ?></p>
+              <h5 class="card-title" style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo idioma_actual() === 'es' ? 'Densitometría' : 'Densitometry'; ?></h5>
+              <p class="card-text flex-grow-1" style="font-size: 1rem;"><?php echo idioma_actual() === 'es' ? 'Densitometría ósea' : 'Bone densitometry'; ?></p>
             </div>
           </div>
         </div>
@@ -118,12 +118,12 @@ include 'vistas/modulos/componentes/navbar-publico.php';
         <!-- Ecografía -->
         <div class="col-md-6 col-lg-4">
           <div class="card especialidad-card text-center h-100">
-            <div class="card-body d-flex flex-column">
-              <div class="especialidad-icon mb-3">
+            <div class="card-body d-flex flex-column" style="padding: 2.5rem;">
+              <div class="especialidad-icon mb-4" style="font-size: 4rem;">
                 <i class="bi bi-soundwave text-info"></i>
               </div>
-              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Ecografía' : 'Ultrasound'; ?></h5>
-              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Ecografía de todo tipo' : 'All types of ultrasound'; ?></p>
+              <h5 class="card-title" style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo idioma_actual() === 'es' ? 'Ecografía' : 'Ultrasound'; ?></h5>
+              <p class="card-text flex-grow-1" style="font-size: 1rem;"><?php echo idioma_actual() === 'es' ? 'Ecografía de todo tipo' : 'All types of ultrasound'; ?></p>
             </div>
           </div>
         </div>
@@ -131,12 +131,12 @@ include 'vistas/modulos/componentes/navbar-publico.php';
         <!-- Radiología -->
         <div class="col-md-6 col-lg-4">
           <div class="card especialidad-card text-center h-100">
-            <div class="card-body d-flex flex-column">
-              <div class="especialidad-icon mb-3">
+            <div class="card-body d-flex flex-column" style="padding: 2.5rem;">
+              <div class="especialidad-icon mb-4" style="font-size: 4rem;">
                 <i class="bi bi-x-lg text-secondary"></i>
               </div>
-              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Radiología' : 'Radiology'; ?></h5>
-              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Rayos X computarizados' : 'Computerized X-rays'; ?></p>
+              <h5 class="card-title" style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo idioma_actual() === 'es' ? 'Radiología' : 'Radiology'; ?></h5>
+              <p class="card-text flex-grow-1" style="font-size: 1rem;"><?php echo idioma_actual() === 'es' ? 'Rayos X computarizados' : 'Computerized X-rays'; ?></p>
             </div>
           </div>
         </div>
@@ -144,12 +144,12 @@ include 'vistas/modulos/componentes/navbar-publico.php';
         <!-- Farmacia -->
         <div class="col-md-6 col-lg-4">
           <div class="card especialidad-card text-center h-100">
-            <div class="card-body d-flex flex-column">
-              <div class="especialidad-icon mb-3">
+            <div class="card-body d-flex flex-column" style="padding: 2.5rem;">
+              <div class="especialidad-icon mb-4" style="font-size: 4rem;">
                 <i class="bi bi-capsule text-success"></i>
               </div>
-              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Farmacia' : 'Pharmacy'; ?></h5>
-              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Farmacia 24 horas' : 'Pharmacy 24 hours'; ?></p>
+              <h5 class="card-title" style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo idioma_actual() === 'es' ? 'Farmacia' : 'Pharmacy'; ?></h5>
+              <p class="card-text flex-grow-1" style="font-size: 1rem;"><?php echo idioma_actual() === 'es' ? 'Farmacia 24 horas' : 'Pharmacy 24 hours'; ?></p>
             </div>
           </div>
         </div>
@@ -157,12 +157,12 @@ include 'vistas/modulos/componentes/navbar-publico.php';
         <!-- Banco de Sangre -->
         <div class="col-md-6 col-lg-4">
           <div class="card especialidad-card text-center h-100">
-            <div class="card-body d-flex flex-column">
-              <div class="especialidad-icon mb-3">
+            <div class="card-body d-flex flex-column" style="padding: 2.5rem;">
+              <div class="especialidad-icon mb-4" style="font-size: 4rem;">
                 <i class="bi bi-droplet-fill text-danger"></i>
               </div>
-              <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Banco de Sangre' : 'Blood Bank'; ?></h5>
-              <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Banco de Sangre Tipo I-B' : 'Blood Bank Type I-B'; ?></p>
+              <h5 class="card-title" style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo idioma_actual() === 'es' ? 'Banco de Sangre' : 'Blood Bank'; ?></h5>
+              <p class="card-text flex-grow-1" style="font-size: 1rem;"><?php echo idioma_actual() === 'es' ? 'Banco de Sangre Tipo I-B' : 'Blood Bank Type I-B'; ?></p>
             </div>
           </div>
         </div>

@@ -42,7 +42,7 @@
       
     </div>
     
-    <div class="row">
+    <div class="row justify-content-center">
       
       <!-- Logo -->
       <div class="col-md-3 mb-4">
@@ -69,17 +69,6 @@
           <li><a href="#" class="text-white-50"><?php echo t('especialidad_neurologia'); ?></a></li>
           <li><a href="#" class="text-white-50"><?php echo t('especialidad_endocrinologia'); ?></a></li>
           <li><a href="#" class="text-white-50"><?php echo t('footer_cardiologia'); ?></a></li>
-        </ul>
-      </div>
-      
-      <div class="col-md-3">
-        <h6><?php echo t('footer_otros_links'); ?></h6>
-        <ul class="list-unstyled">
-          <li><a href="#" class="text-white-50"><?php echo t('footer_nosotros'); ?></a></li>
-          <li><a href="#" class="text-white-50"><?php echo t('footer_blogs'); ?></a></li>
-          <li><a href="#" class="text-white-50"><?php echo t('footer_contactanos'); ?></a></li>
-          <li><a href="#" class="text-white-50"><?php echo t('footer_faq'); ?></a></li>
-          <li><a href="#" class="text-white-50"><?php echo t('footer_privacidad'); ?></a></li>
         </ul>
       </div>
       

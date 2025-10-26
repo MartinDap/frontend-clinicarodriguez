@@ -39,7 +39,7 @@ require_once 'vistas/modulos/idiomas.php';
           <h1 class="display-4 fw-bold mb-4"><?php echo t('hero_titulo'); ?></h1>
           <p class="lead mb-4"><?php echo t('hero_descripcion'); ?></p>
           <div class="d-flex gap-3">
-            <a href="#citas" class="btn btn-warning btn-lg">
+            <a href="agendar-cita" class="btn btn-warning btn-lg">
               <i class="bi bi-calendar-plus"></i> <?php echo t('hero_btn_cita'); ?>
             </a>
             <a href="#resultados" class="btn btn-outline-primary btn-lg">
@@ -563,10 +563,10 @@ require_once 'vistas/modulos/idiomas.php';
               </div>
               <!-- Google Maps Iframe -->
               <iframe 
-                src="https://www.google.com/maps?q=-6.480640413208718,-76.373696421277&hl=es&z=18&output=embed" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.324357617814!2d-76.37805014848706!3d-6.4805410768226155!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91ba0b894b1b0f9b%3A0x9705ade9141630e8!2sCLINICA%20RODRIGUEZ%20Y%20ESPECIALISTAS!5e0!3m2!1ses!2spe!4v1761439669151!5m2!1ses!2spe" 
                 width="100%" 
                 height="450" 
-                class="border-0"
+                style="border:0;" 
                 allowfullscreen="" 
                 loading="lazy" 
                 referrerpolicy="no-referrer-when-downgrade">

@@ -11,13 +11,13 @@
     <div class="row align-items-center g-0">
       <!-- Teléfono -->
       <div class="col-lg-3 col-md-6 col-6">
-        <a href="tel:997753923" class="topbar-item text-decoration-none d-flex align-items-center justify-content-center justify-content-lg-start">
+        <a href="tel:+51997753923" class="topbar-item text-decoration-none d-flex align-items-center justify-content-center justify-content-lg-start">
           <div class="topbar-icon">
             <i class="bi bi-telephone-fill"></i>
           </div>
           <div class="topbar-content">
             <span class="topbar-label">Teléfonos</span>
-            <span class="topbar-value">997 753 923</span>
+            <span class="topbar-value">+51 997 753 923</span>
           </div>
         </a>
       </div>
@@ -38,7 +38,7 @@
       
       <!-- Cita Online -->
       <div class="col-lg-3 col-md-6 col-6">
-        <a href="#citas" class="topbar-item topbar-highlight text-decoration-none d-flex align-items-center justify-content-center">
+        <a href="agendar-cita" class="topbar-item topbar-highlight text-decoration-none d-flex align-items-center justify-content-center">
           <div class="topbar-icon">
             <i class="bi bi-calendar-check-fill"></i>
           </div>
