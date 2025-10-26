@@ -42,7 +42,7 @@ require_once 'vistas/modulos/idiomas.php';
             <a href="agendar-cita" class="btn btn-warning btn-lg">
               <i class="bi bi-calendar-plus"></i> <?php echo t('hero_btn_cita'); ?>
             </a>
-            <a href="#resultados" class="btn btn-outline-primary btn-lg">
+            <a href="resultados" class="btn btn-outline-primary btn-lg">
               <i class="bi bi-file-earmark-text"></i> <?php echo t('hero_btn_resultados'); ?>
             </a>
           </div>
