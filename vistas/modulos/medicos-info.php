@@ -24,112 +24,13 @@ include 'vistas/modulos/componentes/navbar-publico.php';
   <!-- Sección de Médicos -->
   <section class="py-5 bg-light">
     <div class="container">
-      <div class="row g-4">
-        
-        <!-- Médico 1 -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card medico-card border-0 h-100">
-            <div class="medico-photo-wrapper">
-              <img src="vistas/img/doc-neurocirugia.jpg" alt="OSWALDO RODRIGUEZ MEDINA" class="medico-photo-img">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="medico-nombre mb-1">OSWALDO RODRIGUEZ MEDINA</h5>
-              <p class="medico-especialidad mb-3"><?php echo t('especialidad_neurocirugia'); ?></p>
-            </div>
+      <div class="row g-4" id="contenedorMedicos">
+        <!-- Los médicos se cargarán dinámicamente aquí -->
+        <div class="col-12 text-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
           </div>
         </div>
-
-        <!-- Médico 2 -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card medico-card border-0 h-100">
-            <div class="medico-photo-wrapper">
-              <img src="vistas/img/dco-ginecologia-obstetricia.jpg" alt="DANIELL VILLAMIZAR HERNANDEZ" class="medico-photo-img">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="medico-nombre mb-1">DANIELL VILLAMIZAR HERNANDEZ</h5>
-              <p class="medico-especialidad mb-3"><?php echo t('especialidad_ginecologia'); ?></p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Médico 3 -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card medico-card border-0 h-100">
-            <div class="medico-photo-wrapper">
-              <img src="vistas/img/doc-neurologia.jpg" alt="MOISES RAFAEL ANGELES SOTELO" class="medico-photo-img">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="medico-nombre mb-1">MOISES RAFAEL ANGELES SOTELO</h5>
-              <p class="medico-especialidad mb-3"><?php echo t('especialidad_neurologia'); ?></p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Médico 4 -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card medico-card border-0 h-100">
-            <div class="medico-photo-wrapper">
-              <img src="vistas/img/doc-neumologia.jpg" alt="HYMAN TOM ROJAS NAVARRO" class="medico-photo-img">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="medico-nombre mb-1">HYMAN TOM ROJAS NAVARRO</h5>
-              <p class="medico-especialidad mb-3"><?php echo t('footer_cardiologia'); ?></p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Médico 5 -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card medico-card border-0 h-100">
-            <div class="medico-photo-wrapper">
-              <img src="vistas/img/doc-cirugia-general.jpg" alt="HECTOR MARTIN NUÑEZ DE LA CRUZ" class="medico-photo-img">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="medico-nombre mb-1">HECTOR MARTIN NUÑEZ DE LA CRUZ</h5>
-              <p class="medico-especialidad mb-3"><?php echo idioma_actual() === 'es' ? 'Cirugía General' : 'General Surgery'; ?></p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Médico 6 -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card medico-card border-0 h-100">
-            <div class="medico-photo-wrapper">
-              <img src="vistas/img/doc-dermatologia.jpg" alt="JOSE ONTON REYNAGA" class="medico-photo-img">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="medico-nombre mb-1">JOSE ONTON REYNAGA</h5>
-              <p class="medico-especialidad mb-3"><?php echo idioma_actual() === 'es' ? 'Dermatología' : 'Dermatology'; ?></p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Médico 7 -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card medico-card border-0 h-100">
-            <div class="medico-photo-wrapper">
-              <img src="vistas/img/doc-pediatria.jpg" alt="YENIFER ALEJANDRA PARRA BARBOZA" class="medico-photo-img">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="medico-nombre mb-1">YENIFER ALEJANDRA PARRA BARBOZA</h5>
-              <p class="medico-especialidad mb-3"><?php echo idioma_actual() === 'es' ? 'Pediatría' : 'Pediatrics'; ?></p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Médico 8 -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card medico-card border-0 h-100">
-            <div class="medico-photo-wrapper">
-              <img src="vistas/img/doc-cirugia-general-roxana.jpg" alt="ROXANA ELIZABETH SOTELO DIESTRA" class="medico-photo-img">
-            </div>
-            <div class="card-body text-center">
-              <h5 class="medico-nombre mb-1">ROXANA ELIZABETH SOTELO DIESTRA</h5>
-              <p class="medico-especialidad mb-3"><?php echo t('especialidad_endocrinologia'); ?></p>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
@@ -137,5 +38,75 @@ include 'vistas/modulos/componentes/navbar-publico.php';
 <?php include 'vistas/modulos/componentes/footer-publico.php'; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="vistas/js/config.js"></script>
+<script>
+  /**
+   * Script para cargar y mostrar médicos dinámicamente desde el backend
+   */
+  $(document).ready(function() {
+    // Configuración de la petición AJAX
+    var configuracion = {
+      url: `${CONFIG.API_BASE_URL}medicos`,
+      method: "GET",
+      timeout: 0,
+      headers: {
+        "Authorization": CONFIG.API_AUTH_HEADER
+      }
+    };
+
+    // Realizar petición al backend
+    $.ajax(configuracion)
+      .done(function(respuesta) {
+        console.log("Médicos recibidos:", respuesta);
+        
+        // Limpiar el contenedor
+        $('#contenedorMedicos').empty();
+        
+        // Validar que existan datos
+        if (respuesta && respuesta.data && respuesta.data.length > 0) {
+          // Iterar sobre cada médico
+          respuesta.data.forEach(function(medico) {
+            // Construir la tarjeta del médico
+            var tarjetaMedico = `
+              <div class="col-md-6 col-lg-3">
+                <div class="card medico-card border-0 h-100">
+                  <div class="medico-photo-wrapper">
+                    <img src="${medico.mediFotoUrl || 'vistas/img/default-doctor.jpg'}" 
+                         alt="${medico.mediNombre} ${medico.mediApellido}" 
+                         class="medico-photo-img">
+                  </div>
+                  <div class="card-body text-center">
+                    <h5 class="medico-nombre mb-1">${medico.mediNombre} ${medico.mediApellido}</h5>
+                    <p class="medico-especialidad mb-3">${medico.mediEspecialidad || 'Medicina General'}</p>
+                  </div>
+                </div>
+              </div>
+            `;
+            
+            // Agregar la tarjeta al contenedor
+            $('#contenedorMedicos').append(tarjetaMedico);
+          });
+        } else {
+          // Mostrar mensaje si no hay médicos
+          $('#contenedorMedicos').html(`
+            <div class="col-12 text-center">
+              <p class="text-muted">No hay médicos disponibles en este momento.</p>
+            </div>
+          `);
+        }
+      })
+      .fail(function(xhr, estado, error) {
+        console.error("Error al cargar médicos:", error);
+        
+        // Mostrar mensaje de error
+        $('#contenedorMedicos').html(`
+          <div class="col-12 text-center">
+            <p class="text-danger">Error al cargar la información de los médicos.</p>
+          </div>
+        `);
+      });
+  });
+</script>
 </body>
 </html>

@@ -36,11 +36,50 @@ include 'vistas/modulos/componentes/navbar-publico.php';
   }
   
   .cita-card {
-    background: #f8f9fa;
+    background: linear-gradient(to bottom, #ffffff, #f8fbff);
     border-radius: 30px;
     padding: 3rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e0e0e0;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12), 
+                0 0 0 1px rgba(56, 195, 196, 0.1) inset;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Borde degradado animado en la parte superior */
+  .cita-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, 
+      #38c3c4 0%, 
+      #2a0287 25%, 
+      #38c3c4 50%, 
+      #2a0287 75%, 
+      #38c3c4 100%);
+    background-size: 200% 100%;
+    animation: gradientFlow 4s linear infinite;
+  }
+  
+  /* Efecto de brillo sutil en las esquinas */
+  .cita-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(56, 195, 196, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  
+  @keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
   }
   
   .cita-card h2 {
@@ -63,18 +102,22 @@ include 'vistas/modulos/componentes/navbar-publico.php';
   }
   
   .form-control, .form-select {
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
+    border: 2px solid #e8eef5;
+    border-radius: 12px;
     padding: 0.75rem 1rem;
     font-size: 0.95rem;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   }
   
   .form-control:focus, .form-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-color: #38c3c4;
+    box-shadow: 0 0 0 3px rgba(56, 195, 196, 0.15), 
+                0 4px 12px rgba(56, 195, 196, 0.1);
     background: white;
+    outline: none;
+    transform: translateY(-1px);
   }
   
   .form-control::placeholder {
@@ -86,24 +129,51 @@ include 'vistas/modulos/componentes/navbar-publico.php';
   }
   
   .btn-enviar {
-    background: #007bff;
+    background: linear-gradient(135deg, #38c3c4 0%, #2a0287 100%);
     color: white;
     border: none;
-    padding: 0.75rem 2.5rem;
+    padding: 0.85rem 3rem;
     border-radius: 50px;
     font-weight: bold;
     font-size: 1rem;
-    transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 6px 20px rgba(56, 195, 196, 0.35), 
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Efecto de brillo al pasar el cursor */
+  .btn-enviar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(255, 255, 255, 0.3), 
+      transparent);
+    transition: left 0.5s;
+  }
+  
+  .btn-enviar:hover::before {
+    left: 100%;
   }
   
   .btn-enviar:hover {
-    background: #0056b3;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+    background: linear-gradient(135deg, #2a0287 0%, #38c3c4 100%);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(56, 195, 196, 0.45), 
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  }
+  
+  .btn-enviar:active {
+    transform: translateY(-1px) scale(0.98);
   }
   
   .char-counter {
@@ -184,20 +254,24 @@ include 'vistas/modulos/componentes/navbar-publico.php';
                   class="form-control" 
                   id="documento" 
                   name="documento" 
-                  maxlength="60" 
+                  maxlength="20" 
                   required
-                  placeholder="<?php echo idioma_actual() === 'es' ? 'DNI / Pasaporte' : 'ID / Passport'; ?>">
+                  pattern="[0-9]+"
+                  title="<?php echo idioma_actual() === 'es' ? 'Solo se permiten números' : 'Only numbers allowed'; ?>"
+                  placeholder="<?php echo idioma_actual() === 'es' ? 'Solo números' : 'Numbers only'; ?>">
               </div>
               <div>
                 <label for="celular" class="form-label"><?php echo idioma_actual() === 'es' ? 'Teléfono' : 'Phone'; ?></label>
                 <input 
-                  type="tel" 
+                  type="text" 
                   class="form-control" 
                   id="celular" 
                   name="celular" 
-                  maxlength="60" 
+                  maxlength="15" 
                   required
-                  placeholder="<?php echo idioma_actual() === 'es' ? 'Teléfono' : 'Phone'; ?>">
+                  pattern="[0-9]+"
+                  title="<?php echo idioma_actual() === 'es' ? 'Solo se permiten números' : 'Only numbers allowed'; ?>"
+                  placeholder="<?php echo idioma_actual() === 'es' ? 'Solo números' : 'Numbers only'; ?>">
               </div>
             </div>
         
@@ -220,8 +294,8 @@ include 'vistas/modulos/componentes/navbar-publico.php';
             <!-- Botón de Envío -->
             <div class="mt-4">
               <button type="submit" class="btn btn-enviar">
-                <?php echo idioma_actual() === 'es' ? 'Enviar' : 'Send'; ?>
-                <i class="bi bi-arrow-right"></i>
+                <?php echo idioma_actual() === 'es' ? 'Enviar por WhatsApp' : 'Send via WhatsApp'; ?>
+                <i class="bi bi-whatsapp"></i>
               </button>
             </div>
             
@@ -247,17 +321,67 @@ function setupCharCounter(inputId, counterId) {
 // Inicializar contadores
 setupCharCounter('razonConsulta', 'razonCounter');
 
-// Manejar envío del formulario
+// Validar que solo se ingresen números en DNI/Pasaporte y Teléfono
+function validarSoloNumeros(inputId) {
+  const input = document.getElementById(inputId);
+  
+  input.addEventListener('input', function(e) {
+    // Remover cualquier caracter que no sea número
+    this.value = this.value.replace(/[^0-9]/g, '');
+  });
+  
+  // Prevenir pegar texto no numérico
+  input.addEventListener('paste', function(e) {
+    e.preventDefault();
+    const pasteData = (e.clipboardData || window.clipboardData).getData('text');
+    const soloNumeros = pasteData.replace(/[^0-9]/g, '');
+    this.value = soloNumeros;
+  });
+}
+
+// Aplicar validación a los campos
+validarSoloNumeros('documento');
+validarSoloNumeros('celular');
+
+// Manejar envío del formulario y redireccionar a WhatsApp
 document.getElementById('formCita').addEventListener('submit', function(e) {
   e.preventDefault();
   
-  // Aquí puedes agregar la lógica para enviar el formulario
-  // Por ahora mostramos un mensaje de confirmación
-  alert('<?php echo idioma_actual() === 'es' ? '¡Solicitud enviada! Nos contactaremos contigo pronto.' : 'Request submitted! We will contact you soon.'; ?>');
+  // Obtener los valores del formulario
+  const nombre = document.getElementById('nombreCompleto').value.trim();
+  const apellidos = document.getElementById('apellidos').value.trim();
+  const documento = document.getElementById('documento').value.trim();
+  const celular = document.getElementById('celular').value.trim();
+  const mensaje = document.getElementById('razonConsulta').value.trim();
   
-  // Opcional: limpiar el formulario
-  this.reset();
-  document.querySelectorAll('.char-counter span').forEach(span => span.textContent = '0');
+  // Validar que todos los campos estén completos
+  if (!nombre || !apellidos || !documento || !celular || !mensaje) {
+    alert('<?php echo idioma_actual() === 'es' ? 'Por favor complete todos los campos' : 'Please fill in all fields'; ?>');
+    return;
+  }
+  
+  // Construir el mensaje para WhatsApp
+  const textoWhatsApp = `<?php echo idioma_actual() === 'es' ? 
+    '*Nueva solicitud de contacto*%0A%0A' .
+    '*Nombre:* ' : 
+    '*New contact request*%0A%0A' .
+    '*Name:* '; ?>` + nombre + ' ' + apellidos + `%0A` +
+    `<?php echo idioma_actual() === 'es' ? '*DNI/Pasaporte:* ' : '*ID/Passport:* '; ?>` + documento + `%0A` +
+    `<?php echo idioma_actual() === 'es' ? '*Teléfono:* ' : '*Phone:* '; ?>` + celular + `%0A%0A` +
+    `<?php echo idioma_actual() === 'es' ? '*Mensaje:*%0A' : '*Message:*%0A'; ?>` + mensaje;
+  
+  // Número de WhatsApp de la clínica (el mismo que está en el footer)
+  const numeroWhatsApp = '51937753923';
+  
+  // Crear URL de WhatsApp y abrir en nueva pestaña
+  const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${textoWhatsApp}`;
+  window.open(urlWhatsApp, '_blank');
+  
+  // Opcional: Limpiar el formulario después de enviar
+  setTimeout(() => {
+    this.reset();
+    document.querySelectorAll('.char-counter span').forEach(span => span.textContent = '0');
+  }, 500);
 });
 </script>
 
