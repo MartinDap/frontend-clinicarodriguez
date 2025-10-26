@@ -67,6 +67,11 @@ class ControladorUsuarios {
                 $email = $usuarioData["usuaEmail"];
                 $telefono = $usuarioData["usuaTelefono"];
 
+				// --- Roles ---
+    			$roles = isset($responseArray["roles"]) ? $responseArray["roles"] : [];
+    			$rolesTexto = implode(", ", $roles); // Convierte ["ADMIN","USUARIO"] → "ADMIN, USUARIO"
+
+
                 // Iniciar sesión
                 $_SESSION["iniciarSesion"] = "ok";
                 $_SESSION["id"] = $userId;
@@ -76,6 +81,7 @@ class ControladorUsuarios {
                 $_SESSION["email"] = $email;
                 $_SESSION["telefono"] = $telefono;
                 $_SESSION["token"] = $token;
+				$_SESSION["rolesArray"] = $roles;
 
                 // Registrar fecha y hora de login
                 date_default_timezone_set('America/Lima');

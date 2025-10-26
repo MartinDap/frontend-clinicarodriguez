@@ -8,9 +8,9 @@
  */
 
 // URL base del API backend
-define('API_BASE_URL', 'http://localhost:8080/api/');
+define('API_BASE_URL', 'https://backend-clinicarodriguez.onrender.com/api/');
 
 // Header de autenticación (Basic Auth codificado en Base64)
 // NOTA: Este valor debe ser reemplazado por variables de entorno en producción
-define('API_AUTH_HEADER', 'authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJ0aW4xMjMiLCJ1c3VhcmlvSWQiOjMsInJvbCI6IlVTRVIiLCJpYXQiOjE3NjE0MzI0NDIsImV4cCI6MTc2MTUxODg0Mn0.OS2bZ6HneVgiHNTAiw19mdRWvuOQdehNRJ792w9YhWn8v8PHczpDfLoMDDHu1KVE');
+define('API_AUTH_HEADER', 'authorization: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb3JnZWRhcCIsInVzdWFyaW9JZCI6Miwicm9sIjoiVVNFUiIsImlhdCI6MTc2MTQ0ODc4NywiZXhwIjoxNzYxNTM1MTg3fQ.3S9LjKp5cwP4LK2wfGl_1fzMmm77XxhuzpUy5gWC8C1yVTDf2JSx5eipfJf_V_8m');
 ?>

@@ -128,6 +128,6 @@ if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
 <script src="vistas/js/usuarios.js"></script>
 <script src="vistas/js/pacientes.js"></script>
 <script src="vistas/js/citas.js"></script>
-
+<script src="vistas/js/config.js"></script>
 </body>
 </html>
