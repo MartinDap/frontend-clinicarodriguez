@@ -94,8 +94,8 @@ if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
     // Rutas permitidas del sistema
     $rutas_permitidas = [
       "dashboard", "pacientes", "medicos", "citas", 
-      "historias-clinicas", "consultas", "usuarios", 
-      "especialidades", "reportes", "configuracion", "salir"
+      "historias-clinicas", "ver-historia", "consultas", "usuarios", 
+      "especialidades", "reportes", "configuracion", "salir", "horarios"
     ];
     
     if(in_array($_GET["ruta"], $rutas_permitidas)){
@@ -127,7 +127,11 @@ if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
 <script src="vistas/js/plantilla.js"></script>
 <script src="vistas/js/usuarios.js"></script>
 <script src="vistas/js/pacientes.js"></script>
+<script src="vistas/js/medicos.js"></script>
+<script src="vistas/js/horarios.js"></script>
 <script src="vistas/js/citas.js"></script>
+<script src="vistas/js/historias-clinicas.js"></script>
+<script src="vistas/js/ver-historia.js"></script>
 <script src="vistas/js/config.js"></script>
 </body>
 </html>
