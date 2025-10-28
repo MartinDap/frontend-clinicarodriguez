@@ -26,8 +26,10 @@ if ($ruta == 'conocenos' ||
 } elseif ($ruta == 'dashboard' || 
     $ruta == 'pacientes' || 
     $ruta == 'medicos' || 
+    $ruta == 'horarios' || 
     $ruta == 'citas' ||
     $ruta == 'historias-clinicas' ||
+    $ruta == 'ver-historia' ||
     $ruta == 'consultas' ||
     $ruta == 'usuarios' ||
     $ruta == 'especialidades' ||

@@ -218,17 +218,18 @@ MODAL AGREGAR MÉDICO
 
               <!-- Foto URL -->
               <div class="form-group col-md-4">
-                <label for="mediFotoUrl">Foto URL</label>
+                <label for="mediFoto">Subir Foto</label>
                 <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-image"></i></span>
+                  <span class="input-group-text"><i class="fa fa-image"></i></span>
                   <input
-                    type="text"
+                    type="file"
                     class="form-control input-lg"
-                    name="mediFotoUrl"
-                    id="mediFotoUrl"
-                    placeholder="https://...">
+                    name="mediFoto"
+                    id="mediFoto"
+                    accept="image/*">
                 </div>
               </div>
+
             </div>
 
           </div><!-- /.box-body -->

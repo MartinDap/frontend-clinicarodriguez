@@ -4,6 +4,103 @@
  */
 
 /*=============================================
+REGISTRAR MÉDICO
+=============================================*/
+$(document).ready(function() {
+    $("#formRegistrarMedico").on("submit", function(event) {
+        event.preventDefault(); // Evita recarga
+
+        // 1. Capturar los valores del formulario
+        var mediNombre      = $("#mediNombre").val();
+        var mediApellido    = $("#mediApellido").val();
+        var mediDni         = $("#mediDni").val();
+        var mediTelefono    = $("#mediTelefono").val();
+        var mediEmail       = $("#mediEmail").val();
+        var mediEstado      = $("#mediEstado").val();
+        var mediFotoFile    = $("#mediFoto")[0].files[0];
+
+        // Armamos el objeto médico (igual que tu JSON original)
+        var medicoObject = {
+            mediNombre:   mediNombre,
+            mediApellido: mediApellido,
+            mediDni:      mediDni,
+            mediEmail:    mediEmail,
+            mediTelefono: mediTelefono,
+            mediEstado:   1
+        };
+
+        // 2. Construir el FormData
+        var formData = new FormData();
+
+        // adjuntar la foto
+        // el nombre 'foto' debe coincidir EXACTO con lo que tu backend espera en @RequestParam("foto")
+        formData.append("foto", mediFotoFile);
+
+        // adjuntar el JSON del médico como string
+        // el nombre 'medico' debe coincidir con lo que tu backend espera en @RequestParam("medico")
+        formData.append("medico", JSON.stringify(medicoObject));
+
+        console.log("Voy a enviar:");
+        console.log("foto:", mediFotoFile);
+        console.log("medico:", medicoObject);
+
+        // 2. Configurar la solicitud AJAX
+        var settings = {
+        //url: `${CONFIG.API_BASE_URL}medicos`,
+        url: `${CONFIG.API_BASE_URL}medicos/with-photo`,
+        method: "POST",
+        timeout: 0,
+        headers: {
+            "Authorization": CONFIG.API_AUTH_HEADER
+        },
+        processData: false,      // evita que jQuery intente convertir el FormData a string
+        contentType: false, 
+        data: formData,
+        success: function(response) {
+          console.log("Respuesta del servidor:", response);
+
+          if (response.success) {
+              Swal.fire({
+                  type: "success",
+                  title: response.message || "El médico ha sido registrado correctamente",
+                  showConfirmButton: true,
+                  confirmButtonText: "Cerrar"
+              }).then(function(result) {
+                  if (result.value) {
+                      window.location = "medicos";
+                  }
+              });
+          } else {
+              Swal.fire({
+                  type: "warning",
+                  title: response.message || "Hubo un problema al registrar el médico",
+                  showConfirmButton: true,
+                  confirmButtonText: "Cerrar"
+              });
+          }
+      },
+      error: function(xhr, status, error) {
+          console.error("Error al registrar médico:", error);
+          console.error("Detalle:", xhr.responseText);
+
+          Swal.fire({
+              type: "error",
+              title: "No se pudo registrar el médico. Revisa los datos.",
+              showConfirmButton: true,
+              confirmButtonText: "Cerrar"
+          });
+      }
+
+    };
+        // 3. Ejecutar AJAX
+        $.ajax(settings).done(function (response) {
+            console.log("Respuesta final backend:", response);
+        });
+    });
+});
+
+
+/*=============================================
 EDITAR MÉDICO
 =============================================*/
 $(document).on("click", ".btnEditarMedico", function(){
@@ -21,31 +118,44 @@ $(document).on("click", ".btnEditarMedico", function(){
 	
 	$.ajax(settings).done(function (response) {
 		// Si la respuesta es una cadena de texto, conviértela a un objeto JSON
-		if (typeof response === 'string') {
-			response = JSON.parse(response);
-		}
+		// Si la respuesta viene como string plano tipo JSON, la parseamos
+        if (typeof response === 'string') {
+            try {
+                response = JSON.parse(response);
+            } catch (e) {
+                console.error("No se pudo parsear la respuesta en JSON:", e, response);
+            }
+        }
 		
 		console.log("Respuesta del médico:", response);
 		
 		// Ajusta según la estructura de tu API
-		if (response && response.data) {
-			var medico = response.data;
-			
-			// Llenar el formulario con los datos del médico
-			$("#editarMediId").val(medico.mediId);
-			$("#editarMediNombre").val(medico.mediNombre);
-			$("#editarMediApellido").val(medico.mediApellido);
-			$("#editarMediDni").val(medico.mediDni);
-			$("#editarMediTelefono").val(medico.mediTelefono);
-			$("#editarMediEmail").val(medico.mediEmail);
-			$("#editarMediEstado").val(medico.mediEstado);
-			$("#editarMediFotoUrl").val(medico.mediFotoUrl);
-			
-			// Abrir el modal con Bootstrap 5
-			const modalElement = document.getElementById('modalEditarMedico');
-			const modal = new bootstrap.Modal(modalElement);
-			modal.show();
-		} else {
+		// Validamos que tenga las claves esperadas
+        if (response && response.mediId) {
+
+            // Llenar el formulario del modal con los datos del médico
+            $("#editarMediId").val(response.mediId);
+            $("#editarMediNombre").val(response.mediNombre);
+            $("#editarMediApellido").val(response.mediApellido);
+            $("#editarMediDni").val(response.mediDni);
+            $("#editarMediTelefono").val(response.mediTelefono);
+            $("#editarMediEmail").val(response.mediEmail);
+            $("#editarMediEstado").val(response.mediEstado);
+
+            // Si quieres mostrar la URL actual (solo lectura o editable)
+            $("#editarMediFotoUrl").val(response.mediFotoUrl);
+
+            // Y si quieres previsualizar la foto existente:
+            if (response.mediFotoUrl) {
+                $("#previewEditarMediFoto").attr("src", response.mediFotoUrl).show();
+            }
+
+            // Abrir el modal Bootstrap 5
+            const modalElement = document.getElementById('modalEditarMedico');
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+
+        } else {
 			console.error("La estructura del JSON no es la esperada o los datos están vacíos.");
 			Swal.fire({
 				type: "error",
@@ -217,95 +327,7 @@ $(document).on("click", ".btnEliminarMedico", function(){
     });
 });
 
-/*=============================================
-REGISTRAR MÉDICO
-=============================================*/
-$(document).ready(function() {
-    $("#formRegistrarMedico").on("submit", function(event) {
-        event.preventDefault(); // Evita recarga
 
-        // 1. Capturar los valores del formulario
-        var mediNombre      = $("#mediNombre").val();
-        var mediApellido    = $("#mediApellido").val();
-        var mediDni         = $("#mediDni").val();
-        var mediTelefono    = $("#mediTelefono").val();
-        var mediEmail       = $("#mediEmail").val();
-        var mediEstado      = $("#mediEstado").val();
-        var mediFotoUrl     = $("#mediFotoUrl").val() || "";
-
-        console.log("Médico a registrar:");
-        console.log({
-            mediNombre,
-            mediApellido,
-            mediDni,
-            mediTelefono,
-            mediEmail,
-            mediEstado,
-            mediFotoUrl
-        });
-
-        // 2. Configurar la solicitud AJAX
-        var settings = {
-        url: `${CONFIG.API_BASE_URL}medicos`,
-        method: "POST",
-        timeout: 0,
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": CONFIG.API_AUTH_HEADER
-        },
-        data: JSON.stringify({
-            mediNombre: mediNombre,
-            mediApellido: mediApellido,
-            mediDni: mediDni,
-            mediEmail: mediEmail,
-            mediTelefono: mediTelefono,
-            mediFotoUrl: mediFotoUrl,
-            mediEstado: mediEstado
-        }),
-        success: function(response) {
-          console.log("Respuesta del servidor:", response);
-
-          if (response.success) {
-              Swal.fire({
-                  type: "success",
-                  title: response.message || "El médico ha sido registrado correctamente",
-                  showConfirmButton: true,
-                  confirmButtonText: "Cerrar"
-              }).then(function(result) {
-                  if (result.value) {
-                      window.location = "medicos";
-                  }
-              });
-          } else {
-              Swal.fire({
-                  type: "warning",
-                  title: response.message || "Hubo un problema al registrar el médico",
-                  showConfirmButton: true,
-                  confirmButtonText: "Cerrar"
-              });
-          }
-      },
-      error: function(xhr, status, error) {
-          console.error("Error al registrar médico:", error);
-          console.error("Detalle:", xhr.responseText);
-
-          Swal.fire({
-              type: "error",
-              title: "No se pudo registrar el médico. Revisa los datos.",
-              showConfirmButton: true,
-              confirmButtonText: "Cerrar"
-          });
-      }
-
-    };
-
-
-        // 3. Ejecutar AJAX
-        $.ajax(settings).done(function (response) {
-            console.log("Respuesta final backend:", response);
-        });
-    });
-});
 
 
 

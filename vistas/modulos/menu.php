@@ -35,6 +35,13 @@
           <span>Médicos</span>
         </a>
       </li>
+
+      <li>
+        <a href="horarios">
+          <i class="bi bi-person-badge"></i>
+          <span>Horario de citas</span>
+        </a>
+      </li>
       
       <li>
         <a href="citas">

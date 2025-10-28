@@ -5,13 +5,9 @@ VISUALIZAR HISTORIA
 =============================================*/
 // Ya no se necesita, ahora usamos enlaces directos <a href="">
 
-$(document).on("click", ".btnVerHistoria", function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  
+$(document).on("click", ".btnVerHistoria", function() {
   var histId = $(this).attr("histId");
-  console.log("Navegando a ver historia ID:", histId);gi
-  window.location.href = `?ruta=ver-historia&histId=${histId}`;
+  window.location.href = `index.php?ruta=ver-historia&histId=${histId}`;
 });
 
 

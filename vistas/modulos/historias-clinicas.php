@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
   $curl = curl_init();
 
@@ -36,50 +36,49 @@
   <!-- Tabla de Historias Cl├¡nicas -->
   <div class="table-container">
     <table id="tablaHistorias" class="table table-striped table-hover">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Paciente</th>
-        <th>Doctor</th>
-        <th>Fecha</th>
-        <th>Edad</th>
-        <th>Motivo</th>
-        <th>Diagnostico</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php if (isset($data["data"]) && is_array($data["data"])): ?>
-        <?php foreach($data["data"] as $key => $item): ?>
-          <tr>
-            <td><?= ($key + 1) ?></td>
-            <td><?= htmlspecialchars($item["paciente"]["paciNombrecompleto"]) ?></td>
-            <td><?= htmlspecialchars($item["usuario"]["usuaNombrecompleto"]) ?></td>
-            <td><?= htmlspecialchars($item["histFecha"]) ?></td>
-            <td><?= htmlspecialchars($item["histEdad"]) ?></td>
-            <td><?= htmlspecialchars($item["histMotivo"]) ?></td>
-            <td><?= htmlspecialchars($item["histDiagnostico"]) ?></td>
-            <td>
-              <button class="btn btn-sm btn-info btnVerHistoria me-1" histId="<?= $item["histId"] ?>" title="Ver historia">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-warning btnEditarHistoria me-1" histId="<?= $item["histId"] ?>" title="Editar historia">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-danger btnEliminarHistoria" histId="<?= $item["histId"] ?>" title="Eliminar historia">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-      <?php else: ?>
+      <thead>
         <tr>
-          <td colspan="8" class="text-center">No hay historias registradas</td>
+          <th>#</th>
+          <th>Paciente</th>
+          <th>Doctor</th>
+          <th>Fecha</th>
+          <th>Edad</th>
+          <th>Motivo</th>
+          <th>Diagnostico</th>
+          <th>Acciones</th>
         </tr>
-      <?php endif; ?>
-    </tbody>
-  </table>
-
+      </thead>
+      <tbody>
+        <?php if (isset($data["data"]) && is_array($data["data"])): ?>
+          <?php foreach($data["data"] as $key => $item): ?>
+            <tr>
+              <td><?= ($key + 1) ?></td>
+              <td><?= htmlspecialchars($item["paciente"]["paciNombrecompleto"]) ?></td>
+              <td><?= htmlspecialchars($item["usuario"]["usuaNombrecompleto"]) ?></td>
+              <td><?= htmlspecialchars($item["histFecha"]) ?></td>
+              <td><?= htmlspecialchars($item["histEdad"]) ?></td>
+              <td><?= htmlspecialchars($item["histMotivo"]) ?></td>
+              <td><?= htmlspecialchars($item["histDiagnostico"]) ?></td>
+              <td>
+                <button class="btn btn-sm btn-info btnVerHistoria me-1" histId="<?= $item["histId"] ?>" title="Ver historia">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-warning btnEditarHistoria me-1" histId="<?= $item["histId"] ?>" title="Editar historia">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-danger btnEliminarHistoria" histId="<?= $item["histId"] ?>" title="Eliminar historia">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <tr>
+            <td colspan="8" class="text-center">No hay historias registradas</td>
+          </tr>
+        <?php endif; ?>
+      </tbody>
+    </table>
   </div>
 
 </div>
@@ -90,7 +89,7 @@
     <div class="modal-content">
       <form id="formRegistrarHistoria">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalRegistrarHistoriaLabel">Registrar Historia Clinica</h5>
+          <h5 class="modal-title" id="modalRegistrarHistoriaLabel">Registrar Historia Cl├¡nica</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
 
@@ -129,9 +128,9 @@
             <textarea class="form-control" id="histMotivo" name="histMotivo" rows="2" required></textarea>
           </div>
 
-          <!-- Diagnostico -->
+          <!-- Diagn├│stico -->
           <div class="form-group mb-3">
-            <label for="histDiagnostico">Diagnostico</label>
+            <label for="histDiagnostico">Diagn├│stico</label>
             <textarea class="form-control" id="histDiagnostico" name="histDiagnostico" rows="2" required></textarea>
           </div>
 

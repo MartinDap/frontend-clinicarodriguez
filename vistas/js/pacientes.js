@@ -334,9 +334,14 @@ $(document).ready(function() {
 
 
 $(document).ready(function() {
-  
-  // Inicializar DataTable de pacientes
   if ($('#tablaPacientes').length) {
+
+    // Si ya existe una instancia, destrúyela antes
+    if ($.fn.DataTable.isDataTable('#tablaPacientes')) {
+      $('#tablaPacientes').DataTable().clear().destroy();
+    }
+
+    // Luego inicializa normalmente
     $('#tablaPacientes').DataTable({
       language: {
         url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
@@ -345,5 +350,5 @@ $(document).ready(function() {
       pageLength: 10
     });
   }
-  
 });
+
