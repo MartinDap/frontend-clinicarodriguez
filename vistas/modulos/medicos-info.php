@@ -65,36 +65,44 @@ include 'vistas/modulos/componentes/navbar-publico.php';
         
         // Validar que existan datos
         if (respuesta && respuesta.data && respuesta.data.length > 0) {
-          // Iterar sobre cada médico
           respuesta.data.forEach(function(medico) {
+            
+            // Construir las etiquetas de especialidades
+            let etiquetasEspecialidades = '';
+            if (Array.isArray(medico.especialidades) && medico.especialidades.length > 0) {
+              etiquetasEspecialidades = medico.especialidades
+                .map(espe => `<span class="badge bg-primary me-1">${espe.espeNombre}</span>`)
+                .join('');
+            } else {
+              etiquetasEspecialidades = `<span class="badge bg-secondary">Sin especialidad</span>`;
+            }
+
             // Construir la tarjeta del médico
-            var tarjetaMedico = `
-              <div class="col-md-6 col-lg-3">
-                <div class="card medico-card border-0 h-100">
+            const tarjetaMedico = `
+              <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card medico-card border-0 shadow-sm h-100">
                   <div class="medico-photo-wrapper">
                     <img src="${medico.mediFotoUrl || 'vistas/img/default-doctor.jpg'}" 
-                         alt="${medico.mediNombre} ${medico.mediApellido}" 
-                         class="medico-photo-img">
+                        alt="${medico.mediNombre} ${medico.mediApellido}" 
+                        class="medico-photo-img w-100 rounded-top">
                   </div>
                   <div class="card-body text-center">
                     <h5 class="medico-nombre mb-1">${medico.mediNombre} ${medico.mediApellido}</h5>
-                    <p class="medico-especialidad mb-3">${medico.mediEspecialidad || 'Medicina General'}</p>
+                    <div class="medico-especialidades mb-2">
+                      ${etiquetasEspecialidades}
+                    </div>
                   </div>
                 </div>
               </div>
             `;
-            
+
             // Agregar la tarjeta al contenedor
             $('#contenedorMedicos').append(tarjetaMedico);
           });
         } else {
-          // Mostrar mensaje si no hay médicos
-          $('#contenedorMedicos').html(`
-            <div class="col-12 text-center">
-              <p class="text-muted">No hay médicos disponibles en este momento.</p>
-            </div>
-          `);
+          $('#contenedorMedicos').html('<p class="text-center text-muted">No hay médicos disponibles.</p>');
         }
+
       })
       .fail(function(xhr, estado, error) {
         console.error("Error al cargar médicos:", error);

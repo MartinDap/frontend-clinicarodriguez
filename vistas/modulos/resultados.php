@@ -30,7 +30,7 @@ require_once 'vistas/modulos/idiomas.php';
     </div>
 
     <!-- Formulario -->
-    <form id="formConsultaResultados">
+    <form id="formConsultaResultados" method="post">
       
       <!-- Campo DNI -->
       <div class="mb-3">
@@ -58,7 +58,6 @@ require_once 'vistas/modulos/idiomas.php';
           <i class="bi bi-search"></i> <?php echo idioma_actual() === 'es' ? 'Consultar Resultados' : 'Check Results'; ?>
         </button>
       </div>
-
     </form>
     
     <hr>
@@ -146,7 +145,7 @@ require_once 'vistas/modulos/idiomas.php';
               title: '<?php echo idioma_actual() === 'es' ? '¡Paciente Encontrado!' : 'Patient Found!'; ?>',
               html: `
                 <div class="text-start">
-                  <p><strong><?php echo idioma_actual() === 'es' ? 'Nombre:' : 'Name:'; ?></strong> ${respuesta.data.paciNombre} ${respuesta.data.paciApellido}</p>
+                  <p><strong><?php echo idioma_actual() === 'es' ? 'Nombre:' : 'Name:'; ?></strong> ${respuesta.data.paciNombrecompleto}</p>
                   <p><strong><?php echo idioma_actual() === 'es' ? 'DNI:' : 'ID:'; ?></strong> ${respuesta.data.paciDni}</p>
                   <p><strong><?php echo idioma_actual() === 'es' ? 'Teléfono:' : 'Phone:'; ?></strong> ${respuesta.data.paciTelefono || 'N/A'}</p>
                   <hr>
@@ -158,6 +157,8 @@ require_once 'vistas/modulos/idiomas.php';
               confirmButtonColor: '#667eea',
               confirmButtonText: '<?php echo idioma_actual() === 'es' ? 'Entendido' : 'Got it'; ?>'
             });
+              sessionStorage.setItem('dniPaciente', respuesta.data.paciDni);
+              window.location.href = 'ver-resultados';
           } else {
             Swal.fire({
               icon: 'info',

@@ -53,6 +53,11 @@ require_once 'vistas/modulos/session-helper.php';
   
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- CDN Flatpickr (en el <head> o antes de cerrar el </body>) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
   
 </head>
 
@@ -94,8 +99,8 @@ if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
     // Rutas permitidas del sistema
     $rutas_permitidas = [
       "dashboard", "pacientes", "medicos", "citas", 
-      "historias-clinicas", "ver-historia", "consultas", "usuarios", 
-      "especialidades", "reportes", "configuracion", "salir", "horarios"
+      "historias-clinicas", "ver-historia", "consultas", "usuarios",
+      "activos", "configuracion", "salir", "horarios"
     ];
     
     if(in_array($_GET["ruta"], $rutas_permitidas)){
@@ -130,6 +135,7 @@ if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
 <script src="vistas/js/medicos.js"></script>
 <script src="vistas/js/horarios.js"></script>
 <script src="vistas/js/citas.js"></script>
+<script src="vistas/js/activos.js"></script>
 <script src="vistas/js/historias-clinicas.js"></script>
 <script src="vistas/js/ver-historia.js"></script>
 <script src="vistas/js/config.js"></script>

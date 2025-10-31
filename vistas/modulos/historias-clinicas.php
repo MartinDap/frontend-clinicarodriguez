@@ -42,23 +42,21 @@
           <th>Paciente</th>
           <th>Doctor</th>
           <th>Fecha</th>
-          <th>Edad</th>
-          <th>Motivo</th>
-          <th>Diagnostico</th>
+          <th>Talla</th>
+          <th>Peso</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         <?php if (isset($data["data"]) && is_array($data["data"])): ?>
-          <?php foreach($data["data"] as $key => $item): ?>
+          <?php foreach ($data["data"] as $key => $item): ?>
             <tr>
               <td><?= ($key + 1) ?></td>
               <td><?= htmlspecialchars($item["paciente"]["paciNombrecompleto"]) ?></td>
               <td><?= htmlspecialchars($item["usuario"]["usuaNombrecompleto"]) ?></td>
-              <td><?= htmlspecialchars($item["histFecha"]) ?></td>
-              <td><?= htmlspecialchars($item["histEdad"]) ?></td>
-              <td><?= htmlspecialchars($item["histMotivo"]) ?></td>
-              <td><?= htmlspecialchars($item["histDiagnostico"]) ?></td>
+              <td><?= htmlspecialchars(date("d/m/Y H:i", strtotime($item["histFecha"]))) ?></td>
+              <td><?= htmlspecialchars($item["histTalle"]) ?> m</td>
+              <td><?= htmlspecialchars($item["histPeso"]) ?> kg</td>
               <td>
                 <button class="btn btn-sm btn-info btnVerHistoria me-1" histId="<?= $item["histId"] ?>" title="Ver historia">
                   <i class="bi bi-eye"></i>
@@ -74,10 +72,12 @@
           <?php endforeach; ?>
         <?php else: ?>
           <tr>
-            <td colspan="8" class="text-center">No hay historias registradas</td>
+            <td colspan="9" class="text-center">No hay historias registradas</td>
           </tr>
         <?php endif; ?>
       </tbody>
+
+
     </table>
   </div>
 

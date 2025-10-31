@@ -32,8 +32,7 @@ if ($ruta == 'conocenos' ||
     $ruta == 'ver-historia' ||
     $ruta == 'consultas' ||
     $ruta == 'usuarios' ||
-    $ruta == 'especialidades' ||
-    $ruta == 'reportes' ||
+    $ruta == 'activos' ||
     $ruta == 'configuracion' ||
     $ruta == 'salir' ||
     $ruta == 'login') {

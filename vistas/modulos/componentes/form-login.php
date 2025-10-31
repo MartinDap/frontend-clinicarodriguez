@@ -13,30 +13,27 @@ $mostrar_volver = $mostrar_volver ?? false;
     
     <div class="login-logo">
       <i class="bi bi-hospital"></i>
-      <h3><?php echo t('login_titulo'); ?></h3>
-      <p class="text-muted"><?php echo t('login_subtitulo'); ?></p>
+      <h3><?php echo t('Inicia sesion a nuestro sistema'); ?></h3>
     </div>
-    
     <!-- Formulario de login tradicional -->
     <form method="post">
-      
       <div class="mb-3">
-        <label class="form-label"><?php echo t('login_usuario'); ?></label>
+        <label class="form-label"><?php echo t('Usuario'); ?></label>
         <div class="input-group">
           <span class="input-group-text">
             <i class="bi bi-person"></i>
           </span>
-          <input type="text" class="form-control" placeholder="<?php echo t('login_usuario_placeholder'); ?>" name="ingUsuario" required>
+          <input type="text" class="form-control" placeholder="<?php echo t('Usuario'); ?>" name="ingUsuario" required>
         </div>
       </div>
       
       <div class="mb-3">
-        <label class="form-label"><?php echo t('login_password'); ?></label>
+        <label class="form-label"><?php echo t('Contraseña'); ?></label>
         <div class="input-group">
           <span class="input-group-text">
             <i class="bi bi-lock"></i>
           </span>
-          <input type="password" class="form-control" placeholder="<?php echo t('login_password_placeholder'); ?>" name="ingPassword" required>
+          <input type="password" class="form-control" placeholder="<?php echo t('Contraseña'); ?>" name="ingPassword" required>
         </div>
       </div>
       

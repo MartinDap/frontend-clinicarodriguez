@@ -93,8 +93,8 @@ $data = $historia['data'];
               <td><?= htmlspecialchars($data['paciente']['paciDni']) ?></td>
             </tr>
             <tr>
-              <th>Edad:</th>
-              <td><?= htmlspecialchars($data['histEdad']) ?> años</td>
+              <th>Fecha de nacimiento:</th>
+              <td><?= htmlspecialchars($data['paciente']['paciFecNacimiento']) ?></td>
             </tr>
             <tr>
               <th>Sexo:</th>
@@ -200,30 +200,6 @@ $data = $historia['data'];
           </div>
         </div>
 
-      </div>
-    </div>
-
-    <!-- Diagnóstico -->
-    <div class="col-12 mb-4">
-      <div class="card">
-        <div class="card-header bg-danger text-white">
-          <h5 class="mb-0"><i class="bi bi-clipboard-check"></i> Diagnóstico</h5>
-        </div>
-        <div class="card-body">
-          <p class="mb-0"><?= nl2br(htmlspecialchars($data['histDiagnostico'])) ?></p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tratamiento -->
-    <div class="col-12 mb-4">
-      <div class="card">
-        <div class="card-header bg-primary text-white">
-          <h5 class="mb-0"><i class="bi bi-prescription2"></i> Tratamiento</h5>
-        </div>
-        <div class="card-body">
-          <p class="mb-0"><?= nl2br(htmlspecialchars($data['histTratamiento'])) ?></p>
-        </div>
       </div>
     </div>
 

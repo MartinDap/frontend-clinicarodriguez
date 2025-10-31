@@ -152,7 +152,7 @@ require_once 'vistas/modulos/idiomas.php';
     cargarInfoPaciente(dniPaciente);
     
     // Cargar resultados del paciente
-    cargarResultados(dniPaciente);
+    //cargarResultados(dniPaciente);
   });
   
   /**
@@ -160,37 +160,167 @@ require_once 'vistas/modulos/idiomas.php';
    */
   function cargarInfoPaciente(dni) {
     $.ajax({
-      url: `${CONFIG.API_BASE_URL}pacientes/dni/${dni}`,
-      method: 'GET',
-      headers: {
-        'Authorization': CONFIG.API_AUTH_HEADER
-      }
+        url: `${CONFIG.API_BASE_URL}pacientes/dni/${dni}`,
+        method: 'GET',
+        headers: {
+            'Authorization': CONFIG.API_AUTH_HEADER
+        }
     })
     .done(function(respuesta) {
-      if (respuesta && respuesta.data) {
-        var paciente = respuesta.data;
-        
-        // Actualizar nombre en la barra de navegación
-        $('#nombrePacienteNav').text(`${paciente.paciNombre} ${paciente.paciApellido}`);
-        
-        // Actualizar información en la tarjeta
-        var html = `
-          <div class="col-md-6">
-            <p class="mb-2"><strong><i class="bi bi-person me-2"></i><?php echo idioma_actual() === 'es' ? 'Nombre:' : 'Name:'; ?></strong> ${paciente.paciNombre} ${paciente.paciApellido}</p>
-            <p class="mb-2"><strong><i class="bi bi-card-text me-2"></i><?php echo idioma_actual() === 'es' ? 'DNI:' : 'ID:'; ?></strong> ${paciente.paciDni}</p>
-          </div>
-          <div class="col-md-6">
-            <p class="mb-2"><strong><i class="bi bi-telephone me-2"></i><?php echo idioma_actual() === 'es' ? 'Teléfono:' : 'Phone:'; ?></strong> ${paciente.paciTelefono || 'N/A'}</p>
-            <p class="mb-2"><strong><i class="bi bi-envelope me-2"></i><?php echo idioma_actual() === 'es' ? 'Email:' : 'Email:'; ?></strong> ${paciente.paciEmail || 'N/A'}</p>
-          </div>
-        `;
-        $('#infoPaciente').html(html);
-      }
+        if (respuesta && respuesta.data) {
+            var paciente = respuesta.data;
+            
+            // Actualizar nombre en la barra de navegación
+            $('#nombrePacienteNav').text(`${paciente.paciNombrecompleto}`);
+            
+            // Actualizar información en la tarjeta
+            var html = `
+                <div class="col-md-6">
+                    <p class="mb-2"><strong><i class="bi bi-person me-2"></i><?php echo idioma_actual() === 'es' ? 'Nombre:' : 'Name:'; ?></strong> ${paciente.paciNombrecompleto}</p>
+                    <p class="mb-2"><strong><i class="bi bi-card-text me-2"></i><?php echo idioma_actual() === 'es' ? 'DNI:' : 'ID:'; ?></strong> ${paciente.paciDni}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-2"><strong><i class="bi bi-telephone me-2"></i><?php echo idioma_actual() === 'es' ? 'Teléfono:' : 'Phone:'; ?></strong> ${paciente.paciTelefono || 'N/A'}</p>
+                    <p class="mb-2"><strong><i class="bi bi-envelope me-2"></i><?php echo idioma_actual() === 'es' ? 'Email:' : 'Email:'; ?></strong> ${paciente.paciEmail || 'N/A'}</p>
+                </div>
+            `;
+            $('#infoPaciente').html(html);
+
+            // Hacer segunda consulta para obtener documentos del paciente
+            cargarDocumentosPaciente(paciente.paciId);
+        }
     })
     .fail(function() {
-      $('#nombrePacienteNav').text('<?php echo idioma_actual() === 'es' ? 'Error' : 'Error'; ?>');
-      $('#infoPaciente').html('<p class="text-danger"><?php echo idioma_actual() === 'es' ? 'Error al cargar información' : 'Error loading information'; ?></p>');
+        $('#nombrePacienteNav').text('<?php echo idioma_actual() === 'es' ? 'Error' : 'Error'; ?>');
+        $('#infoPaciente').html('<p class="text-danger"><?php echo idioma_actual() === 'es' ? 'Error al cargar información' : 'Error loading information'; ?></p>');
     });
+  }
+
+  function cargarDocumentosPaciente(pacienteId) {
+      $.ajax({
+          url: `${CONFIG.API_BASE_URL}documentos/paciente/${pacienteId}`,
+          method: 'GET',
+          headers: {
+              'Authorization': CONFIG.API_AUTH_HEADER
+          }
+      })
+      .done(function(respuesta) {
+        console.log('Documentos recibidos:', respuesta);
+          if (respuesta){
+              var documentosHtml = '';
+              
+              respuesta.forEach(function (documento) {
+
+                // 🔸 1. Verificar si el documento es visible para el paciente
+                if (!documento.docuVisiblePaciente) {
+                  return; // Saltar documentos no visibles
+                }
+
+                // 🔸 2. Estado y badge
+                const estaCompletado = documento.docuEstado === true;
+                const badgeClass = estaCompletado ? "bg-success" : "bg-warning";
+                const badgeText = estaCompletado
+                  ? "<?php echo idioma_actual() === 'es' ? 'Completado' : 'Completed'; ?>"
+                  : "<?php echo idioma_actual() === 'es' ? 'En proceso' : 'In process'; ?>";
+
+                // 🔸 3. Formatear fecha (mostrando formato local)
+                const fechaFormateada = documento.docuFechaSubida
+                  ? new Date(documento.docuFechaSubida).toLocaleDateString("es-PE", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : "—";
+
+                // 🔸 4. Construir el HTML del documento
+                documentosHtml += `
+                  <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                          <h6 class="mb-1">
+                            <i class="bi bi-file-medical me-2 text-primary"></i>
+                            ${documento.docuNombre || "<?php echo idioma_actual() === 'es' ? 'Documento Médico' : 'Medical Document'; ?>"}
+                          </h6>
+
+                          <p class="text-muted mb-2 small">
+                            <?php echo idioma_actual() === 'es' ? 'Tipo:' : 'Type:'; ?> 
+                            ${documento.docuTipo || 'N/A'}
+                          </p>
+
+                          <p class="text-muted mb-2 small">
+                            <?php echo idioma_actual() === 'es' ? 'Fecha:' : 'Date:'; ?> 
+                            ${fechaFormateada}
+                          </p>
+
+                          <p class="mb-0">
+                            <span class="badge ${badgeClass}">
+                              ${badgeText}
+                            </span>
+                            ${
+                              documento.docuConfidencial
+                                ? `<span class="badge bg-danger ms-1">
+                                    <i class="bi bi-shield-lock"></i>
+                                    <?php echo idioma_actual() === 'es' ? 'Confidencial' : 'Confidential'; ?>
+                                  </span>`
+                                : ""
+                            }
+                          </p>
+                        </div>
+
+                        ${
+                          estaCompletado && documento.docuUrl
+                            ? `<a href="${documento.docuUrl}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                <i class="bi bi-download"></i>
+                                <?php echo idioma_actual() === 'es' ? 'Descargar' : 'Download'; ?>
+                              </a>`
+                            : `<button class="btn btn-sm btn-outline-secondary" disabled>
+                                <i class="bi bi-download"></i>
+                                <?php echo idioma_actual() === 'es' ? 'Descargar' : 'Download'; ?>
+                              </button>`
+                        }
+                      </div>
+                    </div>
+                  </div>
+                `;
+              });
+
+              
+              // Si no hay documentos visibles después del filtro
+              if (documentosHtml === '') {
+                  documentosHtml = `
+                      <div class="alert alert-info">
+                          <i class="bi bi-info-circle me-2"></i>
+                          <?php echo idioma_actual() === 'es' 
+                              ? 'No hay documentos disponibles para visualizar.' 
+                              : 'No documents available for viewing.'; ?>
+                      </div>
+                  `;
+              }
+              
+              $('#listaResultados').html(documentosHtml);
+          } else {
+              // Si no hay documentos
+              $('#listaResultados').html(`
+                  <div class="alert alert-info">
+                      <i class="bi bi-info-circle me-2"></i>
+                      <?php echo idioma_actual() === 'es' 
+                          ? 'No se encontraron documentos disponibles.' 
+                          : 'No documents found.'; ?>
+                  </div>
+              `);
+          }
+      })
+      .fail(function() {
+          $('#listaResultados').html(`
+              <div class="alert alert-warning">
+                  <i class="bi bi-exclamation-triangle me-2"></i>
+                  <?php echo idioma_actual() === 'es' 
+                      ? 'Error al cargar los documentos.' 
+                      : 'Error loading documents.'; ?>
+              </div>
+          `);
+      });
   }
   
   /**

@@ -50,12 +50,7 @@
         </a>
       </li>
       
-      <li>
-        <a href="consultas">
-          <i class="bi bi-clipboard2-pulse"></i>
-          <span>Consultas</span>
-        </a>
-      </li>
+      
       
       <li>
         <a href="historias-clinicas">
@@ -63,11 +58,10 @@
           <span>Historias Clínicas</span>
         </a>
       </li>
-      
       <li>
-        <a href="especialidades">
+        <a href="activos">
           <i class="bi bi-hospital"></i>
-          <span>Especialidades</span>
+          <span>Gestion de Activos</span>
         </a>
       </li>
       
@@ -79,12 +73,12 @@
       </li>
       
       <li>
-        <a href="reportes">
-          <i class="bi bi-file-earmark-bar-graph"></i>
-          <span>Reportes</span>
+        <a href="consultas">
+          <i class="bi bi-clipboard2-pulse"></i>
+          <span>Consultas</span>
         </a>
       </li>
-      
+
       <li>
         <a href="configuracion">
           <i class="bi bi-gear"></i>
