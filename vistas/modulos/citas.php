@@ -81,10 +81,9 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Doctor</th>
           <th>Paciente</th>
-          <th>DNI Paciente</th>
-          <th>Teléfono</th>
+          <th>Doctor</th>
+          <th>Especialidad</th>
           <th>Fecha</th>
           <th>Hora</th>
           <th>Estado</th>
@@ -96,19 +95,13 @@
           <?php foreach($data["data"] as $key => $item): ?>
             <tr>
               <td><?= ($key + 1) ?></td>
-              <td><?= htmlspecialchars($item["usuario"]["usuaNombrecompleto"]) ?></td>
               <td><?= htmlspecialchars($item["paciente"]["paciNombrecompleto"]) ?></td>
-              <td><?= htmlspecialchars($item["paciente"]["paciDni"]) ?></td>
-              <td><?= htmlspecialchars($item["paciente"]["paciTelefono"]) ?></td>
+              <td><?= htmlspecialchars($item["medico"]["mediNombre"]) ?></td>
+              <td><?= htmlspecialchars($item["citaTipo"]) ?></td>
               <td><?= htmlspecialchars($item["citaFecha"]) ?></td>
-              <td><?= htmlspecialchars($item["citaHora"]) ?>:00</td>
-              <td>
-                <?php if ($item["citaEstado"] == "1"): ?>
-                  <span class="label label-success">Activa</span>
-                <?php else: ?>
-                  <span class="label label-danger">Cancelada</span>
-                <?php endif; ?>
-              </td>
+              <td><?= htmlspecialchars($item["citaHora"]) ?></td>
+              <td><?= htmlspecialchars($item["citaEstado"]) ?></td>
+              
               <td>
                 <button class="btn btn-sm btn-warning btnEditarCita" citaId="<?= $item["citaId"] ?>">
                   <i class="bi bi-pencil"></i>

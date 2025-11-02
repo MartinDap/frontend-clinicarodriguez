@@ -1,0 +1,187 @@
+.cita-section {
+    background: white;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 100px 0;
+  }
+  
+  .cita-content {
+    color: #333;
+  }
+  
+  .cita-content h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+  
+  .cita-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  
+  .cita-card {
+    background: linear-gradient(to bottom, #ffffff, #f8fbff);
+    border-radius: 30px;
+    padding: 3rem;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12), 
+                0 0 0 1px rgba(56, 195, 196, 0.1) inset;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Borde degradado animado en la parte superior */
+  .cita-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, 
+      #38c3c4 0%, 
+      #2a0287 25%, 
+      #38c3c4 50%, 
+      #2a0287 75%, 
+      #38c3c4 100%);
+    background-size: 200% 100%;
+    animation: gradientFlow 4s linear infinite;
+  }
+  
+  /* Efecto de brillo sutil en las esquinas */
+  .cita-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(56, 195, 196, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  
+  @keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+  
+  .cita-card h2 {
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+  }
+  
+  .cita-card .subtitle {
+    color: #666;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+  }
+  
+  .form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-control, .form-select {
+    border: 2px solid #e8eef5;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  }
+  
+  .form-control:focus, .form-select:focus {
+    border-color: #38c3c4;
+    box-shadow: 0 0 0 3px rgba(56, 195, 196, 0.15), 
+                0 4px 12px rgba(56, 195, 196, 0.1);
+    background: white;
+    outline: none;
+    transform: translateY(-1px);
+  }
+  
+  .form-control::placeholder {
+    color: #999;
+  }
+  
+  textarea.form-control {
+    resize: none;
+  }
+  
+  .btn-enviar {
+    background: linear-gradient(135deg, #38c3c4 0%, #2a0287 100%);
+    color: white;
+    border: none;
+    padding: 0.85rem 3rem;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 6px 20px rgba(56, 195, 196, 0.35), 
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Efecto de brillo al pasar el cursor */
+  .btn-enviar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(255, 255, 255, 0.3), 
+      transparent);
+    transition: left 0.5s;
+  }
+  
+  .btn-enviar:hover::before {
+    left: 100%;
+  }
+  
+  .btn-enviar:hover {
+    background: linear-gradient(135deg, #2a0287 0%, #38c3c4 100%);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(56, 195, 196, 0.45), 
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  }
+  
+  .btn-enviar:active {
+    transform: translateY(-1px) scale(0.98);
+  }
+  
+  .char-counter {
+    font-size: 0.875rem;
+    color: #999;
+    text-align: right;
+    margin-top: 0.25rem;
+  }
+  
+  .row-inputs {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .row-inputs > div {
+    flex: 1;
+  }
+  
+  @media (max-width: 768px) {
+    .row-inputs {
+      flex-direction: column;
+    }
+  }

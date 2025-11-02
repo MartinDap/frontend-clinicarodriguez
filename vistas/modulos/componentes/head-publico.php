@@ -21,6 +21,9 @@ $titulo_pagina = $titulo_pagina ?? 'Clínica Médica';
   
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   
   <!-- Estilos personalizados -->
   <link rel="stylesheet" href="vistas/css/estilos-publicos.css">

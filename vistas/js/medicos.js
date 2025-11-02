@@ -23,9 +23,6 @@ $(document).ready(function() {
         var medicoObject = {
             mediNombre:   mediNombre,
             mediApellido: mediApellido,
-            mediDni:      mediDni,
-            mediEmail:    mediEmail,
-            mediTelefono: mediTelefono,
             mediEstado:   1
         };
 

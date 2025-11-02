@@ -3,7 +3,7 @@
   $curl = curl_init();
 
   curl_setopt_array($curl, array(
-    CURLOPT_URL => API_BASE_URL . 'dia-usuario',
+    CURLOPT_URL => API_BASE_URL . 'dias-medico',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
@@ -25,7 +25,7 @@
   $curl = curl_init();
 
   curl_setopt_array($curl, array(
-    CURLOPT_URL => API_BASE_URL . 'usuarios',
+    CURLOPT_URL => API_BASE_URL . 'medicos',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
@@ -38,10 +38,10 @@
     ),
   ));
 
-  $responseusuario = curl_exec($curl);
+  $responsemedicos = curl_exec($curl);
 
   curl_close($curl);
-  $dataUsuario = json_decode($responseusuario, true);
+  $dataMedicos = json_decode($responsemedicos, true);
 
 
 ?>
@@ -59,7 +59,6 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Usuario</th>
           <th>Nombre Completo</th>
           <th>Día</th>
           <th>Hora Inicio</th>
@@ -74,24 +73,23 @@
           <?php foreach($data["data"] as $key => $item): ?>
             <tr>
               <td><?= ($key + 1) ?></td>
-              <td><?= htmlspecialchars($item["usuario"]["usuaUsername"]) ?></td>
-              <td><?= htmlspecialchars($item["usuario"]["usuaNombrecompleto"]) ?></td>
+              <td><?= htmlspecialchars($item["medico"]["mediNombre"]) ?></td>
               <td><?= htmlspecialchars($item["dia"]["dia"]) ?></td>
-              <td><?= htmlspecialchars($item["diusHoraInicio"]) ?></td>
-              <td><?= htmlspecialchars($item["diusHoraFin"]) ?></td>
-              <td><?= htmlspecialchars($item["diusDuracion"]) ?></td>
+              <td><?= htmlspecialchars($item["dimeHoraInicio"]) ?></td>
+              <td><?= htmlspecialchars($item["dimeHoraFin"]) ?></td>
+              <td><?= htmlspecialchars($item["dimeDuracion"]) ?></td>
               <td>
-                <?php if ($item["diusEstado"] == 1): ?>
+                <?php if ($item["dimeEstado"] == 1): ?>
                   <span class="label label-success">Activo</span>
                 <?php else: ?>
                   <span class="label label-danger">Inactivo</span>
                 <?php endif; ?>
               </td>
               <td>
-                <button class="btn btn-sm btn-warning btnEditarDisponibilidad" diusId="<?= $item["diusId"] ?>">
+                <button class="btn btn-sm btn-warning btnEditarDisponibilidad" dimeId="<?= $item["dimeId"] ?>">
                   <i class="bi bi-pencil"></i>
                 </button>
-                <button class="btn btn-sm btn-danger btnEliminarDisponibilidad" diusId="<?= $item["diusId"] ?>">
+                <button class="btn btn-sm btn-danger btnEliminarDisponibilidad" dimeId="<?= $item["dimeId"] ?>">
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
@@ -129,15 +127,15 @@ MODAL REGISTRAR HORARIO
 
             <!-- Usuario -->
             <div class="form-group mb-3">
-              <label for="regUsuarioId">Seleccionar Usuario / Doctor</label>
+              <label for="regMedicoId">Seleccionar Usuario / Doctor</label>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user-md"></i></span>
-                <select class="form-control input-lg" name="regUsuarioId" id="regUsuarioId" required>
+                <select class="form-control input-lg" name="regMedicoId" id="regMedicoId" required>
                   <option value="">Seleccione un usuario...</option>
-                  <?php if (isset($dataUsuario["data"]) && is_array($dataUsuario["data"])): ?>
-                    <?php foreach ($dataUsuario["data"] as $usuario): ?>
-                      <option value="<?= htmlspecialchars($usuario["usuaId"]) ?>">
-                        <?= htmlspecialchars($usuario["usuaNombrecompleto"]) ?>
+                  <?php if (isset($dataMedicos["data"]) && is_array($dataMedicos["data"])): ?>
+                    <?php foreach ($dataMedicos["data"] as $medico): ?>
+                      <option value="<?= htmlspecialchars($medico["mediId"]) ?>">
+                        <?= htmlspecialchars($medico["mediNombre"]) ?>
                       </option>
                     <?php endforeach; ?>
                   <?php else: ?>

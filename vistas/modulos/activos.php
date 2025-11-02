@@ -66,6 +66,7 @@
   $dataUsuarios = json_decode($responseusuarios, true);
 
 ?>
+<link rel="stylesheet" href="vistas/css/activos.css">
 <div class="container-fluid">
   
   <div class="d-flex justify-content-between align-items-center mb-4">
@@ -84,7 +85,6 @@
           <th>Equipo</th>
           <th>Categoría</th>
           <th>Marca / Modelo</th>
-          <th>N° Serie</th>
           <th>Fecha Compra</th>
           <th>Ubicación</th>
           <th>Estado</th>
@@ -101,7 +101,6 @@
               <td><?= htmlspecialchars($item["acteNombreEquipo"]) ?></td>
               <td><?= htmlspecialchars($item["categoria"]["caacNombreCategoria"]) ?></td>
               <td><?= htmlspecialchars($item["acteMarca"]) ?> / <?= htmlspecialchars($item["acteModelo"]) ?></td>
-              <td><?= htmlspecialchars($item["acteNumeroSerie"]) ?></td>
               <td><?= htmlspecialchars(date("d/m/Y", strtotime($item["acteFechaCompra"]))) ?></td>
               <td><?= htmlspecialchars($item["acteUbicacion"]) ?></td>
               <td>
@@ -115,9 +114,9 @@
               </td>
               <td><?= htmlspecialchars($item["usuario"]["usuaNombrecompleto"]) ?></td>
               <td>
-                <button class="btn btn-sm btn-info btnVerActivo me-1" acteId="<?= $item["acteId"] ?>" title="Ver activo">
-                  <i class="bi bi-eye"></i>
-                </button>
+                <button type="button" class="btn btn-info btn-sm btnVerActivo" acteId="<?= $item['acteId'] ?>" tittle="Ver activo">
+                <i class="bi bi-eye"></i>
+              </button>
                 <button class="btn btn-sm btn-warning btnEditarActivo me-1" acteId="<?= $item["acteId"] ?>" title="Editar activo">
                   <i class="bi bi-pencil"></i>
                 </button>
@@ -169,6 +168,9 @@ MODAL AGREGAR ACTIVO
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
                   <input type="text" class="form-control input-lg" name="acteCodigoActivo" id="acteCodigoActivo" placeholder="Ej: 11111111" required>
+                  <button type="button" class="btn btn-primary rounded-circle" id="btnGenerarCodigo" style="margin-left: 5px; width: 45px; height: 45px; padding: 0;" title="Generar código automático">
+                    <i class="bi bi-eye"></i>
+                  </button>
                 </div>
               </div>
 
@@ -335,9 +337,6 @@ MODAL AGREGAR ACTIVO
     </div>
   </div>
 </div>
-
-
-
 
 <!--=====================================
 MODAL EDITAR PRODUCTO
@@ -527,3 +526,60 @@ MODAL EDITAR PACIENTE
 
   </div>
 </div>
+
+
+<!-- Modal para visualizar y descargar ticket -->
+<div id="modalTicketActivo" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+    <div class="modal-content">
+      
+      <!-- Cabecera del Modal -->
+      <div class="modal-header" style="background:#003264; color:white">
+        <h4 class="modal-title">Ticket del Activo</h4>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Cuerpo del Modal -->
+      <div class="modal-body text-center" style="padding: 20px;">
+        <!-- Contenedor del ticket -->
+        <div id="ticketContainer" style="background: white; border: 2px dashed #003264; border-radius: 10px; padding: 20px; max-width: 350px; margin: 0 auto;">
+          <!-- Información del activo -->
+          <div style="text-align: left; font-size: 13px; line-height: 1.8;">
+            <p style="margin: 5px 0;"><strong>Código:</strong> <span id="ticketCodigo">202511012147</span></p>
+            <p style="margin: 5px 0;"><strong>Activo:</strong> <span id="ticketNombre">Laptop HP ProBook 450 G8</span></p>
+            <p style="margin: 5px 0;"><strong>Área:</strong> <span id="ticketUbicacion">Oficina Administrativa</span></p>
+            <p style="margin: 5px 0;">📅 <strong>Adq:</strong> <span id="ticketFechaCompra">2024-06-15</span></p>
+          </div>
+          
+          <hr style="border-top: 1px solid #003264; margin: 10px 0;">
+          
+          <!-- Código QR -->
+          <div style="margin-top: 15px;">
+            <div id="qrcode" style="display: inline-block; padding: 10px; background: white;"></div>
+          </div>
+          
+          <!-- Pie del ticket -->
+          <div style="margin-top: 10px; font-size: 10px; color: #666;">
+            <p style="margin: 5px 0;">Sistema de Gestión de Activos</p>
+          </div>
+          
+        </div>
+        
+        <!-- Botón de descarga -->
+        <button type="button" class="btn btn-success mt-3" id="btnDescargarTicket">
+          Descargar Sticker
+        </button>
+      </div>
+      
+      <!-- Pie del Modal -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>

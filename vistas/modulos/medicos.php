@@ -37,10 +37,8 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>DNI</th>
           <th>Nombre</th>
           <th>Apellido</th>
-          <th>Teléfono</th>
           <th>Foto</th>
           <th>Estado</th>
           <th>Acciones</th>
@@ -51,10 +49,8 @@
         <?php foreach($data["data"] as $key => $medico): ?>
           <tr>
             <td><?= ($key + 1) ?></td>
-            <td><?= htmlspecialchars($medico["mediDni"]) ?></td>
             <td><?= htmlspecialchars($medico["mediNombre"]) ?></td>
             <td><?= htmlspecialchars($medico["mediApellido"]) ?></td>
-            <td><?= htmlspecialchars($medico["mediTelefono"]) ?></td>
             <td>
               <?php if (!empty($medico["mediFotoUrl"])): ?>
                 <img src="<?= htmlspecialchars($medico["mediFotoUrl"]) ?>" alt="Foto" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
@@ -62,6 +58,7 @@
                 <span class="text-muted">Sin foto</span>
               <?php endif; ?>
             </td>
+            
             <td>
               <?php 
                 $estado = $medico["mediEstado"] ?? 'INACTIVO';

@@ -30,8 +30,7 @@ require_once 'vistas/modulos/session-helper.php';
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
   
-  <!-- SweetAlert2 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
+  
   
   <!-- Estilos personalizados -->
   <link rel="stylesheet" href="vistas/css/estilos.css">
@@ -48,6 +47,8 @@ require_once 'vistas/modulos/session-helper.php';
   <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
   <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
   
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
   
@@ -138,6 +139,7 @@ if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
 <script src="vistas/js/activos.js"></script>
 <script src="vistas/js/historias-clinicas.js"></script>
 <script src="vistas/js/ver-historia.js"></script>
+<script src="vistas/js/api.js"></script>
 <script src="vistas/js/config.js"></script>
 </body>
 </html>

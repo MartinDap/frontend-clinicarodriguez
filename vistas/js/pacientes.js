@@ -1,8 +1,32 @@
 /**
  * Script para gestión de pacientes
  * Sistema de Gestión Clínica
- */
 
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const productos = await apiGet("pacientes"); // 👉 Llama a tu API GET /productos
+    const tbody = document.querySelector("#tablaPacientes tbody");
+    console.log("Productos obtenidos:", productos);
+    if (productos) {
+        productos.data.forEach(paciente => {
+            console.log("Productos obtenidos:", paciente);
+            tbody.innerHTML += `
+            <tr>
+                <td>${paciente.paciId}</td>
+                <td>${paciente.paciNombrecompleto}</td>
+                <td>${paciente.paciDni}</td>
+                <td>${paciente.paciTelefono}</td>
+                <td>${paciente.paciEmail}</td>
+                <td>${paciente.paciDireccion}</td>
+            </tr>
+            `;
+        });
+    } else {
+      tbody.innerHTML = `<tr><td colspan="3">No hay productos disponibles</td></tr>`;
+    }
+  });
+
+ */
 /*=============================================
 EDITAR PACIENTE
 =============================================*/

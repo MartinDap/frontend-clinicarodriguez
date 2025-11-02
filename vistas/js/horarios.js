@@ -247,7 +247,7 @@ $(document).ready(function () {
     event.preventDefault(); // evita reload
 
     // Capturar campos del nuevo horario
-    var usuarioId  = $("#regUsuarioId").val();  // idusuario (doctor)
+    var medicoId  = $("#regMedicoId").val();  // idusuario (doctor)
     var diaId      = $("#regDiaId").val();      // id del día
     var horaInicio = $("#regHoraInicio").val(); // HH:mm
     var horaFin    = $("#regHoraFin").val();    // HH:mm
@@ -255,7 +255,7 @@ $(document).ready(function () {
     var estado     = $("#regEstado").val();     // 1/0
 
     console.log("Horario a registrar:", {
-        usuarioId,
+        medicoId,
         diaId,
         horaInicio,
         horaFin,
@@ -265,20 +265,20 @@ $(document).ready(function () {
 
     // Armar el JSON con la estructura correcta
     var data = {
-        usuario: {
-        usuaId: parseInt(usuarioId)
+        medico: {
+          mediId: parseInt(medicoId)
         },
         dia: {
-        diasId: parseInt(diaId)
+          diasId: parseInt(diaId)
         },
-        diusEstado: parseInt(estado),
-        diusHoraInicio: horaInicio + ":00", // agregar segundos si solo tienes HH:mm
-        diusHoraFin: horaFin + ":00",
-        diusDuracion: parseInt(duracion)
+        dimeEstado: parseInt(estado),
+        dimeHoraInicio: horaInicio + ":00", // agregar segundos si solo tienes HH:mm
+        dimeHoraFin: horaFin + ":00",
+        dimeDuracion: parseInt(duracion)
     };
 
     var settings = {
-        url: `${CONFIG.API_BASE_URL}dia-usuario`, // POST /disponibilidad
+        url: `${CONFIG.API_BASE_URL}dias-medico`, // POST /disponibilidad
         method: "POST",
         headers: {
         "Content-Type": "application/json",
