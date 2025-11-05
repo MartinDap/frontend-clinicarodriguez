@@ -100,7 +100,7 @@ if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
     // Rutas permitidas del sistema
     $rutas_permitidas = [
       "dashboard", "pacientes", "medicos", "citas", 
-      "historias-clinicas", "ver-historia", "consultas", "usuarios",
+      "historias-clinicas", "ver-historia", "usuarios",
       "activos", "configuracion", "salir", "horarios"
     ];
     

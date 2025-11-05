@@ -86,11 +86,63 @@ function limpiarSelecciones() {
   }
 }
 
-// Función para cargar médicos disponibles
+// Función para obtener el número de día de la semana (0=Domingo, 1=Lunes, etc.)
+function obtenerNumeroDia(nombreDia) {
+  const dias = {
+    'DOMINGO': 0,
+    'LUNES': 1,
+    'MARTES': 2,
+    'MIÉRCOLES': 3,
+    'MIERCOLES': 3,
+    'JUEVES': 4,
+    'VIERNES': 5,
+    'SÁBADO': 6,
+    'SABADO': 6
+  };
+  return dias[nombreDia.toUpperCase()] ?? 1;
+}
+
+// Función para obtener las próximas N fechas de un día específico
+function obtenerProximasFechas(nombreDia, cantidad = 4) {
+  const fechas = [];
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0); // Reset horas para comparación correcta
+  const diaObjetivo = obtenerNumeroDia(nombreDia);
+  
+  let fecha = new Date(hoy);
+  let encontrados = 0;
+  
+  // Buscar hasta 60 días adelante
+  for (let i = 0; i < 60 && encontrados < cantidad; i++) {
+    if (fecha.getDay() === diaObjetivo && fecha >= hoy) {
+      fechas.push(new Date(fecha));
+      encontrados++;
+    }
+    fecha.setDate(fecha.getDate() + 1);
+  }
+  
+  return fechas;
+}
+
+// Función para formatear fecha DD/MM/YYYY
+function formatearFecha(fecha) {
+  const dia = String(fecha.getDate()).padStart(2, '0');
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+  const year = fecha.getFullYear();
+  return `${dia}/${mes}/${year}`;
+}
+
+// Función para formatear fecha YYYY-MM-DD (para enviar a API)
+function formatearFechaAPI(fecha) {
+  const year = fecha.getFullYear();
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+  const dia = String(fecha.getDate()).padStart(2, '0');
+  return `${year}-${mes}-${dia}`;
+}
+
 // Función para cargar médicos disponibles
 async function cargarMedicosDisponibles(especialidadId) {
   try {
-    
     const response = await fetch(`${CONFIG.API_BASE_URL}disponibilidad/especialidad/${especialidadId}`, {
       method: 'GET',
       headers: {
@@ -179,6 +231,9 @@ function crearHorariosContainer(medico) {
   const container = document.createElement('div');
   container.className = 'horarios-container';
   
+  // Obtener slots ocupados del médico
+  const slotsOcupados = medico.slotsOcupados || [];
+  
   medico.horarios.forEach(horario => {
     const diaDiv = document.createElement('div');
     diaDiv.className = 'mb-3';
@@ -191,12 +246,12 @@ function crearHorariosContainer(medico) {
     diaLabel.textContent = diaNombreCorto;
     diaDiv.appendChild(diaLabel);
     
-    // Generar slots de tiempo
+    // Generar slots de tiempo con fechas
     const slotsContainer = document.createElement('div');
     slotsContainer.className = 'd-flex flex-wrap gap-2';
     slotsContainer.style.gap = '8px';
     
-    const slots = generarSlots(horario);
+    const slots = generarSlots(horario, slotsOcupados);
     slots.forEach(slot => {
       const slotBtn = crearSlotBoton(slot, medico, horario);
       slotsContainer.appendChild(slotBtn);
@@ -209,31 +264,50 @@ function crearHorariosContainer(medico) {
   return container;
 }
 
-// Función para generar slots de tiempo
-function generarSlots(horario) {
+// Función para generar slots de tiempo con fechas
+function generarSlots(horario, slotsOcupados = []) {
   const slots = [];
   const duracionMinutos = horario.duracion;
+  
+  // Obtener las próximas 4 fechas para este día
+  const proximasFechas = obtenerProximasFechas(horario.diaNombre, 4);
   
   // Convertir horas a minutos
   const [horaInicioH, horaInicioM] = horario.horaInicio.split(':').map(Number);
   const [horaFinH, horaFinM] = horario.horaFin.split(':').map(Number);
   
-  let inicioMinutos = horaInicioH * 60 + horaInicioM;
-  const finMinutos = horaFinH * 60 + horaFinM;
-  
-  while (inicioMinutos + duracionMinutos <= finMinutos) {
-    const horaInicio = minutosAHora(inicioMinutos);
-    const horaFin = minutosAHora(inicioMinutos + duracionMinutos);
+  // Para cada fecha disponible
+  proximasFechas.forEach(fecha => {
+    let inicioMinutos = horaInicioH * 60 + horaInicioM;
+    const finMinutos = horaFinH * 60 + horaFinM;
     
-    slots.push({
-      inicio: horaInicio,
-      fin: horaFin,
-      dia: horario.diaNombre,
-      diaId: horario.diaId
-    });
+    const fechaAPI = formatearFechaAPI(fecha);
     
-    inicioMinutos += duracionMinutos;
-  }
+    // Generar slots para esta fecha
+    while (inicioMinutos + duracionMinutos <= finMinutos) {
+      const horaInicio = minutosAHora(inicioMinutos);
+      const horaFin = minutosAHora(inicioMinutos + duracionMinutos);
+      
+      // Verificar si este slot está ocupado
+      const estaOcupado = slotsOcupados.some(ocupado => {
+        return ocupado.fecha === fechaAPI && 
+               ocupado.horaInicio === horaInicio + ':00';
+      });
+      
+      slots.push({
+        inicio: horaInicio,
+        fin: horaFin,
+        dia: horario.diaNombre,
+        diaId: horario.diaId,
+        fecha: fecha,
+        fechaFormateada: formatearFecha(fecha),
+        fechaAPI: fechaAPI,
+        ocupado: estaOcupado
+      });
+      
+      inicioMinutos += duracionMinutos;
+    }
+  });
   
   return slots;
 }
@@ -250,6 +324,38 @@ function crearSlotBoton(slot, medico, horario) {
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'slot-horario';
+  
+  const diaNombreCorto = t.dias[slot.dia.toUpperCase()] || slot.dia;
+  
+  // Si el slot está ocupado, aplicar estilos diferentes
+  if (slot.ocupado) {
+    btn.style.cssText = `
+      padding: 8px 12px;
+      border: 1px solid #dc3545;
+      border-radius: 6px;
+      background: #f8d7da;
+      cursor: not-allowed;
+      transition: all 0.2s;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 90px;
+      opacity: 0.6;
+    `;
+    btn.disabled = true;
+    
+    // Crear estructura HTML interna para slot ocupado
+    btn.innerHTML = `
+      <div style="font-weight: 500; color: #721c24;">${slot.fechaFormateada}</div>
+      <div style="font-size: 12px; color: #721c24; margin-top: 2px;">${diaNombreCorto} ${slot.inicio}</div>
+      <div style="font-size: 10px; color: #721c24; margin-top: 2px;">Ocupado</div>
+    `;
+    
+    return btn;
+  }
+  
+  // Estilo normal para slots disponibles
   btn.style.cssText = `
     padding: 8px 12px;
     border: 1px solid #dee2e6;
@@ -257,11 +363,18 @@ function crearSlotBoton(slot, medico, horario) {
     background: white;
     cursor: pointer;
     transition: all 0.2s;
-    font-size: 14px;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 90px;
   `;
   
-  const diaNombreCorto = t.dias[slot.dia.toUpperCase()] || slot.dia;
-  btn.textContent = `${diaNombreCorto} ${slot.inicio}`;
+  // Crear estructura HTML interna
+  btn.innerHTML = `
+    <div style="font-weight: 500; color: #495057;">${slot.fechaFormateada}</div>
+    <div style="font-size: 12px; color: #6c757d; margin-top: 2px;">${diaNombreCorto} ${slot.inicio}</div>
+  `;
   
   // Hover effect
   btn.addEventListener('mouseenter', function() {
@@ -283,14 +396,16 @@ function crearSlotBoton(slot, medico, horario) {
       el.classList.remove('seleccionado');
       el.style.background = 'white';
       el.style.borderColor = '#dee2e6';
-      el.style.color = 'inherit';
+      el.querySelector('div').style.color = '#495057';
+      el.querySelectorAll('div')[1].style.color = '#6c757d';
     });
     
     // Marcar como seleccionado
     this.classList.add('seleccionado');
     this.style.background = '#0d6efd';
     this.style.borderColor = '#0d6efd';
-    this.style.color = 'white';
+    this.querySelector('div').style.color = 'white';
+    this.querySelectorAll('div')[1].style.color = 'white';
     
     // Guardar selección
     medicoSeleccionado = medico;
@@ -299,7 +414,10 @@ function crearSlotBoton(slot, medico, horario) {
       dia: slot.dia,
       horaInicio: slot.inicio,
       horaFin: slot.fin,
-      duracion: horario.duracion
+      duracion: horario.duracion,
+      fecha: slot.fecha,
+      fechaFormateada: slot.fechaFormateada,
+      fechaAPI: slot.fechaAPI
     };
     
     console.log('Médico seleccionado:', medicoSeleccionado);
@@ -344,7 +462,6 @@ async function registrarPaciente(datos) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-        //[API_AUTH_HEADER.split(':')[0]]: API_AUTH_HEADER.split(':')[1]
       },
       body: JSON.stringify({
         paciNombrecompleto: datos.nombreCompleto,
@@ -387,18 +504,17 @@ async function registrarCita(pacienteId, medicoId, especialidadNombre, datos) {
     const response = await fetch(`${CONFIG.API_BASE_URL}citas`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        //[API_AUTH_HEADER.split(':')[0]]: API_AUTH_HEADER.split(':')[1]
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         paciente: { paciId: pacienteId },
         medico: { mediId: medicoId },
-        citaFecha: fechaActual,
+        citaFecha: datos.fechaCita, // Fecha seleccionada por el usuario
         citaHora: datos.horaInicio + ':00',
         citaTipo: `Consulta general para ${especialidadNombre}`,
         citaMotivo: datos.razonConsulta,
         citaEstado: 'RESERVADO POR PACIENTE',
-        citaFechaRegistro: fechaActual
+        citaFechaRegistro: fechaActual // Fecha actual del sistema
       })
     });
     
@@ -420,7 +536,6 @@ async function registrarCita(pacienteId, medicoId, especialidadNombre, datos) {
   }
 }
 
-
 // Función para mostrar loading
 function mostrarLoading(mostrar) {
   const btnEnviar = document.getElementById('saludo');
@@ -436,7 +551,6 @@ function mostrarLoading(mostrar) {
       : 'Send via WhatsApp <i class="bi bi-whatsapp"></i>';
   }
 }
-
 
 // Modificar el submit del formulario para incluir los datos seleccionados
 const formCita = document.getElementById('formCita');
@@ -464,8 +578,8 @@ if (formCita) {
     // Mostrar loading
     mostrarLoading(true);
 
-    try{
-        // 1. Registrar paciente
+    try {
+      // 1. Registrar paciente
       const pacienteId = await registrarPaciente({
         nombreCompleto,
         documento,
@@ -482,57 +596,64 @@ if (formCita) {
         especialidadNombre,
         {
           horaInicio: horarioSeleccionado.horaInicio,
-          razonConsulta
+          razonConsulta: razonConsulta,
+          fechaCita: horarioSeleccionado.fechaAPI // Fecha seleccionada en formato YYYY-MM-DD
         }
       );
+      
       console.log('Cita registrada:', resultadoCita);
 
-      // Crear mensaje para WhatsApp
-        const mensaje = `
-            *SOLICITUD DE CITA MÉDICA*
+      // 3. Crear mensaje para WhatsApp
+      const mensaje = `
+*SOLICITUD DE CITA MÉDICA*
 
-            *Paciente:* ${nombreCompleto}
-            *Documento:* ${documento}
-            *Teléfono:* ${celular}
-            *Correo:* ${correo}
+👤 *Paciente:* ${nombreCompleto}
+📄 *Documento:* ${documento}
+📞 *Teléfono:* ${celular}
+📧 *Correo:* ${correo}
 
-            *Especialidad:* ${especialidadNombre}
-            *Médico:* Dr(a). ${medicoSeleccionado.medicoNombre} ${medicoSeleccionado.medicoApellido}
-            *Día:* ${horarioSeleccionado.dia}
-            *Horario:* ${horarioSeleccionado.horaInicio} - ${horarioSeleccionado.horaFin}
+🏥 *Especialidad:* ${especialidadNombre}
+👨‍⚕️ *Médico:* Dr(a). ${medicoSeleccionado.medicoNombre} ${medicoSeleccionado.medicoApellido}
+📅 *Fecha:* ${horarioSeleccionado.fechaFormateada} (${horarioSeleccionado.dia})
+🕐 *Horario:* ${horarioSeleccionado.horaInicio} - ${horarioSeleccionado.horaFin}
 
-            *Motivo de consulta:*
-            ${razonConsulta}
-        `.trim();
+💬 *Motivo de consulta:*
+${razonConsulta}
 
-        // Codificar mensaje para URL
-        const mensajeCodificado = encodeURIComponent(mensaje);
-        
-        // Número de WhatsApp de la clínica
-        const numeroWhatsApp = '+51927238131';
-        
-        // Crear URL de WhatsApp
-        const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
-        
-        // Abrir WhatsApp
-        window.open(urlWhatsApp, '_blank');
+✅ *Estado:* RESERVADO POR PACIENTE
+      `.trim();
 
-        // Limpiar formulario después de un breve delay
-        setTimeout(() => {
-            formCita.reset();
-            limpiarSelecciones();
-        }, 1000);
+      // Codificar mensaje para URL
+      const mensajeCodificado = encodeURIComponent(mensaje);
+      
+      // Número de WhatsApp de la clínica
+      const numeroWhatsApp = '51927238131';
+      
+      // Crear URL de WhatsApp
+      const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
+      
+      // Mostrar mensaje de éxito
+      alert(idiomaActual === 'es'
+        ? '¡Cita registrada exitosamente! Serás redirigido a WhatsApp.'
+        : 'Appointment successfully registered! You will be redirected to WhatsApp.');
+      
+      // Abrir WhatsApp
+      window.open(urlWhatsApp, '_blank');
 
+      // Limpiar formulario después de un breve delay
+      setTimeout(() => {
+        formCita.reset();
+        limpiarSelecciones();
+      }, 1000);
 
-    }catch(error){
-        console.error('Error al procesar la cita:', error);
+    } catch (error) {
+      console.error('Error al procesar la cita:', error);
       alert(idiomaActual === 'es'
         ? 'Error al registrar la cita. Por favor, intenta nuevamente.'
         : 'Error registering the appointment. Please try again.');
-    }finally{
-        mostrarLoading(false);
+    } finally {
+      mostrarLoading(false);
     }
-
   });
 }
 
@@ -541,9 +662,11 @@ function setupCharCounter(inputId, counterId) {
   const input = document.getElementById(inputId);
   const counter = document.getElementById(counterId);
   
-  input.addEventListener('input', function() {
-    counter.textContent = this.value.length;
-  });
+  if (input && counter) {
+    input.addEventListener('input', function() {
+      counter.textContent = this.value.length;
+    });
+  }
 }
 
 // Inicializar contadores
@@ -553,18 +676,22 @@ setupCharCounter('razonConsulta', 'razonCounter');
 function validarSoloNumeros(inputId) {
   const input = document.getElementById(inputId);
   
-  input.addEventListener('input', function(e) {
-    // Remover cualquier caracter que no sea número
-    this.value = this.value.replace(/[^0-9]/g, '');
-  });
-  
-  // Prevenir pegar texto no numérico
-  input.addEventListener('paste', function(e) {
-    e.preventDefault();
-    const pasteData = (e.clipboardData || window.clipboardData).getData('text');
-    const soloNumeros = pasteData.replace(/[^0-9]/g, '');
-    this.value = soloNumeros;
-  });
+  if (input) {
+    input.addEventListener('input', function(e) {
+      // Remover cualquier caracter que no sea número
+      this.value = this.value.replace(/[^0-9]/g, '');
+    });
+    
+    // Prevenir pegar texto no numérico
+    input.addEventListener('paste', function(e) {
+      e.preventDefault();
+      const pasteData = (e.clipboardData || window.clipboardData).getData('text');
+      const soloNumeros = pasteData.replace(/[^0-9]/g, '');
+      this.value = soloNumeros;
+    });
+  }
 }
 
-
+// Inicializar validaciones
+validarSoloNumeros('documento');
+validarSoloNumeros('celular');

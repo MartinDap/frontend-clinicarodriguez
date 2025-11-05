@@ -71,13 +71,6 @@
           <span>Usuarios</span>
         </a>
       </li>
-      
-      <li>
-        <a href="consultas">
-          <i class="bi bi-clipboard2-pulse"></i>
-          <span>Consultas</span>
-        </a>
-      </li>
 
       <li>
         <a href="configuracion">

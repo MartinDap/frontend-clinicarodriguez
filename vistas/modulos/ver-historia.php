@@ -35,7 +35,7 @@ $data = $historia['data'];
   $curl = curl_init();
 
   curl_setopt_array($curl, array(
-    CURLOPT_URL => API_BASE_URL . 'documentos/paciente/' . $histId,
+    CURLOPT_URL => API_BASE_URL . 'documentos/historia/' . $histId,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
@@ -126,10 +126,6 @@ $data = $historia['data'];
               <td><?= htmlspecialchars($data['usuario']['usuaNombrecompleto']) ?></td>
             </tr>
             <tr>
-              <th>Especialidad:</th>
-              <td><?= htmlspecialchars($data['usuario']['usuaEspecialidad'] ?? 'N/A') ?></td>
-            </tr>
-            <tr>
               <th>Fecha de Consulta:</th>
               <td><?= date('d/m/Y', strtotime($data['histFecha'])) ?></td>
             </tr>
@@ -142,7 +138,6 @@ $data = $historia['data'];
 
   <!-- Detalles de la Historia Clínica -->
   <div class="row">
-    
     <!-- Documentos del Paciente -->
     <div class="col-12 mb-4">
       <div class="card shadow-sm">
@@ -170,10 +165,10 @@ $data = $historia['data'];
               </thead>
 
               <tbody id="tablaDocumentosPaciente">
-                <?php if (!empty($dataDocumentos) && is_array($dataDocumentos)): ?>
-                  <?php foreach ($dataDocumentos as $key => $doc): ?>
+                <?php if (!empty($dataDocumentos['data']) && is_array($dataDocumentos['data'])): ?>
+                  <?php foreach ($dataDocumentos['data'] as $index => $doc): ?>
                     <tr>
-                      <td><?= $key + 1 ?></td>
+                      <td><?= (int)$index + 1 ?></td>
                       <td><?= htmlspecialchars($doc['docuNombre']) ?></td>
                       <td><?= htmlspecialchars($doc['docuTipo']) ?></td>
                       <td><?= date("Y-m-d H:i", strtotime($doc['docuFechaSubida'])) ?></td>
@@ -194,6 +189,7 @@ $data = $historia['data'];
                   </tr>
                 <?php endif; ?>
               </tbody>
+
 
             </table>
 
@@ -222,12 +218,6 @@ $data = $historia['data'];
   <!-- Botones de Acción -->
   <div class="card mb-4">
     <div class="card-body text-center">
-      <button onclick="window.print()" class="btn btn-info me-2">
-        <i class="bi bi-printer"></i> Imprimir
-      </button>
-      <button class="btn btn-warning me-2 btnEditarHistoria" histId="<?= $data['histId'] ?>">
-        <i class="bi bi-pencil"></i> Editar
-      </button>
       <a href="?ruta=historias-clinicas" class="btn btn-secondary">
         <i class="bi bi-arrow-left"></i> Volver
       </a>
@@ -251,17 +241,61 @@ $data = $historia['data'];
       <form id="formSubirDocumento" enctype="multipart/form-data">
         <div class="modal-body">
           
-          <input type="hidden" name="paciId" id="paciId" value="<?= htmlspecialchars($data['paciente']['paciId'] ?? '') ?>">
+          <!-- Campo oculto para almacenar el histId -->
+          <input type="hidden" name="histId" id="histId" value="<?= htmlspecialchars($data['histId'] ?? '') ?>">
 
+          <!-- Nombre del documento -->
           <div class="mb-3">
             <label for="docNombre" class="form-label">Nombre del Documento</label>
             <input type="text" class="form-control" name="docNombre" id="docNombre" required>
           </div>
 
+          <!-- Archivo del documento -->
           <div class="mb-3">
             <label for="docArchivo" class="form-label">Archivo</label>
             <input type="file" class="form-control" name="docArchivo" id="docArchivo" accept=".pdf,.jpg,.jpeg,.png" required>
             <div class="form-text">Formatos permitidos: PDF, JPG, PNG.</div>
+          </div>
+
+          <!-- Tipo de documento -->
+          <div class="mb-3">
+            <label for="docTipo" class="form-label">Tipo de Documento</label>
+            <select class="form-control" name="docTipo" id="docTipo" required>
+              <option value="">Seleccione un tipo de documento...</option>
+              <option value="informe_medico">Informe Médico</option>
+              <option value="examen_laboratorio">Exámenes de Laboratorio</option>
+              <option value="imagenes_medicas">Imágenes Médicas</option>
+              <option value="receta_medica">Receta Médica</option>
+              <option value="consentimiento_informado">Consentimiento Informado</option>
+              <option value="historial_consultas">Historial de Consultas</option>
+              <option value="informe_quirurgico">Informe Quirúrgico</option>
+              <option value="resultados_pruebas">Resultados de Pruebas</option>
+              <option value="hoja_seguimiento">Hoja de Seguimiento</option>
+              <option value="referencia_medica">Referencia Médica</option>
+              <option value="plan_tratamiento">Plan de Tratamiento</option>
+              <option value="informe_psicologia">Informe de Psicología</option>
+              <option value="informe_fisioterapia">Informe de Fisioterapia</option>
+              <option value="historia_vacunacion">Historia de Vacunación</option>
+            </select>
+          </div>
+
+
+          <!-- Visibilidad para el paciente -->
+          <div class="mb-3">
+            <label for="visiblePaciente" class="form-label">Visible al Paciente</label>
+            <select class="form-control" name="visiblePaciente" id="visiblePaciente" required>
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+
+          <!-- Documento confidencial -->
+          <div class="mb-3">
+            <label for="confidencial" class="form-label">Confidencial</label>
+            <select class="form-control" name="confidencial" id="confidencial" required>
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
           </div>
 
         </div>
@@ -276,6 +310,7 @@ $data = $historia['data'];
     </div>
   </div>
 </div>
+
 
 
 

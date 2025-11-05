@@ -22,6 +22,28 @@ curl_close($curl);
 
 $data = json_decode($response, true);
 
+/* roles */
+  $curl = curl_init();
+
+  curl_setopt_array($curl, array(
+    CURLOPT_URL => API_BASE_URL . 'roles',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'GET',
+    CURLOPT_HTTPHEADER => array(
+      API_AUTH_HEADER
+    ),
+  ));
+
+  $roles = curl_exec($curl);
+
+  curl_close($curl);
+  $dataRoles = json_decode($roles, true);
+
 ?>
 
 <div class="container-fluid">
@@ -84,7 +106,7 @@ $data = json_decode($response, true);
                 ?>
               </td>
               <td>
-                <button class="btn btn-sm btn-info btnVerUsuario me-1" usuaId="<?= $usuario["usuaId"] ?>" title="Ver">
+                <button class="btn btn-sm btn-info btnAsignarRoles me-1" usuaId="<?= $usuario["usuaId"] ?>" title="Ver">
                   <i class="bi bi-eye"></i>
                 </button>
                 <button class="btn btn-sm btn-warning btnEditarUsuario me-1" usuaId="<?= $usuario["usuaId"] ?>" title="Editar">
@@ -235,6 +257,114 @@ MODAL AGREGAR USUARIO
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
           <button type="submit" class="btn btn-primary">Guardar usuario</button>
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+</div>
+
+<!--=====================================
+MODAL ASIGNAR ROLES
+======================================-->
+<div id="modalAsignarRoles" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+
+      <form role="form" id="formAsignarRoles" method="post">
+        <input type="hidden" id="asignarUserId" name="asignarUserId">
+
+        <!--=====================================
+        CABECERA DEL MODAL
+        ======================================-->
+        <div class="modal-header" style="background:#003264; color:white">
+          <h4 class="modal-title">Asignar Roles a Usuario</h4>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!--=====================================
+        CUERPO DEL MODAL
+        ======================================-->
+        <div class="modal-body">
+          <div class="box-body">
+
+            <!-- Información del Usuario Seleccionado -->
+            <div class="row" id="infoUsuario" style="display: none; margin-top: 15px; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
+              <div class="col-md-12">
+                <h5><i class="fa fa-info-circle"></i> Información del Usuario</h5>
+                <p><strong>Nombre:</strong> <span id="infoNombreUsuario"></span></p>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 20px;">
+              <!-- Roles Disponibles -->
+              <div class="form-group col-md-12">
+                <label><i class="fa fa-shield"></i> Seleccionar Roles (puede seleccionar múltiples)</label>
+                <div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; max-height: 300px; overflow-y: auto;">
+
+                  <?php
+                  // Verificar si $dataRoles es válido y tiene datos
+                  if (isset($dataRoles['success']) && $dataRoles['success'] === true && 
+                      isset($dataRoles['data']) && is_array($dataRoles['data']) && !empty($dataRoles['data'])) {
+                      
+                      foreach ($dataRoles['data'] as $rol) {
+                          // Validar que existan las claves esperadas
+                          if (isset($rol['roleId']) && isset($rol['roleName']) && isset($rol['roleDescripcion'])) {
+                  ?>
+                              <div class="form-check" style="margin-bottom: 10px;">
+                                  <input 
+                                      class="form-check-input" 
+                                      type="checkbox" 
+                                      name="roles[]" 
+                                      value="<?php echo htmlspecialchars($rol['roleId']); ?>" 
+                                      id="rol<?php echo htmlspecialchars($rol['roleId']); ?>">
+                                  <label class="form-check-label" for="rol<?php echo htmlspecialchars($rol['roleId']); ?>">
+                                      <strong><?php echo htmlspecialchars($rol['roleName']); ?></strong> - 
+                                      <?php echo htmlspecialchars($rol['roleDescripcion']); ?>
+                                  </label>
+                              </div>
+                  <?php
+                          }
+                      }
+                  } else {
+                      echo '<p class="text-muted">No hay roles disponibles</p>';
+                  }
+                  ?>
+
+                </div>
+                <small class="form-text text-muted">
+                  <i class="fa fa-info-circle"></i> Seleccione uno o más roles para asignar al usuario.
+                </small>
+              </div>
+            </div>
+
+
+            <!-- Roles actualmente asignados -->
+            <div class="row" style="margin-top: 15px;">
+              <div class="col-md-12">
+                <div class="alert alert-info">
+                  <strong><i class="fa fa-list"></i> Roles actualmente asignados:</strong>
+                  <div id="rolesActuales">
+                    <span class="badge bg-secondary">Ninguno</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /.box-body -->
+        </div><!-- /.modal-body -->
+
+        <!--=====================================
+        PIE DEL MODAL
+        ======================================-->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-save"></i> Asignar Roles
+          </button>
         </div>
 
       </form>

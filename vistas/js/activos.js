@@ -1,32 +1,34 @@
 
 
+const btnGuardar = document.getElementById('btnGuardar');
+if (btnGuardar) {
+  // Función para generar código automático basado en fecha y hora
+  document.getElementById('btnGenerarCodigo').addEventListener('click', function() {
+    const ahora = new Date();
+    
+    // Obtener componentes de fecha y hora
+    const anio = ahora.getFullYear();
+    const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+    const dia = String(ahora.getDate()).padStart(2, '0');
+    const hora = String(ahora.getHours()).padStart(2, '0');
+    const minuto = String(ahora.getMinutes()).padStart(2, '0');
+    const segundo = String(ahora.getSeconds()).padStart(2, '0');
+    
+    // Crear código concatenado: AAAAMMDDHHMMSS
+    const codigoGenerado = `${anio}${mes}${dia}${hora}${minuto}${segundo}`;
+    
+    // Asignar al campo
+    document.getElementById('acteCodigoActivo').value = codigoGenerado;
+    
+    // Opcional: Efecto visual de confirmación
+    const input = document.getElementById('acteCodigoActivo');
+    input.style.backgroundColor = '#d4edda';
+    setTimeout(() => {
+      input.style.backgroundColor = '';
+    }, 500);
+  });
+}
 
-
-// Función para generar código automático basado en fecha y hora
-document.getElementById('btnGenerarCodigo').addEventListener('click', function() {
-  const ahora = new Date();
-  
-  // Obtener componentes de fecha y hora
-  const anio = ahora.getFullYear();
-  const mes = String(ahora.getMonth() + 1).padStart(2, '0');
-  const dia = String(ahora.getDate()).padStart(2, '0');
-  const hora = String(ahora.getHours()).padStart(2, '0');
-  const minuto = String(ahora.getMinutes()).padStart(2, '0');
-  const segundo = String(ahora.getSeconds()).padStart(2, '0');
-  
-  // Crear código concatenado: AAAAMMDDHHMMSS
-  const codigoGenerado = `${anio}${mes}${dia}${hora}${minuto}${segundo}`;
-  
-  // Asignar al campo
-  document.getElementById('acteCodigoActivo').value = codigoGenerado;
-  
-  // Opcional: Efecto visual de confirmación
-  const input = document.getElementById('acteCodigoActivo');
-  input.style.backgroundColor = '#d4edda';
-  setTimeout(() => {
-    input.style.backgroundColor = '';
-  }, 500);
-});
 
 
 /*=============================================
@@ -255,85 +257,89 @@ function abrirModalTicket(datosActivo) {
 }
 
 // Método para descargar el ticket como imagen
-document.getElementById('btnDescargarTicket').addEventListener('click', function() {
-  const ticketContainer = document.getElementById('ticketContainer');
-  const codigo = document.getElementById('ticketCodigo').textContent;
-  
-  // Mostrar loading
-  Swal.fire({
-    title: 'Generando sticker...',
-    text: 'Por favor espere',
-    allowOutsideClick: false,
-    didOpen: () => {
-      Swal.showLoading();
-    }
-  });
-  
-  // Esperar a que el QR se renderice completamente
-  setTimeout(() => {
-    // Opciones para html2canvas
-    const opciones = {
-      scale: 3, // Mayor calidad (3x)
-      backgroundColor: '#ffffff',
-      logging: false,
-      useCORS: true,
-      allowTaint: true,
-      foreignObjectRendering: false,
-      imageTimeout: 0,
-      // Importante para capturar el canvas del QR
-      onclone: function(clonedDoc) {
-        // Asegurar que el QR canvas esté visible en el clon
-        const qrCanvas = clonedDoc.querySelector('#qrcode canvas');
-        if (qrCanvas) {
-          qrCanvas.style.display = 'block';
-          qrCanvas.style.margin = '0 auto';
-        }
-      }
-    };
+
+const btnDescargarTicket = document.getElementById('btnDescargarTicket');
+if (btnDescargarTicket) {
+  document.getElementById('btnDescargarTicket').addEventListener('click', function() {
+    const ticketContainer = document.getElementById('ticketContainer');
+    const codigo = document.getElementById('ticketCodigo').textContent;
     
-    // Generar imagen del ticket
-    html2canvas(ticketContainer, opciones)
-      .then(canvas => {
-        // Cerrar loading
-        Swal.close();
-        
-        // Convertir canvas a blob
-        canvas.toBlob(function(blob) {
-          // Crear URL temporal del blob
-          const url = URL.createObjectURL(blob);
+    // Mostrar loading
+    Swal.fire({
+      title: 'Generando sticker...',
+      text: 'Por favor espere',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+    
+    // Esperar a que el QR se renderice completamente
+    setTimeout(() => {
+      // Opciones para html2canvas
+      const opciones = {
+        scale: 3, // Mayor calidad (3x)
+        backgroundColor: '#ffffff',
+        logging: false,
+        useCORS: true,
+        allowTaint: true,
+        foreignObjectRendering: false,
+        imageTimeout: 0,
+        // Importante para capturar el canvas del QR
+        onclone: function(clonedDoc) {
+          // Asegurar que el QR canvas esté visible en el clon
+          const qrCanvas = clonedDoc.querySelector('#qrcode canvas');
+          if (qrCanvas) {
+            qrCanvas.style.display = 'block';
+            qrCanvas.style.margin = '0 auto';
+          }
+        }
+      };
+      
+      // Generar imagen del ticket
+      html2canvas(ticketContainer, opciones)
+        .then(canvas => {
+          // Cerrar loading
+          Swal.close();
           
-          // Crear enlace de descarga
-          const link = document.createElement('a');
-          link.download = `sticker_activo_${codigo}.png`;
-          link.href = url;
-          
-          // Simular click para descargar
-          document.body.appendChild(link);
-          link.click();
-          
-          // Limpiar
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
-          
-          // Notificación de éxito
+          // Convertir canvas a blob
+          canvas.toBlob(function(blob) {
+            // Crear URL temporal del blob
+            const url = URL.createObjectURL(blob);
+            
+            // Crear enlace de descarga
+            const link = document.createElement('a');
+            link.download = `sticker_activo_${codigo}.png`;
+            link.href = url;
+            
+            // Simular click para descargar
+            document.body.appendChild(link);
+            link.click();
+            
+            // Limpiar
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            // Notificación de éxito
+            Swal.fire({
+              icon: 'success',
+              title: '¡Descarga exitosa!',
+              text: 'El sticker se ha descargado correctamente',
+              timer: 2000,
+              showConfirmButton: false
+            });
+          }, 'image/png', 1.0);
+        })
+        .catch(error => {
+          Swal.close();
+          console.error('Error al generar el sticker:', error);
           Swal.fire({
-            icon: 'success',
-            title: '¡Descarga exitosa!',
-            text: 'El sticker se ha descargado correctamente',
-            timer: 2000,
-            showConfirmButton: false
+            icon: 'error',
+            title: 'Error al generar el sticker',
+            text: 'Por favor, intente nuevamente',
+            showConfirmButton: true
           });
-        }, 'image/png', 1.0);
-      })
-      .catch(error => {
-        Swal.close();
-        console.error('Error al generar el sticker:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al generar el sticker',
-          text: 'Por favor, intente nuevamente',
-          showConfirmButton: true
         });
-      });
-  }, 500); // Esperar 500ms para que el QR se renderice
-});
+    }, 500); // Esperar 500ms para que el QR se renderice
+  });
+}

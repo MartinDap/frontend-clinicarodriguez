@@ -21,7 +21,7 @@
   curl_close($curl);
   $data = json_decode($response, true);
 
-  /* USUARIO */
+  /* medicos */
   $curl = curl_init();
 
   curl_setopt_array($curl, array(

@@ -30,7 +30,6 @@ if ($ruta == 'conocenos' ||
     $ruta == 'citas' ||
     $ruta == 'historias-clinicas' ||
     $ruta == 'ver-historia' ||
-    $ruta == 'consultas' ||
     $ruta == 'usuarios' ||
     $ruta == 'activos' ||
     $ruta == 'configuracion' ||

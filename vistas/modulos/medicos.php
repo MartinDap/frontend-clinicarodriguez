@@ -22,6 +22,28 @@
   curl_close($curl);
   $data = json_decode($response, true);
 
+   /* especialidades */
+  $curl = curl_init();
+
+  curl_setopt_array($curl, array(
+    CURLOPT_URL => API_BASE_URL . 'especialidades',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'GET',
+    CURLOPT_HTTPHEADER => array(
+      API_AUTH_HEADER
+    ),
+  ));
+
+  $responseespeci = curl_exec($curl);
+
+  curl_close($curl);
+  $dataEspe = json_decode($responseespeci, true);
+
 ?>
 <div class="container-fluid">
   
@@ -67,7 +89,7 @@
               ?>
             </td>
             <td>
-              <button class="btn btn-sm btn-info btnVerMedico" mediId="<?= $medico["mediId"] ?>">
+              <button class="btn btn-sm btn-info btnAsignarEspecialidades" mediId="<?= $medico["mediId"] ?>">
                 <i class="bi bi-eye"></i>
               </button>
               <button class="btn btn-sm btn-warning btnEditarMedico" mediId="<?= $medico["mediId"] ?>">
@@ -143,6 +165,36 @@ MODAL AGREGAR MÉDICO
                     name="mediApellido"
                     id="mediApellido"
                     placeholder="Ej: Gómez"
+                    required>
+                </div>
+              </div>
+
+              <!-- Usuario -->
+              <div class="form-group col-md-6">
+                <label for="mediUsuario">Usuario</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
+                  <input
+                    type="text"
+                    class="form-control input-lg"
+                    name="mediUsuario"
+                    id="mediUsuario"
+                    placeholder="Ej: cgomez"
+                    required>
+                </div>
+              </div>
+
+              <!-- Contraseña -->
+              <div class="form-group col-md-6">
+                <label for="mediPassword">Contraseña</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                  <input
+                    type="password"
+                    class="form-control input-lg"
+                    name="mediPassword"
+                    id="mediPassword"
+                    placeholder="Contraseña"
                     required>
                 </div>
               </div>
@@ -246,8 +298,6 @@ MODAL AGREGAR MÉDICO
 
   </div>
 </div>
-
-
 
 <!--=====================================
 MODAL EDITAR MÉDICO
@@ -390,6 +440,110 @@ MODAL EDITAR MÉDICO
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
           <button type="submit" class="btn btn-success">Guardar cambios</button>
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+</div>
+
+<!--=====================================
+MODAL ASIGNAR ESPECIALIDADES
+======================================-->
+<div id="modalAsignarEspecialidades" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+
+      <form role="form" id="formAsignarEspecialidades" method="post">
+      <input type="hidden" id="asignarMediId" name="asignarMediId">
+        <!--=====================================
+        CABECERA DEL MODAL
+        ======================================-->
+        <div class="modal-header" style="background:#003264; color:white">
+          <h4 class="modal-title">Asignar Roles a Médico</h4>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!--=====================================
+        CUERPO DEL MODAL
+        ======================================-->
+        <div class="modal-body">
+          <div class="box-body">
+
+            <!-- Información del Médico Seleccionado -->
+            <div class="row" id="infoMedico" style="display: none; margin-top: 15px; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
+              <div class="col-md-12">
+                <h5><i class="fa fa-info-circle"></i> Información del Médico</h5>
+                <p><strong>Nombre:</strong> <span id="infoNombre"></span></p>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 20px;">
+              <!-- Roles Disponibles -->
+              <div class="form-group col-md-12">
+                  <label><i class="fa fa-shield"></i> Seleccionar Especialidades (puede seleccionar múltiples)</label>
+                  <div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; max-height: 300px; overflow-y: auto;">
+                      
+                      <?php
+                      // Verificar si $dataEspe es válido y tiene datos
+                      if (isset($dataEspe['success']) && $dataEspe['success'] === true && isset($dataEspe['data']) && is_array($dataEspe['data']) && !empty($dataEspe['data'])) {
+                          foreach ($dataEspe['data'] as $especialidad) {
+                              // Asegurarse de que cada especialidad tenga los campos necesarios
+                              if (isset($especialidad['espeId']) && isset($especialidad['espeNombre']) && isset($especialidad['espeDescripcion'])) {
+                      ?>
+                                  <div class="form-check" style="margin-bottom: 10px;">
+                                      <input 
+                                          class="form-check-input" 
+                                          type="checkbox" 
+                                          name="especialidades[]" 
+                                          value="<?php echo htmlspecialchars($especialidad['espeId']); ?>" 
+                                          id="especialidades<?php echo htmlspecialchars($especialidad['espeId']); ?>">
+                                      <label class="form-check-label" for="rol<?php echo htmlspecialchars($especialidad['espeId']); ?>">
+                                          <strong><?php echo htmlspecialchars($especialidad['espeNombre']); ?></strong> - <?php echo htmlspecialchars($especialidad['espeDescripcion']); ?>
+                                      </label>
+                                  </div>
+                      <?php
+                              }
+                          }
+                      } else {
+                          // Mensaje si no hay datos
+                          echo '<p class="text-muted">No hay especialidades disponibles</p>';
+                      }
+                      ?>
+
+                  </div>
+                  <small class="form-text text-muted">
+                      <i class="fa fa-info-circle"></i> Seleccione una o más especialidades para asignar al médico
+                  </small>
+              </div>
+          </div>
+
+            <!-- Especialidades Actualmente Asignados -->
+            <div class="row" style="margin-top: 15px;">
+              <div class="col-md-12">
+                <div class="alert alert-info">
+                  <strong><i class="fa fa-list"></i> Especialidades actualmente asignados:</strong>
+                  <div id="especialidadesActuales">
+                    <span class="badge bg-secondary">Ninguno</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /.box-body -->
+        </div><!-- /.modal-body -->
+
+        <!--=====================================
+        PIE DEL MODAL
+        ======================================-->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-save"></i> Asignar Roles
+          </button>
         </div>
 
       </form>

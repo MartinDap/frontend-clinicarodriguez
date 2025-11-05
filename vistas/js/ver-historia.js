@@ -1,16 +1,21 @@
 /*=============================================
 SUBIR DOCUMENTO DEL PACIENTE
 =============================================*/
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
 
-  $("#formSubirDocumento").on("submit", function (event) {
+  // Captura el evento de envío del formulario
+  document.getElementById("formSubirDocumento").addEventListener("submit", function (event) {
     event.preventDefault(); // Evita recargar la página
 
-    // Capturar datos del formulario
-    var paciId = $("#paciId").val();
-    var docNombre = $("#docNombre").val();
-    var archivo = $("#docArchivo")[0].files[0];
+    // Capturar los valores del formulario
+    const histId = document.getElementById("histId").value.trim();
+    const docNombre = document.getElementById("docNombre").value.trim();
+    const archivo = document.getElementById("docArchivo").files[0];
+    const docTipo = document.getElementById("docTipo").value.trim();
+    const visiblePaciente = document.getElementById("visiblePaciente").value.trim();
+    const confidencial = document.getElementById("confidencial").value.trim();
 
+    // Validar que se haya seleccionado un archivo
     if (!archivo) {
       Swal.fire({
         icon: "warning",
@@ -21,35 +26,34 @@ $(document).ready(function () {
     }
 
     // Crear el FormData
-    var formData = new FormData();
+    const formData = new FormData();
     formData.append("file", archivo);
-    formData.append("paciId", paciId);
+    formData.append("histId", histId);
     formData.append("nombre", docNombre);
-    formData.append("tipo", "Otro"); // Puedes cambiarlo dinámicamente si tienes un campo tipo
-    formData.append("visiblePaciente", "true");
-    formData.append("confidencial", "true");
+    formData.append("tipo", docTipo);
+    formData.append("visiblePaciente", visiblePaciente);
+    formData.append("confidencial", confidencial);
 
     console.log("Subiendo documento:", {
-      paciId,
+      histId,
       docNombre,
-      archivo
+      archivo,
+      docTipo,
+      visiblePaciente,
+      confidencial
     });
 
-    // Configurar la solicitud AJAX
-    $.ajax({
-      async: true,
-      crossDomain: true,
-      url: `${CONFIG.API_BASE_URL}documentos/upload`,
+    // Realizar la solicitud POST con fetch
+    fetch(`${CONFIG.API_BASE_URL}documentos/upload`, {
       method: "POST",
       headers: {
         "Authorization": CONFIG.API_AUTH_HEADER
       },
-      processData: false,
-      contentType: false,
-      mimeType: "multipart/form-data",
-      data: formData,
-      success: function (response) {
-        console.log("Respuesta del servidor (subir documento):", response);
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Respuesta del servidor (subir documento):", data);
 
         Swal.fire({
           icon: "success",
@@ -63,22 +67,21 @@ $(document).ready(function () {
           // Recargar la página o la tabla de documentos
           window.location.reload();
         });
-      },
-      error: function (xhr, status, error) {
+      })
+      .catch(error => {
         console.error("Error al subir documento:", error);
-        console.error("Detalle:", xhr.responseText);
 
         Swal.fire({
           icon: "error",
           title: "No se pudo subir el documento",
-          text: xhr.responseText || "Verifica el archivo e inténtalo nuevamente.",
+          text: error.message || "Verifica el archivo e inténtalo nuevamente.",
           confirmButtonText: "Cerrar"
         });
-      }
-    });
+      });
   });
 
 });
+
 
 
 
