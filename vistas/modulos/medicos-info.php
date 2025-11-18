@@ -83,11 +83,11 @@ include 'vistas/modulos/componentes/navbar-publico.php';
                 <div class="card medico-card border-0 shadow-sm h-100">
                   <div class="medico-photo-wrapper">
                     <img src="${medico.mediFotoUrl || 'vistas/img/default-doctor.jpg'}" 
-                        alt="${medico.mediNombre} ${medico.mediApellido}" 
+                        alt="${medico.mediNombre}" 
                         class="medico-photo-img w-100 rounded-top">
                   </div>
                   <div class="card-body text-center">
-                    <h5 class="medico-nombre mb-1">${medico.mediNombre} ${medico.mediApellido}</h5>
+                    <h5 class="medico-nombre mb-1">${medico.mediNombre}</h5>
                     <div class="medico-especialidades mb-2">
                       ${etiquetasEspecialidades}
                     </div>

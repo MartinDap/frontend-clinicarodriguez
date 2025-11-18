@@ -17,26 +17,115 @@ REGISTRAR HISTORIA
 =============================================*/
 document.addEventListener("DOMContentLoaded", () => {
 
+    const inputDni        = document.getElementById("inputDniPaciente");
+    const inputNombre     = document.getElementById("inputNombrePaciente");
+    const inputPaciId     = document.getElementById("inputPaciId");
+    const suggestionsBox  = document.getElementById("dniSuggestions");
+
+    let debounceTimer = null;
+
+    // Limpia la lista de sugerencias
+    function clearSuggestions() {
+      suggestionsBox.innerHTML = "";
+    }
+
+    // Escuchar lo que escribe en el DNI
+    inputDni.addEventListener("input", function () {
+      const dni = inputDni.value.trim();
+
+      // Si tiene menos de 2 caracteres, no buscamos
+      if (dni.length < 2) {
+        clearSuggestions();
+        return;
+      }
+
+      // Debounce: espera un poquito antes de llamar al backend
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        buscarPacientesPorDni(dni);
+      }, 300);
+    });
+
+    function buscarPacientesPorDni(dni) {
+      const url = `${CONFIG.API_BASE_URL}pacientes/buscar/dni?dni=${encodeURIComponent(dni)}`;
+      // Si tu CONFIG.API_BASE_URL ya incluye /api/, entonces queda:
+      // http://localhost:8080/api/pacientes/buscar/dni?dni=...
+
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "Authorization": CONFIG.API_AUTH_HEADER
+        }
+      })
+      .then(res => res.json())
+      .then(response => {
+        console.log("Respuesta búsqueda DNI:", response);
+        clearSuggestions();
+
+        if (!response || !response.success || !response.data || response.data.length === 0) {
+          return; // No hay resultados
+        }
+
+        // Pintar cada resultado como opción clicable
+        response.data.forEach(p => {
+          const item = document.createElement("button");
+          item.type = "button";
+          item.className = "list-group-item list-group-item-action";
+          item.textContent = `${p.nroDoc} - ${p.nombrecompleto}`;
+
+          item.addEventListener("click", () => {
+            // Al seleccionar: llenar campos
+            inputDni.value    = p.nroDoc;
+            inputNombre.value = p.nombrecompleto;
+            inputPaciId.value = p.paciId;
+
+            clearSuggestions();
+          });
+
+          suggestionsBox.appendChild(item);
+        });
+      })
+      .catch(err => {
+        console.error("Error buscando pacientes por DNI:", err);
+        clearSuggestions();
+      });
+    }
+
+    // Ocultar sugerencias al hacer click fuera
+    document.addEventListener("click", function (e) {
+      if (!suggestionsBox.contains(e.target) && e.target !== inputDni) {
+        clearSuggestions();
+      }
+    });
+
   const formRegistrarHistoria = document.getElementById("formRegistrarHistoria");
   if(formRegistrarHistoria){
     formRegistrarHistoria.addEventListener("submit", async (event) => {
-        event.preventDefault(); // evita recargar la página
+      event.preventDefault(); // evita recargar la página
 
         // Capturar los valores del formulario
         const doctorId        = document.getElementById("doctorId").value.trim();
-        const pacienteId      = document.getElementById("pacienteId").value.trim();
+        const pacienteId      = document.getElementById("inputPaciId").value.trim();          // <-- ahora sale del hidden
+        const dniPaciente     = document.getElementById("inputDniPaciente").value.trim();     // opcional, solo para validar mejor
+        const nombrePaciente  = document.getElementById("inputNombrePaciente").value.trim();  // opcional
         const histNumHistoria = document.getElementById("histNumHistoria").value.trim();
         const histFecha       = document.getElementById("histFecha").value.trim();
-        const histTalle       = document.getElementById("histTalle").value.trim();
-        const histPeso        = document.getElementById("histPeso").value.trim();
-        const histTemperaturaC= document.getElementById("histTemperaturaC").value.trim();
-        const histFrecCardiaca= document.getElementById("histFrecCardiaca").value.trim();
 
         // Validar campos obligatorios
-        if (!doctorId || !pacienteId || !histNumHistoria || !histFecha || !histTalle || !histPeso || !histTemperaturaC || !histFrecCardiaca) {
+        if (!doctorId || !pacienteId || !histNumHistoria || !histFecha) {
           Swal.fire({
             icon: "warning",
             title: "Complete los campos obligatorios antes de registrar.",
+            confirmButtonText: "Cerrar"
+          });
+          return;
+        }
+
+        // Validar que realmente se haya seleccionado un paciente de la lista
+        if (!dniPaciente || !nombrePaciente) {
+          Swal.fire({
+            icon: "warning",
+            title: "Busque y seleccione un paciente por DNI antes de registrar.",
             confirmButtonText: "Cerrar"
           });
           return;
@@ -51,11 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
             paciId: parseInt(pacienteId)
           },
           histNumHistoria: parseInt(histNumHistoria), // Número de historia
-          histFecha: `${histFecha}T00:00:00`, // formato ISO (ajusta si tu backend espera hora)
-          histTalle: parseFloat(histTalle),
-          histPeso: parseFloat(histPeso),
-          histTemperaturaC: parseFloat(histTemperaturaC),
-          histFrecCardiaca: parseFloat(histFrecCardiaca),
+          histRegistrofecha: histFecha,
           histEstado: 1
         };
 
@@ -102,6 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     }
+    
 });
 
 

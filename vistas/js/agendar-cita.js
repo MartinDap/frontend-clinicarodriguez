@@ -458,24 +458,25 @@ function obtenerFechaActual() {
 // Función para registrar paciente
 async function registrarPaciente(datos) {
   try {
-    const response = await fetch(`${CONFIG.API_BASE_URL}pacientes`, {
+    // Construir el objeto solo con los datos disponibles
+    const datosRegistro = {
+      nombrecompleto: datos.nombreCompleto,
+      tipoDoc: datos.tipoDocumento,
+      nroDoc: datos.documento,
+      telefono: datos.celular
+    };
+    
+    // Agregar email solo si está presente
+    if (datos.correo && datos.correo.trim() !== '') {
+      datosRegistro.email = datos.correo;
+    }
+    
+    const response = await fetch(`${CONFIG.API_BASE_URL}pacientes/registrar`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        paciNombrecompleto: datos.nombreCompleto,
-        paciSexo: null,
-        paciFecNacimiento: null,
-        paciDni: datos.documento,
-        paciEstadoCivil: null,
-        paciDireccion: null,
-        paciTelefono: datos.celular,
-        paciEmail: datos.correo,
-        paciApoderado: null,
-        paciNumhistoria: null,
-        paciEstado: 0
-      })
+      body: JSON.stringify(datosRegistro)
     });
     
     if (!response.ok) {
@@ -568,6 +569,7 @@ if (formCita) {
     
     // Obtener datos del formulario
     const nombreCompleto = document.getElementById('nombreCompleto').value;
+    const tipoDocumento = document.getElementById('tipoDocumento').value;
     const documento = document.getElementById('documento').value;
     const celular = document.getElementById('celular').value;
     const correo = document.getElementById('correo').value;
@@ -582,6 +584,7 @@ if (formCita) {
       // 1. Registrar paciente
       const pacienteId = await registrarPaciente({
         nombreCompleto,
+        tipoDocumento,
         documento,
         celular,
         correo
@@ -605,22 +608,22 @@ if (formCita) {
 
       // 3. Crear mensaje para WhatsApp
       const mensaje = `
-*SOLICITUD DE CITA MÉDICA*
+        *SOLICITUD DE CITA MÉDICA*
 
-👤 *Paciente:* ${nombreCompleto}
-📄 *Documento:* ${documento}
-📞 *Teléfono:* ${celular}
-📧 *Correo:* ${correo}
+        👤 *Paciente:* ${nombreCompleto}
+        📄 *Documento:* ${documento}
+        📞 *Teléfono:* ${celular}
+        📧 *Correo:* ${correo}
 
-🏥 *Especialidad:* ${especialidadNombre}
-👨‍⚕️ *Médico:* Dr(a). ${medicoSeleccionado.medicoNombre} ${medicoSeleccionado.medicoApellido}
-📅 *Fecha:* ${horarioSeleccionado.fechaFormateada} (${horarioSeleccionado.dia})
-🕐 *Horario:* ${horarioSeleccionado.horaInicio} - ${horarioSeleccionado.horaFin}
+        🏥 *Especialidad:* ${especialidadNombre}
+        👨‍⚕️ *Médico:* Dr(a). ${medicoSeleccionado.medicoNombre} ${medicoSeleccionado.medicoApellido}
+        📅 *Fecha:* ${horarioSeleccionado.fechaFormateada} (${horarioSeleccionado.dia})
+        🕐 *Horario:* ${horarioSeleccionado.horaInicio} - ${horarioSeleccionado.horaFin}
 
-💬 *Motivo de consulta:*
-${razonConsulta}
+        💬 *Motivo de consulta:*
+        ${razonConsulta}
 
-✅ *Estado:* RESERVADO POR PACIENTE
+        ✅ *Estado:* RESERVADO POR PACIENTE
       `.trim();
 
       // Codificar mensaje para URL
@@ -633,9 +636,9 @@ ${razonConsulta}
       const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
       
       // Mostrar mensaje de éxito
-      alert(idiomaActual === 'es'
-        ? '¡Cita registrada exitosamente! Serás redirigido a WhatsApp.'
-        : 'Appointment successfully registered! You will be redirected to WhatsApp.');
+      //alert(idiomaActual === 'es'
+      //  ? '¡Cita registrada exitosamente! Serás redirigido a WhatsApp.'
+      //  : 'Appointment successfully registered! You will be redirected to WhatsApp.');
       
       // Abrir WhatsApp
       window.open(urlWhatsApp, '_blank');

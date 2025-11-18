@@ -39,12 +39,7 @@ require_once 'vistas/modulos/idiomas.php';
           <span class="input-group-text">
             <i class="bi bi-person-badge"></i>
           </span>
-          <input 
-            type="text" 
-            class="form-control" 
-            id="dniConsulta" 
-            name="dniConsulta" 
-            placeholder="<?php echo idioma_actual() === 'es' ? 'Ingresa tu DNI' : 'Enter your ID'; ?>" 
+          <input type="text" class="form-control" id="dniConsulta" name="dniConsulta" placeholder="<?php echo idioma_actual() === 'es' ? 'Ingresa tu DNI' : 'Enter your ID'; ?>" 
             required
             maxlength="8"
             pattern="[0-9]{8}"
@@ -145,9 +140,8 @@ require_once 'vistas/modulos/idiomas.php';
               title: '<?php echo idioma_actual() === 'es' ? '¡Paciente Encontrado!' : 'Patient Found!'; ?>',
               html: `
                 <div class="text-start">
-                  <p><strong><?php echo idioma_actual() === 'es' ? 'Nombre:' : 'Name:'; ?></strong> ${respuesta.data.paciNombrecompleto}</p>
-                  <p><strong><?php echo idioma_actual() === 'es' ? 'DNI:' : 'ID:'; ?></strong> ${respuesta.data.paciDni}</p>
-                  <p><strong><?php echo idioma_actual() === 'es' ? 'Teléfono:' : 'Phone:'; ?></strong> ${respuesta.data.paciTelefono || 'N/A'}</p>
+                  <p><strong><?php echo idioma_actual() === 'es' ? 'Nombre:' : 'Name:'; ?></strong> ${respuesta.data.persona.persNombrecompleto}</p>
+                  <p><strong><?php echo idioma_actual() === 'es' ? 'DNI:' : 'ID:'; ?></strong> ${respuesta.data.persona.persNroDoc}</p>
                   <hr>
                   <p class="text-muted small"><?php echo idioma_actual() === 'es' 
                     ? 'Para consultar resultados específicos, comunícate con recepción.' 
@@ -157,7 +151,7 @@ require_once 'vistas/modulos/idiomas.php';
               confirmButtonColor: '#667eea',
               confirmButtonText: '<?php echo idioma_actual() === 'es' ? 'Entendido' : 'Got it'; ?>'
             });
-              sessionStorage.setItem('dniPaciente', respuesta.data.paciDni);
+              sessionStorage.setItem('dniPaciente', respuesta.data.persona.persNroDoc);
               window.location.href = 'ver-resultados';
           } else {
             Swal.fire({

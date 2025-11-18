@@ -1,69 +1,100 @@
-/*=============================================
-REGISTRAR NUEVO USUARIO
-=============================================*/
-$(document).ready(function () {
+  /*=============================================
+  REGISTRAR NUEVO USUARIO (VANILLA JS)
+  =============================================*/
+  document.addEventListener("DOMContentLoaded", function () {
 
-  $("#formRegistrarUsuario").on("submit", function (event) {
-    event.preventDefault();
+    const form = document.getElementById("formRegistrarUsuario");
 
-    // Capturar campos
-    var data = {
-      usuaUsername: $("#usuaUsername").val(),
-      usuaNombrecompleto: $("#usuaNombrecompleto").val(),
-      usuaClave: $("#usuaClave").val(),
-      usuaEmail: $("#usuaEmail").val(),
-      usuaTelefono: $("#usuaTelefono").val(),
-      usuaDni: $("#usuaDni").val()
-    };
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-    // Validar campos
-    if (!data.usuaUsername || !data.usuaNombrecompleto || !data.usuaClave ||
-        !data.usuaEmail || !data.usuaTelefono || !data.usuaDni) {
-      Swal.fire({
-        icon: "warning",
-        title: "Complete todos los campos antes de registrar.",
-        confirmButtonText: "Cerrar"
-      });
-      return;
-    }
+      // Capturar campos del formulario
+      const data = {
+        nombrecompleto: document.getElementById("nombrecompleto").value.trim(),
+        tipoDoc: document.getElementById("tipoDoc").value,
+        nroDoc: document.getElementById("nroDoc").value.trim(),
+        sexo: document.getElementById("sexo").value,
+        fecNacimiento: document.getElementById("fecNacimiento").value,
+        estadoCivil: document.getElementById("estadoCivil").value,
+        telefono: document.getElementById("telefono").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        direccion: document.getElementById("direccion").value.trim(),
+        username: document.getElementById("username").value.trim(),
+        password: document.getElementById("password").value
+      };
 
-    // Enviar al backend
-    $.ajax({
-      url: `${CONFIG.API_BASE_URL}auth/registro`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": CONFIG.API_AUTH_HEADER
-      },
-      data: JSON.stringify(data),
-      success: function (response) {
-        if (response.success) {
+      // Validar campos requeridos (todos)
+      const camposObligatorios = [
+        "nombrecompleto",
+        "tipoDoc",
+        "nroDoc",
+        "sexo",
+        "fecNacimiento",
+        "estadoCivil",
+        "telefono",
+        "email",
+        "direccion",
+        "username",
+        "password"
+      ];
+
+      const faltantes = camposObligatorios.filter(campo => !data[campo]);
+
+      if (faltantes.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "Complete todos los campos antes de registrar.",
+          confirmButtonText: "Cerrar"
+        });
+        return;
+      }
+
+      // Enviar al backend con fetch
+      fetch(`${CONFIG.API_BASE_URL}usuarios/registrar`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": CONFIG.API_AUTH_HEADER
+        },
+        body: JSON.stringify(data)
+      })
+      .then(async (response) => {
+        let responseBody = {};
+        try {
+          responseBody = await response.json();
+        } catch (e) {
+          // Si no hay JSON, dejamos responseBody vacío
+        }
+
+        if (response.ok && responseBody.success) {
           Swal.fire({
             icon: "success",
             title: "Usuario registrado correctamente",
             confirmButtonText: "Cerrar"
-          }).then(() => window.location = "usuarios");
+          }).then(() => {
+            window.location = "usuarios";
+          });
         } else {
           Swal.fire({
             icon: "warning",
-            title: response.message || "No se pudo registrar el usuario",
+            title: responseBody.message || "No se pudo registrar el usuario",
             confirmButtonText: "Cerrar"
           });
         }
-      },
-      error: function (xhr, status, error) {
+      })
+      .catch((error) => {
         console.error("Error al registrar usuario:", error);
         Swal.fire({
           icon: "error",
           title: "Error al registrar el usuario. Revisa los datos.",
           confirmButtonText: "Cerrar"
         });
-      }
+      });
+
     });
 
   });
 
-});
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -117,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
               }
 
               // Mostrar nombre del usuario
-              document.getElementById('infoNombreUsuario').textContent = result.usuaNombrecompleto || '';
+              document.getElementById('infoNombreUsuario').textContent = result.persona.persNombrecompleto || '';
 
               // Mostrar sección de información
               document.getElementById('infoUsuario').style.display = 'block';
@@ -169,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
               // Marcar roles actuales
               result.data.forEach(item => {
-                  const role = item.role; // ← ahora se llama 'role'
+                  const role = item.role;
                   const checkbox = document.getElementById(`rol${role.roleId}`);
                   if (checkbox) {
                       checkbox.checked = true;

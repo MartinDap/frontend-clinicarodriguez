@@ -28,66 +28,80 @@ document.addEventListener("DOMContentLoaded", async () => {
 
  */
 /*=============================================
-EDITAR PACIENTE
+EDITAR PACIENTE 
 =============================================*/
-$(document).on("click", ".btnEditarPaciente", function(){
-	var paciId = $(this).attr("paciId");
-	console.log("ID del paciente:", paciId);
-	
-	var settings = {
-		"url": `${CONFIG.API_BASE_URL}pacientes/${paciId}`,
-		"method": "GET",
-		"timeout": 0,
-		"headers": {
-			"Authorization": CONFIG.API_AUTH_HEADER
-		},
-	};
-	
-	$.ajax(settings).done(function (response) {
-		// Si la respuesta es una cadena de texto, conviértela a un objeto JSON
-		if (typeof response === 'string') {
-			response = JSON.parse(response);
-		}
-		
-		console.log("Respuesta del paciente:", response);
-		
-		// Ajusta según la estructura de tu API
-		if (response && response.data) {
-			var paciente = response.data;
-			
-			// Llenar el formulario con los datos del paciente
-			$("#editarPaciId").val(paciente.paciId);
-			$("#editarPaciNombrecompleto").val(paciente.paciNombrecompleto);
-			$("#editarPaciDni").val(paciente.paciDni);
-			$("#editarPaciSexo").val(paciente.paciSexo);
-			$("#editarPaciFecNacimiento").val(paciente.paciFecNacimiento);
-			$("#editarPaciEstadoCivil").val(paciente.paciEstadoCivil);
-			$("#editarPaciTelefono").val(paciente.paciTelefono);
-			$("#editarPaciEmail").val(paciente.paciEmail);
-			$("#editarPaciDireccion").val(paciente.paciDireccion);
-			$("#editarPaciApoderado").val(paciente.paciApoderado);
-			
-			// Abrir el modal con Bootstrap 5
-			const modalElement = document.getElementById('modalEditarPaciente');
-			const modal = new bootstrap.Modal(modalElement);
-			modal.show();
-		} else {
-			console.error("La estructura del JSON no es la esperada o los datos están vacíos.");
-			Swal.fire({
-				type: "error",
-				title: "No se pudo cargar la información del paciente",
-				showConfirmButton: true
-			});
-		}
-	}).fail(function(xhr, status, error) {
-		console.error("Error al obtener paciente:", error);
-		Swal.fire({
-			type: "error",
-			title: "Error al cargar los datos del paciente",
-			showConfirmButton: true
-		});
-	});
-})
+document.addEventListener("click", function (event) {
+
+  // Delegación de eventos para botones con clase .btnEditarPaciente
+  const btn = event.target.closest(".btnEditarPaciente");
+  if (!btn) return;
+
+  const paciId = btn.getAttribute("paciId");
+  console.log("ID del paciente:", paciId);
+
+  const url = `${CONFIG.API_BASE_URL}pacientes/${paciId}`;
+
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "Authorization": CONFIG.API_AUTH_HEADER
+    }
+  })
+  .then(async (res) => {
+    // Intentar leer la respuesta como texto primero
+    let response = await res.text();
+    
+    try {
+      // Si es un JSON válido, lo parseamos
+      response = JSON.parse(response);
+    } catch (e) {
+      // Si no es JSON parseable, dejamos el texto tal cual
+      console.warn("La respuesta no es un JSON válido, se deja como texto:", response);
+    }
+
+    console.log("Respuesta del paciente:", response);
+
+    // Misma lógica que tenías con jQuery:
+    if (response && response.data) {
+      const paciente = response.data;
+
+      // Llenar el formulario con los datos del paciente
+      document.getElementById("editarPaciId").value              = paciente.paciId;
+      document.getElementById("editarPaciNombrecompleto").value  = paciente.paciNombrecompleto;
+      document.getElementById("editarPaciDni").value             = paciente.paciDni;
+      document.getElementById("editarPaciSexo").value            = paciente.paciSexo;
+      document.getElementById("editarPaciFecNacimiento").value   = paciente.paciFecNacimiento;
+      document.getElementById("editarPaciEstadoCivil").value     = paciente.paciEstadoCivil;
+      document.getElementById("editarPaciTelefono").value        = paciente.paciTelefono;
+      document.getElementById("editarPaciEmail").value           = paciente.paciEmail;
+      document.getElementById("editarPaciDireccion").value       = paciente.paciDireccion;
+      document.getElementById("editarPaciApoderado").value       = paciente.paciApoderado;
+
+      // Abrir el modal con Bootstrap 5
+      const modalElement = document.getElementById("modalEditarPaciente");
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+
+    } else {
+      console.error("La estructura del JSON no es la esperada o los datos están vacíos.");
+      Swal.fire({
+        type: "error",
+        title: "No se pudo cargar la información del paciente",
+        showConfirmButton: true
+      });
+    }
+  })
+  .catch((error) => {
+    console.error("Error al obtener paciente:", error);
+    Swal.fire({
+      type: "error",
+      title: "Error al cargar los datos del paciente",
+      showConfirmButton: true
+    });
+  });
+
+});
+
 
 /*=============================================
 CONFIRMAR EDITAR PACIENTE
@@ -249,109 +263,97 @@ $(document).on("click", ".btnEliminarPaciente", function(){
     });
 });
 
+
 /*=============================================
-REGISTRAR PACIENTE
+REGISTRAR PACIENTE 
 =============================================*/
-$(document).ready(function() {
-    $("#formRegistrarPaciente").on("submit", function(event) {
+document.addEventListener('DOMContentLoaded', function() {
+    const formRegistrarPaciente = document.getElementById('formRegistrarPaciente');
+    
+    if (!formRegistrarPaciente) return;
+
+    formRegistrarPaciente.addEventListener('submit', async function(event) {
         event.preventDefault(); // Evita recarga
 
-        // 1. Capturar los valores del formulario
-        var paciNombrecompleto  = $("#paciNombrecompleto").val();
-        var paciSexo            = $("#paciSexo").val();
-        var paciFecNacimiento   = $("#paciFecNacimiento").val();
-        var paciDni             = $("#paciDni").val();
-        var paciEstadoCivil     = $("#paciEstadoCivil").val();
-        var paciDireccion       = $("#paciDireccion").val();
-        var paciTelefono        = $("#paciTelefono").val();
-        var paciEmail           = $("#paciEmail").val();
-        var paciApoderado       = $("#paciApoderado").val();
-        var paciNumhistoria     = $("#paciNumhistoria").val() || ""; // opcional
-        var paciEstado          = 1; // si quieres que siempre entre activo
+        try {
+            // 1. Capturar los valores del formulario con los nombres correctos
+            const nombrecompleto = document.getElementById('paciNombrecompleto').value.trim();
+            const tipoDoc = document.getElementById('paciTipoDoc').value.trim();
+            const nroDoc = document.getElementById('paciNroDoc').value.trim();
+            const sexo = document.getElementById('paciSexo').value.trim();
+            const fecNacimiento = document.getElementById('paciFecNacimiento').value;
+            const estadoCivil = document.getElementById('paciEstadoCivil').value.trim();
+            const direccion = document.getElementById('paciDireccion').value.trim();
+            const telefono = document.getElementById('paciTelefono').value.trim();
+            const email = document.getElementById('paciEmail').value.trim();
 
-        console.log("Paciente a registrar:");
-        console.log({
-            paciNombrecompleto,
-            paciSexo,
-            paciFecNacimiento,
-            paciDni,
-            paciEstadoCivil,
-            paciDireccion,
-            paciTelefono,
-            paciEmail,
-            paciApoderado,
-            paciNumhistoria,
-            paciEstado
-        });
+            console.log("Paciente a registrar:");
+            console.log({
+                nombrecompleto,
+                tipoDoc,
+                nroDoc,
+                sexo,
+                fecNacimiento,
+                estadoCivil,
+                direccion,
+                telefono,
+                email
+            });
 
-        // 2. Configurar la solicitud AJAX
-        var settings = {
-        url: `${CONFIG.API_BASE_URL}pacientes`,
-        method: "POST",
-        timeout: 0,
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": CONFIG.API_AUTH_HEADER // debe tener el 'Bearer ...'
-        },
-        data: JSON.stringify({
-            paciNombrecompleto: paciNombrecompleto,
-            paciSexo: paciSexo,
-            paciFecNacimiento: paciFecNacimiento,
-            paciDni: paciDni,
-            paciEstadoCivil: paciEstadoCivil,
-            paciDireccion: paciDireccion,
-            paciTelefono: paciTelefono,
-            paciEmail: paciEmail,
-            paciApoderado: paciApoderado,
-            paciNumhistoria: paciNumhistoria,
-            paciEstado: paciEstado
-        }),
-        success: function(response) {
-          console.log("Respuesta del servidor:", response);
+            // 2. Preparar el payload según la estructura del backend
+            const pacienteData = {
+                nombrecompleto: nombrecompleto,
+                tipoDoc: tipoDoc,
+                nroDoc: nroDoc,
+                sexo: sexo,
+                fecNacimiento: fecNacimiento,
+                estadoCivil: estadoCivil,
+                telefono: telefono,
+                email: email,
+                direccion: direccion,
+                fotoUrl: "default.png" // Valor por defecto o puedes manejarlo con la foto
+            };
 
-          if (response.success) {
-              Swal.fire({
-                  type: "success",
-                  title: response.message || "El paciente ha sido registrado correctamente",
-                  showConfirmButton: true,
-                  confirmButtonText: "Cerrar"
-              }).then(function(result) {
-                  if (result.value) {
-                      window.location = "pacientes";
-                  }
-              });
-          } else {
-              Swal.fire({
-                  type: "warning",
-                  title: response.message || "Hubo un problema al registrar el paciente",
-                  showConfirmButton: true,
-                  confirmButtonText: "Cerrar"
-              });
-          }
-      },
-      error: function(xhr, status, error) {
-          console.error("Error al registrar paciente:", error);
-          console.error("Detalle:", xhr.responseText);
+            // 3. Enviar la solicitud
+            const response = await fetch(`${CONFIG.API_BASE_URL}pacientes/registrar`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': CONFIG.API_AUTH_HEADER,
+                    'accept': '*/*'
+                },
+                body: JSON.stringify(pacienteData)
+            });
 
-          swal({
-              type: "error",
-              title: "No se pudo registrar el paciente. Revisa los datos.",
-              showConfirmButton: true,
-              confirmButtonText: "Cerrar"
-          }).then(function(result) {
-              if (result.value) {
-                  // puedes quedarte en la misma vista o recargar
-              }
-          });
-      }
+            const result = await response.json();
+            console.log("Respuesta del servidor:", result);
 
-    };
+            // 4. Manejar la respuesta
+            if (result.success) {
+                await Swal.fire({
+                    icon: 'success',
+                    title: result.message || 'El paciente ha sido registrado correctamente',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Cerrar'
+                });
+                
+                // Redirigir a la lista de pacientes
+                window.location.href = 'pacientes';
+                
+            } else {
+                throw new Error(result.message || 'Hubo un problema al registrar el paciente');
+            }
 
-
-        // 3. Ejecutar AJAX
-        $.ajax(settings).done(function (response) {
-            console.log("Respuesta final backend:", response);
-        });
+        } catch (error) {
+            console.error('Error al registrar paciente:', error);
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'No se pudo registrar el paciente. Revisa los datos.',
+                confirmButtonText: 'Cerrar'
+            });
+        }
     });
 });
 

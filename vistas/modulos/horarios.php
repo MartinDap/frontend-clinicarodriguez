@@ -59,12 +59,11 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Nombre Completo</th>
+          <th>Doctor</th>
           <th>Día</th>
           <th>Hora Inicio</th>
           <th>Hora Fin</th>
-          <th>Duración (hrs)</th>
-          <th>Estado</th>
+          <th>Duración (min)</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -73,18 +72,11 @@
           <?php foreach($data["data"] as $key => $item): ?>
             <tr>
               <td><?= ($key + 1) ?></td>
-              <td><?= htmlspecialchars($item["medico"]["mediNombre"]) ?></td>
+              <td><?= htmlspecialchars($item["medico"]["persona"]["persNombrecompleto"]) ?></td>
               <td><?= htmlspecialchars($item["dia"]["dia"]) ?></td>
               <td><?= htmlspecialchars($item["dimeHoraInicio"]) ?></td>
               <td><?= htmlspecialchars($item["dimeHoraFin"]) ?></td>
               <td><?= htmlspecialchars($item["dimeDuracion"]) ?></td>
-              <td>
-                <?php if ($item["dimeEstado"] == 1): ?>
-                  <span class="label label-success">Activo</span>
-                <?php else: ?>
-                  <span class="label label-danger">Inactivo</span>
-                <?php endif; ?>
-              </td>
               <td>
                 <button class="btn btn-sm btn-warning btnEditarDisponibilidad" dimeId="<?= $item["dimeId"] ?>">
                   <i class="bi bi-pencil"></i>
@@ -184,22 +176,10 @@ MODAL REGISTRAR HORARIO
 
             <!-- Duración -->
             <div class="form-group mb-3">
-              <label for="regDuracion">Duración (en horas)</label>
+              <label for="regDuracion">Duracion de la cita en minutos (aproximado)</label>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
                 <input type="number" class="form-control input-lg" name="regDuracion" id="regDuracion" min="1" step="0.5" placeholder="Ej: 2" required>
-              </div>
-            </div>
-
-            <!-- Estado -->
-            <div class="form-group mb-3">
-              <label for="regEstado">Estado</label>
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
-                <select class="form-control input-lg" name="regEstado" id="regEstado" required>
-                  <option value="1">Activo</option>
-                  <option value="0">Inactivo</option>
-                </select>
               </div>
             </div>
 

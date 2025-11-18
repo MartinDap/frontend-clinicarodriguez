@@ -101,7 +101,7 @@ if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
     $rutas_permitidas = [
       "dashboard", "pacientes", "medicos", "citas", 
       "historias-clinicas", "ver-historia", "usuarios",
-      "activos", "configuracion", "salir", "horarios"
+      "activos", "configuracion", "salir", "horarios", "organigrama"
     ];
     
     if(in_array($_GET["ruta"], $rutas_permitidas)){
@@ -136,6 +136,7 @@ if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
 <script src="vistas/js/medicos.js"></script>
 <script src="vistas/js/horarios.js"></script>
 <script src="vistas/js/citas.js"></script>
+<script src="vistas/js/organigrama.js"></script>
 <script src="vistas/js/activos.js"></script>
 <script src="vistas/js/historias-clinicas.js"></script>
 <script src="vistas/js/ver-historia.js"></script>

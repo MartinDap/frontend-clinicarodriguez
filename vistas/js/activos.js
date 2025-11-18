@@ -1,61 +1,64 @@
 
 
-const btnGuardar = document.getElementById('btnGuardar');
-if (btnGuardar) {
-  // Función para generar código automático basado en fecha y hora
-  document.getElementById('btnGenerarCodigo').addEventListener('click', function() {
-    const ahora = new Date();
-    
-    // Obtener componentes de fecha y hora
-    const anio = ahora.getFullYear();
-    const mes = String(ahora.getMonth() + 1).padStart(2, '0');
-    const dia = String(ahora.getDate()).padStart(2, '0');
-    const hora = String(ahora.getHours()).padStart(2, '0');
-    const minuto = String(ahora.getMinutes()).padStart(2, '0');
-    const segundo = String(ahora.getSeconds()).padStart(2, '0');
-    
-    // Crear código concatenado: AAAAMMDDHHMMSS
-    const codigoGenerado = `${anio}${mes}${dia}${hora}${minuto}${segundo}`;
-    
-    // Asignar al campo
-    document.getElementById('acteCodigoActivo').value = codigoGenerado;
-    
-    // Opcional: Efecto visual de confirmación
-    const input = document.getElementById('acteCodigoActivo');
-    input.style.backgroundColor = '#d4edda';
-    setTimeout(() => {
-      input.style.backgroundColor = '';
-    }, 500);
-  });
-}
-
-
-
 /*=============================================
 REGISTRAR NUEVO ACTIVO TECNOLÓGICO
 =============================================*/
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-  $("#formRegistrarActivo").submit(function (event) {
+  const form = document.getElementById("formRegistrarActivo");
+
+  // ================================
+  // GENERAR CÓDIGO AUTOMÁTICO
+  // ================================
+  const btnCodigo = document.getElementById('btnGenerarCodigo');
+
+  if (btnCodigo) {
+    btnCodigo.addEventListener('click', function () {
+
+      const ahora = new Date();
+
+      const anio = ahora.getFullYear();
+      const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+      const dia = String(ahora.getDate()).padStart(2, '0');
+      const hora = String(ahora.getHours()).padStart(2, '0');
+      const minuto = String(ahora.getMinutes()).padStart(2, '0');
+      const segundo = String(ahora.getSeconds()).padStart(2, '0');
+
+      const codigoGenerado = `${anio}${mes}${dia}${hora}${minuto}${segundo}`;
+
+      const input = document.getElementById('acteCodigoActivo');
+      input.value = codigoGenerado;
+
+      input.style.backgroundColor = '#d4edda';
+      setTimeout(() => {
+        input.style.backgroundColor = '';
+      }, 500);
+    });
+  }
+
+  if (!form) return;
+
+  form.addEventListener("submit", function (event) {
     event.preventDefault(); // evita recargar la página
 
     // Capturar campos del formulario
-    var codigoActivo    = $("#acteCodigoActivo").val().trim();
-    var nombreEquipo    = $("#acteNombreEquipo").val().trim();
-    var categoriaId     = $("#caacId").val();
-    var marca           = $("#acteMarca").val().trim();
-    var modelo          = $("#acteModelo").val().trim();
-    var numeroSerie     = $("#acteNumeroSerie").val().trim();
-    var fechaCompra     = $("#acteFechaCompra").val();
-    var estado          = $("#acteEstado").val();
-    var ubicacion       = $("#acteUbicacion").val().trim();
-    var usuarioId       = $("#usuaId").val();
-    var vidaUtilAnios   = $("#acteVidaUtilAnios").val();
-    var fechaBaja       = $("#acteFechaBaja").val();
-    var observaciones   = $("#acteObservaciones").val().trim();
+    const codigoActivo    = document.getElementById("acteCodigoActivo").value.trim();
+    const nombreEquipo    = document.getElementById("acteNombreEquipo").value.trim();
+    const categoriaId     = document.getElementById("caacId").value;
+    const marca           = document.getElementById("acteMarca").value.trim();
+    const modelo          = document.getElementById("acteModelo").value.trim();
+    const numeroSerie     = document.getElementById("acteNumeroSerie").value.trim();
+    const fechaCompra     = document.getElementById("acteFechaCompra").value;
+    const estado          = document.getElementById("acteEstado").value;
+    const ubicacion       = document.getElementById("acteUbicacion").value.trim();
+    const usuarioId       = document.getElementById("usuaId").value;
+    const vidaUtilAnios   = document.getElementById("acteVidaUtilAnios").value;
+    const fechaBaja       = document.getElementById("acteFechaBaja").value;
+    const observaciones   = document.getElementById("acteObservaciones").value.trim();
+    const areaId          = document.getElementById("areaId") ? document.getElementById("areaId").value : null;
 
     // Validar campos obligatorios
-    if (!codigoActivo || !nombreEquipo || !categoriaId || !usuarioId || !estado || !ubicacion || !fechaCompra) {
+    if (!codigoActivo || !nombreEquipo || !categoriaId || !usuarioId || !estado || !ubicacion || !fechaCompra || !areaId) {
       Swal.fire({
         icon: "warning",
         title: "Complete todos los campos obligatorios antes de registrar.",
@@ -65,7 +68,7 @@ $(document).ready(function () {
     }
 
     // Construir el JSON con la estructura que espera el backend
-    var data = {
+    const data = {
       acteCodigoActivo: codigoActivo,
       acteNombreEquipo: nombreEquipo,
       categoria: {
@@ -77,6 +80,9 @@ $(document).ready(function () {
       acteFechaCompra: fechaCompra,
       acteEstado: estado,
       acteUbicacion: ubicacion,
+      area: {
+        areaId: parseInt(areaId)
+      },
       usuario: {
         usuaId: parseInt(usuarioId)
       },
@@ -85,46 +91,47 @@ $(document).ready(function () {
       acteObservaciones: observaciones
     };
 
-    // Configuración del AJAX
-    $.ajax({
-      url: `${CONFIG.API_BASE_URL}activos-tecnologicos`, // cambia si tu endpoint tiene otro nombre
+    // Llamada al backend con fetch (sin jQuery)
+    fetch(`${CONFIG.API_BASE_URL}activos-tecnologicos`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": CONFIG.API_AUTH_HEADER
       },
-      data: JSON.stringify(data),
-      success: function (response) {
-        console.log("Respuesta del servidor (registrar activo):", response);
+      body: JSON.stringify(data)
+    })
+    .then(async (response) => {
+      const responseData = await response.json().catch(() => ({}));
+      console.log("Respuesta del servidor (registrar activo):", responseData);
 
-        if (response.success) {
-          Swal.fire({
-            icon: "success",
-            title: response.message || "Activo registrado correctamente",
-            confirmButtonText: "Cerrar"
-          }).then(() => window.location = "activos"); // redirige o recarga la lista
-        } else {
-          Swal.fire({
-            icon: "warning",
-            title: response.message || "Hubo un problema al registrar el activo",
-            confirmButtonText: "Cerrar"
-          });
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error("Error al registrar activo:", error);
-        console.error("Detalle:", xhr.responseText);
-
+      if (response.ok && responseData.success) {
         Swal.fire({
-          icon: "error",
-          title: "No se pudo registrar el activo. Revisa los datos.",
+          icon: "success",
+          title: responseData.message || "Activo registrado correctamente",
+          confirmButtonText: "Cerrar"
+        }).then(() => {
+          window.location.href = "activos"; // redirige o recarga la lista
+        });
+      } else {
+        Swal.fire({
+          icon: "warning",
+          title: responseData.message || "Hubo un problema al registrar el activo",
           confirmButtonText: "Cerrar"
         });
       }
+    })
+    .catch((error) => {
+      console.error("Error al registrar activo:", error);
+      Swal.fire({
+        icon: "error",
+        title: "No se pudo registrar el activo. Revisa los datos.",
+        confirmButtonText: "Cerrar"
+      });
     });
   });
 
 });
+
 
 
 

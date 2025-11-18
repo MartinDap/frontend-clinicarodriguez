@@ -59,8 +59,7 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Nombre</th>
-          <th>Apellido</th>
+          <th>Nombres y Apellidos</th>
           <th>Foto</th>
           <th>Estado</th>
           <th>Acciones</th>
@@ -72,7 +71,6 @@
           <tr>
             <td><?= ($key + 1) ?></td>
             <td><?= htmlspecialchars($medico["mediNombre"]) ?></td>
-            <td><?= htmlspecialchars($medico["mediApellido"]) ?></td>
             <td>
               <?php if (!empty($medico["mediFotoUrl"])): ?>
                 <img src="<?= htmlspecialchars($medico["mediFotoUrl"]) ?>" alt="Foto" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
@@ -132,6 +130,7 @@ MODAL AGREGAR MÉDICO
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
+        
         <!--=====================================
         CUERPO DEL MODAL
         ======================================-->
@@ -144,13 +143,7 @@ MODAL AGREGAR MÉDICO
                 <label for="mediNombre">Nombre</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                  <input
-                    type="text"
-                    class="form-control input-lg"
-                    name="mediNombre"
-                    id="mediNombre"
-                    placeholder="Ej: Carlos"
-                    required>
+                  <input type="text" class="form-control input-lg" id="mediNombre" placeholder="Ej: Carlos" required>
                 </div>
               </div>
 
@@ -159,130 +152,149 @@ MODAL AGREGAR MÉDICO
                 <label for="mediApellido">Apellido</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                  <input
-                    type="text"
-                    class="form-control input-lg"
-                    name="mediApellido"
-                    id="mediApellido"
-                    placeholder="Ej: Gómez"
-                    required>
-                </div>
-              </div>
-
-              <!-- Usuario -->
-              <div class="form-group col-md-6">
-                <label for="mediUsuario">Usuario</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
-                  <input
-                    type="text"
-                    class="form-control input-lg"
-                    name="mediUsuario"
-                    id="mediUsuario"
-                    placeholder="Ej: cgomez"
-                    required>
-                </div>
-              </div>
-
-              <!-- Contraseña -->
-              <div class="form-group col-md-6">
-                <label for="mediPassword">Contraseña</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                  <input
-                    type="password"
-                    class="form-control input-lg"
-                    name="mediPassword"
-                    id="mediPassword"
-                    placeholder="Contraseña"
-                    required>
+                  <input type="text" class="form-control input-lg" id="mediApellido" placeholder="Ej: Gómez" required>
                 </div>
               </div>
             </div>
 
             <div class="row">
-              <!-- DNI -->
+              <!-- Tipo Doc -->
               <div class="form-group col-md-4">
-                <label for="mediDni">DNI</label>
+                <label for="mediTipoDoc">Tipo Doc</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
+                  <select class="form-control input-lg" id="mediTipoDoc" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="DNI">DNI</option>
+                    <option value="CE">CE</option>
+                    <option value="PAS">PAS</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Nro Doc -->
+              <div class="form-group col-md-4">
+                <label for="mediDni">Nro Doc</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
-                  <input
-                    type="text"
-                    class="form-control input-lg"
-                    name="mediDni"
-                    id="mediDni"
-                    placeholder="74500985"
-                    required>
+                  <input type="text" class="form-control input-lg" id="mediDni" placeholder="74500985" required>
                 </div>
               </div>
 
-              <!-- Teléfono -->
+              <!-- Sexo -->
               <div class="form-group col-md-4">
-                <label for="mediTelefono">Teléfono / Celular</label>
+                <label for="mediSexo">Sexo</label>
                 <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                  <input
-                    type="text"
-                    class="form-control input-lg"
-                    name="mediTelefono"
-                    id="mediTelefono"
-                    placeholder="987654321"
-                    required>
-                </div>
-              </div>
-
-              <!-- Estado -->
-              <div class="form-group col-md-4">
-                <label for="mediEstado">Estado</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-toggle-on"></i></span>
-                  <select
-                    class="form-control input-lg"
-                    name="mediEstado"
-                    id="mediEstado"
-                    required>
+                  <span class="input-group-addon"><i class="fa fa-venus-mars"></i></span>
+                  <select class="form-control input-lg" id="mediSexo" required>
                     <option value="">Seleccionar...</option>
-                    <option value="ACTIVO">Activo</option>
-                    <option value="INACTIVO">Inactivo</option>
+                    <option value="MASCULINO">Masculino</option>
+                    <option value="FEMENINO">Femenino</option>
                   </select>
                 </div>
               </div>
             </div>
 
             <div class="row">
-              <!-- Email -->
-              <div class="form-group col-md-8">
-                <label for="mediEmail">Correo electrónico</label>
+              <!-- Fec Nacimiento -->
+              <div class="form-group col-md-4">
+                <label for="mediFecNac">Fecha de Nacimiento</label>
                 <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                  <input
-                    type="email"
-                    class="form-control input-lg"
-                    name="mediEmail"
-                    id="mediEmail"
-                    placeholder="ejemplo@correo.com"
-                    required>
+                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                  <input type="date" class="form-control input-lg" id="mediFecNac" required>
                 </div>
               </div>
 
-              <!-- Foto URL -->
+              <!-- Estado Civil -->
               <div class="form-group col-md-4">
-                <label for="mediFoto">Subir Foto</label>
+                <label for="mediEstadoCivil">Estado civil</label>
                 <div class="input-group">
-                  <span class="input-group-text"><i class="fa fa-image"></i></span>
-                  <input
-                    type="file"
-                    class="form-control input-lg"
-                    name="mediFoto"
-                    id="mediFoto"
-                    accept="image/*">
+                  <span class="input-group-addon"><i class="fa fa-heart"></i></span>
+                  <select class="form-control input-lg" id="mediEstadoCivil" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="SOLTERO">Soltero</option>
+                    <option value="CASADO">Casado</option>
+                    <option value="DIVORCIADO">Divorciado</option>
+                    <option value="VIUDO">Viudo</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Dirección -->
+              <div class="form-group col-md-4">
+                <label for="mediDireccion">Dirección</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                  <input type="text" class="form-control input-lg" id="mediDireccion" placeholder="Av. Médicos 789, Lima" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Teléfono -->
+              <div class="form-group col-md-4">
+                <label for="mediTelefono">Teléfono / Celular</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                  <input type="text" class="form-control input-lg" id="mediTelefono" placeholder="987654321" required>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="form-group col-md-4">
+                <label for="mediEmail">Correo electrónico</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                  <input type="email" class="form-control input-lg" id="mediEmail" placeholder="ejemplo@correo.com" required>
                 </div>
               </div>
 
             </div>
 
+            <div class="row">
+              <!-- Usuario -->
+              <div class="form-group col-md-4">
+                <label for="mediUsuario">Usuario</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
+                  <input type="text" class="form-control input-lg" id="mediUsuario" placeholder="Ej: cgomez" required>
+                </div>
+              </div>
+
+              <!-- Contraseña -->
+              <div class="form-group col-md-4">
+                <label for="mediPassword">Contraseña</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                  <input type="password" class="form-control input-lg" id="mediPassword" placeholder="Contraseña" required>
+                </div>
+              </div>
+
+              <!-- N° Colegiatura -->
+              <div class="form-group col-md-4">
+                <label for="mediNroColegiatura">N° Colegiatura</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
+                  <input type="text" class="form-control input-lg" id="mediNroColegiatura" placeholder="CMP-1234" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <!-- Foto -->
+              <div class="form-group col-md-4">
+                <label for="mediFoto">Subir Foto</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-image"></i></span>
+                  <input type="file" class="form-control input-lg" id="mediFoto" accept="image/*">
+                </div>
+              </div>
+            </div>
+
           </div><!-- /.box-body -->
         </div><!-- /.modal-body -->
+
 
         <!--=====================================
         PIE DEL MODAL

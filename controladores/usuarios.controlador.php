@@ -59,36 +59,72 @@ class ControladorUsuarios {
             // Verificar si la API indica éxito
             if (isset($responseArray["success"]) && $responseArray["success"] === true) {
 
-                $usuarioData = $responseArray["data"]["usuario"];
-                $token = $responseArray["data"]["token"];
-                $nombreCompleto = $usuarioData["usuaNombrecompleto"];
-                $username = $usuarioData["usuaUsername"];
-                $userId = $usuarioData["usuaId"];
-                $email = $usuarioData["usuaEmail"];
-                $telefono = $usuarioData["usuaTelefono"];
+                // --- Extrae bloque data ---
+                $data        = $responseArray["data"] ?? [];
+                $token       = $data["token"] ?? null;
+                $type        = $data["type"]  ?? 'Bearer'; // viene "Bearer"
+                $usuario     = $data["usuario"] ?? [];
 
-				// --- Roles ---
-    			$roles = isset($responseArray["roles"]) ? $responseArray["roles"] : [];
-    			$rolesTexto = implode(", ", $roles); // Convierte ["ADMIN","USUARIO"] → "ADMIN, USUARIO"
+                // --- Usuario & Persona ---
+                $userId      = $usuario["usuaId"]        ?? null;
+                $username    = $usuario["usuaUsername"]  ?? '';
+                $ultimaSesion= $usuario["usuaUltimaSesion"] ?? null;
+                $usuaEstado  = $usuario["usuaEstado"]    ?? null;
 
+                $persona                 = $usuario["persona"] ?? [];
+                $persId                  = $persona["persId"] ?? null;
+                $nombreCompleto          = $persona["persNombrecompleto"] ?? '';
+                $tipoDoc                 = $persona["persTipoDoc"] ?? '';
+                $nroDoc                  = $persona["persNroDoc"] ?? '';
+                $email                   = $persona["persEmail"] ?? '';
+                $telefono                = $persona["persTelefono"] ?? '';
+                $direccion               = $persona["persDireccion"] ?? '';
+                $fotoUrl                 = $persona["persFotoUrl"] ?? '';
+                $persEsActivo            = $persona["persEsActivo"] ?? false;
 
+				 // --- Roles ---
+                $roles        = $responseArray["roles"] ?? [];            // p.ej. ["MEDICO"]
+                $usuariosRoles= $responseArray["usuariosRoles"] ?? [];    // con roleId, roleName, etc.
                 // Iniciar sesión
+                if (session_status() === PHP_SESSION_NONE) session_start();
                 $_SESSION["iniciarSesion"] = "ok";
-                $_SESSION["id"] = $userId;
-                $_SESSION["nombre"] = $nombreCompleto;
-                $_SESSION["usuario"] = $username;
-                $_SESSION["perfil"] = "1"; // No hay rol explícito, puedes cambiarlo
-                $_SESSION["email"] = $email;
-                $_SESSION["telefono"] = $telefono;
-                $_SESSION["token"] = $token;
-				$_SESSION["rolesArray"] = $roles;
+                $_SESSION["id"]            = $userId;
+                $_SESSION["usuario"]       = $username;
+                $_SESSION["nombre"]        = $nombreCompleto;
 
-                // Registrar fecha y hora de login
+                // Guarda datos de contacto desde PERSONA
+                //$_SESSION["email"]         = $email;
+                //$_SESSION["telefono"]      = $telefono;
+                //$_SESSION["direccion"]     = $direccion;
+                $_SESSION["foto"]          = $fotoUrl;
+
+                // Documento y persona
+                //$_SESSION["persId"]        = $persId;
+                //$_SESSION["tipoDoc"]       = $tipoDoc;
+                //$_SESSION["nroDoc"]        = $nroDoc;
+
+                // Estado/fechas
+                //$_SESSION["usuaEstado"]    = $usuaEstado;
+                //$_SESSION["persEsActivo"]  = $persEsActivo;
+                //$_SESSION["usuaUltimaSesionApi"] = $ultimaSesion; // la que vino de la API
+
+                // Token para Authorization
+                $_SESSION["token"]         = $token;
+                $_SESSION["tokenType"]     = $type; // "Bearer"
+                $_SESSION["authHeader"]    = $token ? ($type . ' ' . $token) : null;
+
+                // Roles
+                $_SESSION["rolesArray"]    = $roles;         // ["MEDICO", ...]
+                $_SESSION["usuariosRoles"] = $usuariosRoles; // objetos con roleId/name
+                $_SESSION["perfil"]        = "1"; // primer rol como "perfil" visible
+
+                // Registrar fecha/hora local de este login (cliente)
                 date_default_timezone_set('America/Lima');
-                $fechaActual = date('Y-m-d H:i:s');
-                $_SESSION["ultima_sesion"] = $fechaActual;
+                $_SESSION["ultima_sesion"] = date('Y-m-d H:i:s');
 
+                // Redirige
                 echo '<script>window.location = "dashboard";</script>';
+                exit;
 
             } else {
                 // Manejo de error de login

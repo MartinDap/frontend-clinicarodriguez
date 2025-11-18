@@ -65,6 +65,28 @@
   curl_close($curl);
   $dataUsuarios = json_decode($responseusuarios, true);
 
+  /* AREAS */
+  $curl = curl_init();
+
+  curl_setopt_array($curl, array(
+    CURLOPT_URL => API_BASE_URL . 'areas',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'GET',
+    CURLOPT_HTTPHEADER => array(
+      API_AUTH_HEADER
+    ),
+  ));
+
+  $responseareas = curl_exec($curl);
+
+  curl_close($curl);
+  $dataAreas = json_decode($responseareas, true);
+
 ?>
 <link rel="stylesheet" href="vistas/css/activos.css">
 <div class="container-fluid">
@@ -112,7 +134,7 @@
                   <span class="badge bg-danger"><?= htmlspecialchars($item["acteEstado"]) ?></span>
                 <?php endif; ?>
               </td>
-              <td><?= htmlspecialchars($item["usuario"]["usuaNombrecompleto"]) ?></td>
+              <td><?= htmlspecialchars($item["usuario"]["persona"]["persNombrecompleto"]) ?></td>
               <td>
                 <button type="button" class="btn btn-info btn-sm btnVerActivo" acteId="<?= $item['acteId'] ?>" tittle="Ver activo">
                 <i class="bi bi-eye"></i>
@@ -219,6 +241,30 @@ MODAL AGREGAR ACTIVO
                   </select>
                 </div>
               </div>
+
+              <!-- NUEVA FILA: ÁREA DEL ORGANIGRAMA -->
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="areaId">Área (Organigrama)</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-sitemap"></i></span>
+                  <select class="form-control input-lg" name="areaId" id="areaId" required>
+                    <option value="">Seleccionar área...</option>
+                    <?php if (isset($dataAreas["data"]) && is_array($dataAreas["data"])): ?>
+                      <?php foreach ($dataAreas["data"] as $area): ?>
+                        <option value="<?= htmlspecialchars($area["areaId"]) ?>">
+                          <?= htmlspecialchars($area["areaNombre"]) ?>
+                        </option>
+                      <?php endforeach; ?>
+                    <?php else: ?>
+                      <option value="">No hay áreas disponibles</option>
+                    <?php endif; ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+
             </div>
 
             <div class="row">
@@ -299,7 +345,7 @@ MODAL AGREGAR ACTIVO
                     <?php if (isset($dataUsuarios["data"]) && is_array($dataUsuarios["data"])): ?>
                         <?php foreach ($dataUsuarios["data"] as $usuario): ?>
                         <option value="<?= htmlspecialchars($usuario["usuaId"]) ?>">
-                            <?= htmlspecialchars($usuario["usuaNombrecompleto"]) ?> (<?= htmlspecialchars($usuario["usuaUsername"]) ?>)
+                            <?= htmlspecialchars($usuario["persona"]["persNombrecompleto"]) ?>
                         </option>
                         <?php endforeach; ?>
                     <?php else: ?>

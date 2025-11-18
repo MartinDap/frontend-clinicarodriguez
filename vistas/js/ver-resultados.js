@@ -35,17 +35,17 @@ async function cargarInfoPaciente(dni) {
     const respuesta = await response.json();
     if (respuesta && respuesta.data) {
       const paciente = respuesta.data;
-
-      document.getElementById('nombrePacienteNav').textContent = paciente.paciNombrecompleto;
+      console.log('Paciente recibido:', paciente);
+      document.getElementById('nombrePacienteNav').textContent = paciente.persona.persNombrecompleto || 'Paciente';
 
       const html = `
         <div class="col-md-6">
-          <p><strong>Nombre:</strong> ${paciente.paciNombrecompleto}</p>
-          <p><strong>DNI:</strong> ${paciente.paciDni}</p>
+          <p><strong>Nombre:</strong> ${paciente.persona.persNombrecompleto}</p>
+          <p><strong>DNI:</strong> ${paciente.persona.persNroDoc}</p>
         </div>
         <div class="col-md-6">
-          <p><strong>Teléfono:</strong> ${paciente.paciTelefono || 'N/A'}</p>
-          <p><strong>Email:</strong> ${paciente.paciEmail || 'N/A'}</p>
+          <p><strong>Teléfono:</strong> ${paciente.persona.persTelefono || 'N/A'}</p>
+          <p><strong>Email:</strong> ${paciente.persona.persEmail || 'N/A'}</p>
         </div>`;
       document.getElementById('infoPaciente').innerHTML = html;
 

@@ -95,13 +95,29 @@
           <?php foreach($data["data"] as $key => $item): ?>
             <tr>
               <td><?= ($key + 1) ?></td>
-              <td><?= htmlspecialchars($item["paciente"]["paciNombrecompleto"]) ?></td>
-              <td><?= htmlspecialchars($item["medico"]["mediNombre"]) ?></td>
+              <td>
+                <?= htmlspecialchars($item["paciente"]["persona"]["persNombrecompleto"]) ?><br>
+                <small class="text-muted">DNI: <?= htmlspecialchars($item["paciente"]["persona"]["persNroDoc"]) ?></small>
+              </td>
+              <td>
+                <?= htmlspecialchars($item["medico"]["persona"]["persNombrecompleto"]) ?><br>
+              </td>
               <td><?= htmlspecialchars($item["citaTipo"]) ?></td>
               <td><?= htmlspecialchars($item["citaFecha"]) ?></td>
-              <td><?= htmlspecialchars($item["citaHora"]) ?></td>
-              <td><?= htmlspecialchars($item["citaEstado"]) ?></td>
-              
+              <td><?= htmlspecialchars(substr($item["citaHora"], 0, 5)) ?></td> <!-- Muestra solo HH:MM -->
+              <td>
+                <span class="badge 
+                  <?= $item["citaEstado"] == 'RESERVADO POR PACIENTE' ? 'bg-primary' : '' ?>
+                  <?= $item["citaEstado"] == 'CONFIRMADO' ? 'bg-success' : '' ?>
+                  <?= $item["citaEstado"] == 'ATENDIDO' ? 'bg-success' : '' ?>
+                  <?= $item["citaEstado"] == 'CANCELADO' ? 'bg-danger' : '' ?>
+                  <?= $item["citaEstado"] == 'COMPLETADA' ? 'bg-secondary' : '' ?>
+                  <?= $item["citaEstado"] == 'PENDIENTE' ? 'bg-warning' : '' ?>
+                  <?= $item["citaEstado"] == 'NO ASISTIÓ' ? 'bg-danger' : '' ?>">
+                 
+                  <?= htmlspecialchars($item["citaEstado"]) ?>
+                </span>
+              </td>
               <td>
                 <button class="btn btn-sm btn-warning btnEditarCita" citaId="<?= $item["citaId"] ?>">
                   <i class="bi bi-pencil"></i>
@@ -114,7 +130,7 @@
           <?php endforeach; ?>
         <?php else: ?>
           <tr>
-            <td colspan="9" class="text-center">No hay citas registradas</td>
+            <td colspan="8" class="text-center">No hay citas registradas</td>
           </tr>
         <?php endif; ?>
       </tbody>
@@ -192,24 +208,21 @@ MODAL REGISTRAR CITA
   </div>
 </div>
 
-
-
-
 <!--=====================================
-MODAL EDITAR HORARIO
+MODAL EDITAR CITA
 ======================================-->
-<div id="modalEditarHorario" class="modal fade" role="dialog">
+<div id="modalEditarCita" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
 
     <div class="modal-content">
 
-      <form role="form" id="formEditarHorario" method="post">
+      <form role="form" id="formEditarCita" method="post">
 
         <!--=====================================
         CABECERA DEL MODAL
         ======================================-->
         <div class="modal-header" style="background:#003264; color:white">
-          <h4 class="modal-title">Editar Horario</h4>
+          <h4 class="modal-title">Detalle y Estado de Cita</h4>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
@@ -219,146 +232,174 @@ MODAL EDITAR HORARIO
         <div class="modal-body">
           <div class="box-body">
 
-            <input type="hidden" name="paciId" id="editarPaciId">
+            <!-- IDs ocultos -->
+            <input type="hidden" name="citaId" id="editarCitaId">
+            <input type="hidden" name="paciId" id="editarCitaPaciId">
+            <input type="hidden" name="mediId" id="editarCitaMediId">
 
+            <!-- Información del paciente -->
             <div class="row">
-              <!-- Nombre completo -->
               <div class="form-group col-md-8">
-                <label for="editarPaciNombrecompleto">Nombre completo</label>
+                <label for="editarCitaPacienteNombre">Paciente</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-user"></i></span>
                   <input
                     type="text"
                     class="form-control input-lg"
-                    name="editarPaciNombrecompleto"
-                    id="editarPaciNombrecompleto"
-                    required>
+                    id="editarCitaPacienteNombre"
+                    name="editarCitaPacienteNombre"
+                    readonly>
                 </div>
               </div>
 
-              <!-- DNI -->
               <div class="form-group col-md-4">
-                <label for="editarPaciDni">DNI</label>
+                <label for="editarCitaPacienteDoc">Documento</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
                   <input
-                    type="number"
+                    type="text"
                     class="form-control input-lg"
-                    name="editarPaciDni"
-                    id="editarPaciDni"
-                    required>
+                    id="editarCitaPacienteDoc"
+                    name="editarCitaPacienteDoc"
+                    readonly>
                 </div>
               </div>
             </div>
 
+            <!-- Información del médico -->
             <div class="row">
-              <!-- Sexo -->
-              <div class="form-group col-md-4">
-                <label for="editarPaciSexo">Sexo</label>
+              <div class="form-group col-md-8">
+                <label for="editarCitaMedicoNombre">Médico</label>
                 <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-venus-mars"></i></span>
-                  <select
+                  <span class="input-group-addon"><i class="fa fa-user-md"></i></span>
+                  <input
+                    type="text"
                     class="form-control input-lg"
-                    name="editarPaciSexo"
-                    id="editarPaciSexo"
-                    required>
-                    <option value="">Seleccionar...</option>
-                    <option value="MASCULINO">Masculino</option>
-                    <option value="FEMENINO">Femenino</option>
-                  </select>
+                    id="editarCitaMedicoNombre"
+                    name="editarCitaMedicoNombre"
+                    readonly>
                 </div>
               </div>
 
-              <!-- Fecha de nacimiento -->
               <div class="form-group col-md-4">
-                <label for="editarPaciFecNacimiento">Fecha de nacimiento</label>
+                <label for="editarCitaMedicoColegiatura">N° Colegiatura</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-certificate"></i></span>
+                  <input
+                    type="text"
+                    class="form-control input-lg"
+                    id="editarCitaMedicoColegiatura"
+                    name="editarCitaMedicoColegiatura"
+                    readonly>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fecha y hora -->
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label for="editarCitaFecha">Fecha de la cita</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                   <input
                     type="date"
                     class="form-control input-lg"
-                    name="editarPaciFecNacimiento"
-                    id="editarPaciFecNacimiento"
-                    required>
+                    id="editarCitaFecha"
+                    name="editarCitaFecha"
+                    readonly>
                 </div>
               </div>
 
-              <!-- Estado civil -->
               <div class="form-group col-md-4">
-                <label for="editarPaciEstadoCivil">Estado civil</label>
+                <label for="editarCitaHoraInicio">Hora inicio</label>
                 <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-heart"></i></span>
+                  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                  <input
+                    type="time"
+                    class="form-control input-lg"
+                    id="editarCitaHoraInicio"
+                    name="editarCitaHoraInicio"
+                    readonly>
+                </div>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="editarCitaHoraFin">Hora fin</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                  <input
+                    type="time"
+                    class="form-control input-lg"
+                    id="editarCitaHoraFin"
+                    name="editarCitaHoraFin"
+                    readonly>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tipo de cita y motivo -->
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="editarCitaTipo">Tipo de cita</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-stethoscope"></i></span>
+                  <input
+                    type="text"
+                    class="form-control input-lg"
+                    id="editarCitaTipo"
+                    name="editarCitaTipo"
+                    readonly>
+                </div>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="editarCitaFechaRegistro">Fecha de registro</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-calendar-plus-o"></i></span>
+                  <input
+                    type="date"
+                    class="form-control input-lg"
+                    id="editarCitaFechaRegistro"
+                    name="editarCitaFechaRegistro"
+                    readonly>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Motivo de consulta -->
+              <div class="form-group col-md-12">
+                <label for="editarCitaMotivo">Motivo de la consulta</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
+                  <textarea
+                    class="form-control input-lg"
+                    id="editarCitaMotivo"
+                    name="editarCitaMotivo"
+                    rows="3"
+                    readonly></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Estado de la cita  -->
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="editarCitaEstado">Estado de la cita</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-flag"></i></span>
                   <select
                     class="form-control input-lg"
-                    name="editarPaciEstadoCivil"
-                    id="editarPaciEstadoCivil"
+                    id="editarCitaEstado"
+                    name="editarCitaEstado"
                     required>
                     <option value="">Seleccionar...</option>
-                    <option value="SOLTERO">Soltero(a)</option>
-                    <option value="CASADO">Casado(a)</option>
-                    <option value="DIVORCIADO">Divorciado(a)</option>
-                    <option value="VIUDO">Viudo(a)</option>
-                    <option value="CONVIVIENTE">Conviviente</option>
+                    <option value="RESERVADO POR PACIENTE">Reservado por paciente</option>
+                    <option value="CONFIRMADO">Confirmado</option>
+                    <option value="ATENDIDO">Atendido</option>
+                    <option value="NO ASISTIÓ">No asistió</option>
+                    <option value="CANCELADO">Cancelado</option>
                   </select>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <!-- Teléfono -->
-              <div class="form-group col-md-4">
-                <label for="editarPaciTelefono">Teléfono / Celular</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                  <input
-                    type="text"
-                    class="form-control input-lg"
-                    name="editarPaciTelefono"
-                    id="editarPaciTelefono"
-                    required>
-                </div>
-              </div>
-
-              <!-- Correo -->
-              <div class="form-group col-md-8">
-                <label for="editarPaciEmail">Correo electrónico</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                  <input
-                    type="email"
-                    class="form-control input-lg"
-                    name="editarPaciEmail"
-                    id="editarPaciEmail"
-                    required>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <!-- Dirección -->
-              <div class="form-group col-md-8">
-                <label for="editarPaciDireccion">Dirección</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-home"></i></span>
-                  <input
-                    type="text"
-                    class="form-control input-lg"
-                    name="editarPaciDireccion"
-                    id="editarPaciDireccion"
-                    required>
-                </div>
-              </div>
-
-              <!-- Apoderado -->
-              <div class="form-group col-md-4">
-                <label for="editarPaciApoderado">Apoderado / Responsable</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-user-shield"></i></span>
-                  <input
-                    type="text"
-                    class="form-control input-lg"
-                    name="editarPaciApoderado"
-                    id="editarPaciApoderado">
                 </div>
               </div>
             </div>
@@ -371,7 +412,7 @@ MODAL EDITAR HORARIO
         ======================================-->
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
-          <button type="submit" class="btn btn-success">Guardar cambios</button>
+          <button type="submit" class="btn btn-success">Actualizar estado</button>
         </div>
 
       </form>

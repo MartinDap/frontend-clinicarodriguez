@@ -65,7 +65,6 @@ $data = json_decode($response, true);
           <th>DNI</th>
           <th>Email</th>
           <th>Teléfono</th>
-          <th>Foto</th>
           <th>Estado</th>
           <th>Última sesión</th>
           <th>Acciones</th>
@@ -77,21 +76,15 @@ $data = json_decode($response, true);
             <tr>
               <td><?= $key + 1 ?></td>
               <td><?= htmlspecialchars($usuario["usuaUsername"]) ?></td>
-              <td><?= htmlspecialchars($usuario["usuaNombrecompleto"]) ?></td>
-              <td><?= htmlspecialchars($usuario["usuaDni"]) ?></td>
-              <td><?= htmlspecialchars($usuario["usuaEmail"]) ?></td>
-              <td><?= htmlspecialchars($usuario["usuaTelefono"]) ?></td>
-              <td>
-                <?php if (!empty($usuario["usuaFotoUrl"])): ?>
-                  <img src="<?= htmlspecialchars($usuario["usuaFotoUrl"]) ?>" alt="Foto" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
-                <?php else: ?>
-                  <span class="text-muted">Sin foto</span>
-                <?php endif; ?>
-              </td>
+              <td><?= htmlspecialchars($usuario["persona"]["persNombrecompleto"]) ?></td>
+              <td><?= htmlspecialchars($usuario["persona"]["persNroDoc"]) ?></td>
+              <td><?= htmlspecialchars($usuario["persona"]["persEmail"]) ?></td>
+              <td><?= htmlspecialchars($usuario["persona"]["persTelefono"]) ?></td>
+              
               <td>
                 <?php 
-                  $estado = $usuario["usuaEsActivo"] ? "ACTIVO" : "INACTIVO";
-                  $badgeClass = $usuario["usuaEsActivo"] ? "bg-success" : "bg-secondary";
+                  $estado = $usuario["usuaEstado"] ? "ACTIVO" : "INACTIVO";
+                  $badgeClass = $usuario["usuaEstado"] ? "bg-success" : "bg-secondary";
                   echo "<span class='badge {$badgeClass}'>{$estado}</span>";
                 ?>
               </td>
@@ -155,77 +148,121 @@ MODAL AGREGAR USUARIO
             <div class="row">
               <!-- Nombre completo -->
               <div class="form-group col-md-6">
-                <label for="usuaNombrecompleto">Nombre completo</label>
+                <label for="nombrecompleto">Nombre completo</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-user"></i></span>
                   <input
                     type="text"
                     class="form-control input-lg"
-                    name="usuaNombrecompleto"
-                    id="usuaNombrecompleto"
-                    placeholder="Ej: Renzo Upiachihua"
+                    name="nombrecompleto"
+                    id="nombrecompleto"
+                    placeholder="Ej: Juan Carlos Pérez"
                     required>
                 </div>
               </div>
 
               <!-- Username -->
               <div class="form-group col-md-6">
-                <label for="usuaUsername">Nombre de usuario</label>
+                <label for="username">Nombre de usuario</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
                   <input
                     type="text"
                     class="form-control input-lg"
-                    name="usuaUsername"
-                    id="usuaUsername"
-                    placeholder="Ej: renzo123"
+                    name="username"
+                    id="username"
+                    placeholder="Ej: jperez"
                     required>
                 </div>
               </div>
             </div>
 
             <div class="row">
-              <!-- DNI -->
+              <!-- Tipo Documento -->
               <div class="form-group col-md-4">
-                <label for="usuaDni">DNI</label>
+                <label for="tipoDoc">Tipo documento</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
+                  <select class="form-control input-lg" name="tipoDoc" id="tipoDoc" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="DNI">DNI</option>
+                    <option value="CE">Carné de Extranjería</option>
+                    <option value="PASAPORTE">Pasaporte</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Número Documento -->
+              <div class="form-group col-md-4">
+                <label for="nroDoc">Número de documento</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
                   <input
                     type="text"
                     class="form-control input-lg"
-                    name="usuaDni"
-                    id="usuaDni"
-                    placeholder="74500985"
+                    name="nroDoc"
+                    id="nroDoc"
+                    placeholder="12345678"
                     required>
+                </div>
+              </div>
+
+              <!-- Sexo -->
+              <div class="form-group col-md-4">
+                <label for="sexo">Sexo</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-venus-mars"></i></span>
+                  <select class="form-control input-lg" name="sexo" id="sexo" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="MASCULINO">Masculino</option>
+                    <option value="FEMENINO">Femenino</option>
+                    <option value="OTRO">Otro</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Fecha de nacimiento -->
+              <div class="form-group col-md-4">
+                <label for="fecNacimiento">Fecha de nacimiento</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                  <input
+                    type="date"
+                    class="form-control input-lg"
+                    name="fecNacimiento"
+                    id="fecNacimiento"
+                    required>
+                </div>
+              </div>
+
+              <!-- Estado civil -->
+              <div class="form-group col-md-4">
+                <label for="estadoCivil">Estado civil</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-heart"></i></span>
+                  <select class="form-control input-lg" name="estadoCivil" id="estadoCivil" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="SOLTERO">Soltero</option>
+                    <option value="CASADO">Casado</option>
+                    <option value="DIVORCIADO">Divorciado</option>
+                    <option value="VIUDO">Viudo</option>
+                  </select>
                 </div>
               </div>
 
               <!-- Teléfono -->
               <div class="form-group col-md-4">
-                <label for="usuaTelefono">Teléfono / Celular</label>
+                <label for="telefono">Teléfono / Celular</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-phone"></i></span>
                   <input
                     type="text"
                     class="form-control input-lg"
-                    name="usuaTelefono"
-                    id="usuaTelefono"
+                    name="telefono"
+                    id="telefono"
                     placeholder="987654321"
-                    required>
-                </div>
-              </div>
-
-              <!-- Clave -->
-              <div class="form-group col-md-4">
-                <label for="usuaClave">Contraseña</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                  <input
-                    type="password"
-                    class="form-control input-lg"
-                    name="usuaClave"
-                    id="usuaClave"
-                    placeholder="********"
                     required>
                 </div>
               </div>
@@ -233,23 +270,55 @@ MODAL AGREGAR USUARIO
 
             <div class="row">
               <!-- Email -->
-              <div class="form-group col-md-8">
-                <label for="usuaEmail">Correo electrónico</label>
+              <div class="form-group col-md-6">
+                <label for="email">Correo electrónico</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                   <input
                     type="email"
                     class="form-control input-lg"
-                    name="usuaEmail"
-                    id="usuaEmail"
+                    name="email"
+                    id="email"
                     placeholder="ejemplo@correo.com"
+                    required>
+                </div>
+              </div>
+
+              <!-- Contraseña -->
+              <div class="form-group col-md-6">
+                <label for="password">Contraseña</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                  <input
+                    type="password"
+                    class="form-control input-lg"
+                    name="password"
+                    id="password"
+                    placeholder="********"
                     required>
                 </div>
               </div>
             </div>
 
-          </div><!-- /.box-body -->
-        </div><!-- /.modal-body -->
+            <div class="row">
+              <!-- Dirección -->
+              <div class="form-group col-md-12">
+                <label for="direccion">Dirección</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+                  <input
+                    type="text"
+                    class="form-control input-lg"
+                    name="direccion"
+                    id="direccion"
+                    placeholder="Av. Principal 123, Lima"
+                    required>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
 
         <!--=====================================
         PIE DEL MODAL
@@ -265,6 +334,7 @@ MODAL AGREGAR USUARIO
 
   </div>
 </div>
+
 
 <!--=====================================
 MODAL ASIGNAR ROLES

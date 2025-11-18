@@ -58,10 +58,18 @@
           <span>Historias Clínicas</span>
         </a>
       </li>
+
       <li>
         <a href="activos">
           <i class="bi bi-hospital"></i>
           <span>Gestion de Activos</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="organigrama">
+          <i class="bi bi-hospital"></i>
+          <span>Organigrama</span>
         </a>
       </li>
       

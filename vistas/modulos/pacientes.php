@@ -45,40 +45,44 @@
         </tr>
       </thead>
       <tbody>
-      <?php if (isset($data["data"]) && is_array($data["data"])): ?>
-        <?php foreach($data["data"] as $key => $paciente): ?>
+        <?php if (isset($data["data"]) && is_array($data["data"]) && count($data["data"]) > 0): ?>
+          <?php foreach ($data["data"] as $key => $paciente): ?>
+            <?php 
+              $persona   = $paciente["persona"] ?? [];
+              $dni       = $persona["persNroDoc"]        ?? '';
+              $nombre    = $persona["persNombrecompleto"]?? '';
+              $fecNac    = $persona["persFecNacimiento"] ?? null;
+              $telefono  = $persona["persTelefono"]      ?? '';
+              $email     = $persona["persEmail"]         ?? '';
+              $paciId    = $paciente["paciId"]           ?? '';
+            ?>
+            <tr>
+              <td><?= $key + 1 ?></td>
+              <td><?= htmlspecialchars($dni) ?></td>
+              <td><?= htmlspecialchars($nombre) ?></td>
+              <td><?= $fecNac ? date("d/m/Y", strtotime($fecNac)) : '-' ?></td>
+              <td><?= htmlspecialchars($telefono) ?></td>
+              <td><?= htmlspecialchars($email) ?></td>
+              <td>
+                <button class="btn btn-sm btn-info btnVerPaciente" paciId="<?= htmlspecialchars($paciId) ?>">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-warning btnEditarPaciente" paciId="<?= htmlspecialchars($paciId) ?>">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-danger btnEliminarPaciente" eliminarPaciId="<?= htmlspecialchars($paciId) ?>">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        <?php else: ?>
           <tr>
-            <td><?= ($key + 1) ?></td>
-            <td><?= htmlspecialchars($paciente["paciDni"]) ?></td>
-            <td><?= htmlspecialchars($paciente["paciNombrecompleto"]) ?></td>
-            <td>
-              <?php 
-                // Formatear la fecha de nacimiento si existe
-                $fecha = $paciente["paciFecNacimiento"] ?? null;
-                echo $fecha ? date("d/m/Y", strtotime($fecha)) : '-';
-              ?>
-            </td>
-            <td><?= htmlspecialchars($paciente["paciTelefono"]) ?></td>
-            <td><?= htmlspecialchars($paciente["paciEmail"]) ?></td>
-            <td>
-              <button class="btn btn-sm btn-info btnVerPaciente" paciId="<?= $paciente["paciId"] ?>">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-warning btnEditarPaciente" paciId="<?= $paciente["paciId"] ?>">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-danger btnEliminarPaciente" eliminarPaciId="<?= $paciente["paciId"] ?>">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
+            <td colspan="7" class="text-center">No se encontraron pacientes</td>
           </tr>
-        <?php endforeach ?>
-      <?php else: ?>
-        <tr>
-          <td colspan="7" class="text-center">No se encontraron pacientes</td>
-        </tr>
-      <?php endif ?>
-    </tbody>
+        <?php endif; ?>
+      </tbody>
+
 
 
     </table>
@@ -121,28 +125,46 @@ MODAL AGREGAR PACIENTE
                     class="form-control input-lg"
                     name="paciNombrecompleto"
                     id="paciNombrecompleto"
-                    placeholder="Ej: Jose Perez"
+                    placeholder="Ej: Luis Gonzales Arévalo"
                     required>
                 </div>
               </div>
 
-              <!-- DNI -->
+              <!-- Tipo Documento -->
               <div class="form-group col-md-4">
-                <label for="paciDni">DNI</label>
+                <label for="paciTipoDoc">Tipo Documento</label>
                 <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
-                  <input
-                    type="number"
+                  <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
+                  <select
                     class="form-control input-lg"
-                    name="paciDni"
-                    id="paciDni"
-                    placeholder="74500985"
+                    name="paciTipoDoc"
+                    id="paciTipoDoc"
                     required>
+                    <option value="">Seleccionar...</option>
+                    <option value="DNI">DNI</option>
+                    <option value="CE">CE</option>
+                    <option value="PAS">PAS</option>
+                  </select>
                 </div>
               </div>
             </div>
 
             <div class="row">
+              <!-- Nro Documento -->
+              <div class="form-group col-md-4">
+                <label for="paciNroDoc">Nro Documento</label>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
+                  <input
+                    type="text"
+                    class="form-control input-lg"
+                    name="paciNroDoc"
+                    id="paciNroDoc"
+                    placeholder="74229874"
+                    required>
+                </div>
+              </div>
+
               <!-- Sexo -->
               <div class="form-group col-md-4">
                 <label for="paciSexo">Sexo</label>
@@ -173,7 +195,9 @@ MODAL AGREGAR PACIENTE
                     required>
                 </div>
               </div>
+            </div>
 
+            <div class="row">
               <!-- Estado civil -->
               <div class="form-group col-md-4">
                 <label for="paciEstadoCivil">Estado civil</label>
@@ -193,9 +217,7 @@ MODAL AGREGAR PACIENTE
                   </select>
                 </div>
               </div>
-            </div>
 
-            <div class="row">
               <!-- Teléfono -->
               <div class="form-group col-md-4">
                 <label for="paciTelefono">Teléfono / Celular</label>
@@ -206,13 +228,13 @@ MODAL AGREGAR PACIENTE
                     class="form-control input-lg"
                     name="paciTelefono"
                     id="paciTelefono"
-                    placeholder="987654321"
+                    placeholder="967431258"
                     required>
                 </div>
               </div>
 
               <!-- Correo -->
-              <div class="form-group col-md-8">
+              <div class="form-group col-md-4">
                 <label for="paciEmail">Correo electrónico</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
@@ -221,7 +243,7 @@ MODAL AGREGAR PACIENTE
                     class="form-control input-lg"
                     name="paciEmail"
                     id="paciEmail"
-                    placeholder="ejemplo@correo.com"
+                    placeholder="luis.gonzales@gmail.com"
                     required>
                 </div>
               </div>
@@ -229,7 +251,7 @@ MODAL AGREGAR PACIENTE
 
             <div class="row">
               <!-- Dirección -->
-              <div class="form-group col-md-8">
+              <div class="form-group col-md-12">
                 <label for="paciDireccion">Dirección</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-home"></i></span>
@@ -238,29 +260,14 @@ MODAL AGREGAR PACIENTE
                     class="form-control input-lg"
                     name="paciDireccion"
                     id="paciDireccion"
-                    placeholder="Pasaje Iquitos 375"
+                    placeholder="Jr Luis 1"
                     required>
-                </div>
-              </div>
-
-              <!-- Apoderado -->
-              <div class="form-group col-md-4">
-                <label for="paciApoderado">Apoderado / Responsable</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-user-shield"></i></span>
-                  <input
-                    type="text"
-                    class="form-control input-lg"
-                    name="paciApoderado"
-                    id="paciApoderado"
-                    placeholder="Juanito">
                 </div>
               </div>
             </div>
 
-          </div><!-- /.box-body -->
-        </div><!-- /.modal-body -->
-
+          </div><
+        </div>
         <!--=====================================
         PIE DEL MODAL
         ======================================-->
@@ -276,11 +283,6 @@ MODAL AGREGAR PACIENTE
   </div>
 </div>
 
-
-
-<!--=====================================
-MODAL EDITAR PRODUCTO
-======================================-->
 <!--=====================================
 MODAL EDITAR PACIENTE
 ======================================-->

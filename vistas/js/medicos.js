@@ -3,120 +3,89 @@
  * Sistema de Gestión Clínica
  */
 
-/*=============================================
-REGISTRAR MÉDICO
-=============================================*/
 document.addEventListener('DOMContentLoaded', function() {
-    const formRegistrarMedico = document.getElementById('formRegistrarMedico');
-    if (formRegistrarMedico) {
-        formRegistrarMedico.addEventListener('submit', async function(event) {
-        event.preventDefault(); // Evita recarga
+  const formRegistrarMedico = document.getElementById('formRegistrarMedico');
+  if (!formRegistrarMedico) return;
 
-        try {
-            // 1. Capturar los valores del formulario
-            const mediNombre = document.getElementById('mediNombre').value;
-            const mediApellido = document.getElementById('mediApellido').value;
-            const mediDni = document.getElementById('mediDni').value;
-            const mediTelefono = document.getElementById('mediTelefono').value;
-            const mediEmail = document.getElementById('mediEmail').value;
-            const mediEstado = document.getElementById('mediEstado').value;
-            const mediUsuario = document.getElementById('mediUsuario').value;
-            const mediPassword = document.getElementById('mediPassword').value;
-            const mediFotoFile = document.getElementById('mediFoto').files[0];
+  formRegistrarMedico.addEventListener('submit', async function (event) {
+    event.preventDefault();
 
-            // 2. PRIMERO: Registrar el Usuario
-            const usuarioObject = {
-                usuaUsername: mediUsuario,
-                usuaNombrecompleto: `${mediNombre} ${mediApellido}`,
-                usuaClave: mediPassword,
-                usuaEmail: mediEmail,
-                usuaTelefono: mediTelefono,
-                usuaDni: mediDni
-            };
+    try {
+      // 1) Obtener valores
+      const nombre       = document.getElementById('mediNombre').value.trim();
+      const apellido     = document.getElementById('mediApellido').value.trim();
+      const tipoDoc      = document.getElementById('mediTipoDoc').value.trim();
+      const nroDoc       = document.getElementById('mediDni').value.trim();
+      const sexo         = document.getElementById('mediSexo').value.trim();
+      const fecNac       = document.getElementById('mediFecNac').value; // YYYY-MM-DD
+      const estadoCivil  = document.getElementById('mediEstadoCivil').value.trim();
+      const direccion    = document.getElementById('mediDireccion').value.trim();
+      const telefono     = document.getElementById('mediTelefono').value.trim();
+      const email        = document.getElementById('mediEmail').value.trim();
+      const username     = document.getElementById('mediUsuario').value.trim();
+      const password     = document.getElementById('mediPassword').value;
+      const nroCol       = document.getElementById('mediNroColegiatura').value.trim();
+      const fotoFile     = document.getElementById('mediFoto').files[0] || null;
 
-            console.log("Registrando usuario:", usuarioObject);
+      // 2) Mapear a la estructura que el backend espera (usando los nombres correctos)
+      const medicoPayload = {
+        nombrecompleto: `${nombre} ${apellido}`.trim(),
+        tipoDoc: tipoDoc,
+        nroDoc: nroDoc,
+        sexo: sexo,
+        fecNacimiento: fecNac,      // "YYYY-MM-DD"
+        estadoCivil: estadoCivil,
+        telefono: telefono,
+        email: email,
+        direccion: direccion,
+        username: username,
+        password: password,
+        nroColegiatura: nroCol
+      };
 
-            const responseUsuario = await fetch(`${CONFIG.API_BASE_URL}auth/registro`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    //'Authorization': CONFIG.API_AUTH_HEADER
-                },
-                body: JSON.stringify(usuarioObject)
-            });
+      // 3) Armar FormData
+      const formData = new FormData();
+      formData.append('medico', JSON.stringify(medicoPayload));
+      if (fotoFile) {
+        formData.append('foto', fotoFile);
+      }
 
-            const resultUsuario = await responseUsuario.json();
-            console.log("Respuesta registro usuario:", resultUsuario);
+      // 4) Enviar
+      const resp = await fetch(`${CONFIG.API_BASE_URL}medicos/registrar`, {
+        method: 'POST',
+        headers: {
+          'Authorization': CONFIG.API_AUTH_HEADER
+          // NO pongas 'Content-Type': multipart lo maneja el navegador
+        },
+        body: formData
+      });
 
-            if (!resultUsuario.success) {
-                throw new Error(resultUsuario.message || 'Error al registrar usuario');
-            }
+      const result = await resp.json();
+      console.log('Respuesta registro médico:', result);
 
-            // Obtener el usuaId de la respuesta
-            const usuaId = resultUsuario.data.usuaId;
-            console.log("Usuario registrado con ID:", usuaId);
+      if (result.success) {
+        Swal.fire({
+          icon: 'success',
+          title: result.message || 'El médico ha sido registrado correctamente',
+          confirmButtonText: 'Cerrar'
+        }).then(() => {
+          window.location = 'medicos';
+        });
+      } else {
+        throw new Error(result.message || 'Hubo un problema al registrar el médico');
+      }
 
-            // 3. SEGUNDO: Registrar el Médico con el usuaId
-            const medicoObject = {
-                mediNombre: mediNombre,
-                mediApellido: mediApellido,
-                mediEstado: mediEstado,
-                usuario: {
-                    usuaId: usuaId
-                }
-            };
-
-            const formDataMedico = new FormData();
-            formDataMedico.append('foto', mediFotoFile);
-            formDataMedico.append('medico', JSON.stringify(medicoObject));
-
-            console.log("Registrando médico:", medicoObject);
-
-            const responseMedico = await fetch(`${CONFIG.API_BASE_URL}medicos/with-photo`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': CONFIG.API_AUTH_HEADER
-                },
-                body: formDataMedico
-            });
-
-            const resultMedico = await responseMedico.json();
-            console.log("Respuesta registro médico:", resultMedico);
-
-            if (resultMedico.success) {
-                Swal.fire({
-                    type: 'success',
-                    title: resultMedico.message || 'El médico ha sido registrado correctamente',
-                    showConfirmButton: true,
-                    confirmButtonText: 'Cerrar'
-                }).then(function(result) {
-                    if (result.value) {
-                        window.location = 'medicos';
-                    }
-                });
-            } else {
-                Swal.fire({
-                    type: 'warning',
-                    title: resultMedico.message || 'Hubo un problema al registrar el médico',
-                    showConfirmButton: true,
-                    confirmButtonText: 'Cerrar'
-                });
-            }
-
-        } catch (error) {
-            console.error('Error al registrar:', error);
-            
-            Swal.fire({
-                type: 'error',
-                title: error.message || 'No se pudo completar el registro. Revisa los datos.',
-                showConfirmButton: true,
-                confirmButtonText: 'Cerrar'
-            });
-        }
-    });
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        icon: 'error',
+        title: err.message || 'No se pudo completar el registro. Revisa los datos.',
+        confirmButtonText: 'Cerrar'
+      });
     }
-    
+  });
 });
+
 
 
 /*=============================================

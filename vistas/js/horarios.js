@@ -252,15 +252,13 @@ $(document).ready(function () {
     var horaInicio = $("#regHoraInicio").val(); // HH:mm
     var horaFin    = $("#regHoraFin").val();    // HH:mm
     var duracion   = $("#regDuracion").val();   // duración (min)
-    var estado     = $("#regEstado").val();     // 1/0
 
     console.log("Horario a registrar:", {
         medicoId,
         diaId,
         horaInicio,
         horaFin,
-        duracion,
-        estado
+        duracion
     });
 
     // Armar el JSON con la estructura correcta
@@ -271,7 +269,7 @@ $(document).ready(function () {
         dia: {
           diasId: parseInt(diaId)
         },
-        dimeEstado: parseInt(estado),
+        dimeEstado: 1,
         dimeHoraInicio: horaInicio + ":00", // agregar segundos si solo tienes HH:mm
         dimeHoraFin: horaFin + ":00",
         dimeDuracion: parseInt(duracion)

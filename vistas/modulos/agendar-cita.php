@@ -69,11 +69,28 @@ $curl = curl_init();
               </div>
             </div>
 
-            <!-- Fila 2: DNI y Teléfono -->
+            <!-- Fila 2: Tipo de Documento y Número de Documento -->
             <div class="row-inputs mb-3">
               <div>
+                <label for="tipoDocumento" class="form-label">
+                  <?php echo idioma_actual() === 'es' ? 'Tipo de documento' : 'Document Type'; ?>
+                </label>
+                <select
+                  class="form-select"
+                  id="tipoDocumento"
+                  name="tipoDocumento"
+                  required>
+                  <option value="" disabled selected>
+                    <?php echo idioma_actual() === 'es' ? 'Seleccione' : 'Select'; ?>
+                  </option>
+                  <option value="DNI">DNI</option>
+                  <option value="PASAPORTE"><?php echo idioma_actual() === 'es' ? 'Pasaporte' : 'Passport'; ?></option>
+                  <option value="CARNET_EXTRANJERIA"><?php echo idioma_actual() === 'es' ? 'Carnet de Extranjería' : 'Foreign ID'; ?></option>
+                </select>
+              </div>
+              <div>
                 <label for="documento" class="form-label">
-                  <?php echo idioma_actual() === 'es' ? 'DNI / Pasaporte' : 'ID / Passport'; ?>
+                  <?php echo idioma_actual() === 'es' ? 'Número de documento' : 'Document Number'; ?>
                 </label>
                 <input
                   type="text"
@@ -82,10 +99,14 @@ $curl = curl_init();
                   name="documento"
                   maxlength="20"
                   required
-                  pattern="[0-9]+"
-                  title="<?php echo idioma_actual() === 'es' ? 'Solo se permiten números' : 'Only numbers allowed'; ?>"
-                  placeholder="<?php echo idioma_actual() === 'es' ? 'Solo números' : 'Numbers only'; ?>">
+                  pattern="[0-9A-Za-z]+"
+                  title="<?php echo idioma_actual() === 'es' ? 'Solo números y letras' : 'Only numbers and letters allowed'; ?>"
+                  placeholder="<?php echo idioma_actual() === 'es' ? 'Ingrese el número' : 'Enter number'; ?>">
               </div>
+            </div>
+
+            <!-- Fila 3: Teléfono y Correo -->
+            <div class="row-inputs mb-3">
               <div>
                 <label for="celular" class="form-label">
                   <?php echo idioma_actual() === 'es' ? 'Teléfono' : 'Phone'; ?>
@@ -101,11 +122,7 @@ $curl = curl_init();
                   title="<?php echo idioma_actual() === 'es' ? 'Solo se permiten números' : 'Only numbers allowed'; ?>"
                   placeholder="<?php echo idioma_actual() === 'es' ? 'Solo números' : 'Numbers only'; ?>">
               </div>
-            </div>
-
-            <!-- Fila 3: Correo (ancho completo) -->
-            <div class="row-inputs mb-3">
-              <div style="flex:1 1 100%;">
+              <div>
                 <label for="correo" class="form-label">
                   <?php echo idioma_actual() === 'es' ? 'Correo electrónico' : 'Email'; ?>
                 </label>
@@ -114,9 +131,8 @@ $curl = curl_init();
                   class="form-control"
                   id="correo"
                   name="correo"
-                  maxlength="120"
-                  required
-                  placeholder="<?php echo idioma_actual() === 'es' ? 'tucorreo@ejemplo.com' : 'you@example.com'; ?>">
+                  maxlength="100"
+                  placeholder="<?php echo idioma_actual() === 'es' ? 'ejemplo@correo.com' : 'example@email.com'; ?>">
               </div>
             </div>
 
@@ -167,7 +183,7 @@ $curl = curl_init();
             <!-- Botón de Envío -->
             <div class="mt-4">
               <button id="saludo" type="submit" class="btn btn-enviar">
-                <?php echo idioma_actual() === 'es' ? 'Enviar por WhatsApp' : 'Send via WhatsApp'; ?>
+                <?php echo idioma_actual() === 'es' ? 'Registrar cita' : 'Send appointment'; ?>
                 <i class="bi bi-whatsapp"></i>
               </button>
             </div>
