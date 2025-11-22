@@ -1,48 +1,55 @@
 <?php
 
-  // Realizar petición GET a la API para obtener todos los médicos
-  $curl = curl_init();
+  $token = obtener_token_usuario();
+  if ($token !== null) {
+    $curl = curl_init();
 
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => API_BASE_URL . 'medicos',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-    CURLOPT_HTTPHEADER => array(
-      API_AUTH_HEADER
-    ),
-  ));
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => API_BASE_URL . 'medicos',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'GET',
+      CURLOPT_HTTPHEADER => array(
+          'Authorization: ' . $token,
+          'Content-Type: application/json'
+      ),
+    ));
 
-  $response = curl_exec($curl);
+    $response = curl_exec($curl);
 
-  curl_close($curl);
-  $data = json_decode($response, true);
+    curl_close($curl);
+    $data = json_decode($response, true);
 
-   /* especialidades */
-  $curl = curl_init();
+    /* especialidades */
+    $curl = curl_init();
 
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => API_BASE_URL . 'especialidades',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-    CURLOPT_HTTPHEADER => array(
-      API_AUTH_HEADER
-    ),
-  ));
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => API_BASE_URL . 'especialidades',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'GET',
+      CURLOPT_HTTPHEADER => array(
+          'Authorization: ' . $token,
+          'Content-Type: application/json'
+      ),
+    ));
 
-  $responseespeci = curl_exec($curl);
+    $responseespeci = curl_exec($curl);
 
-  curl_close($curl);
-  $dataEspe = json_decode($responseespeci, true);
+    curl_close($curl);
+    $dataEspe = json_decode($responseespeci, true);
+
+  }else {
+      echo "Token no disponible, no se puede realizar la solicitud.";
+  }
 
 ?>
 <div class="container-fluid">
@@ -434,11 +441,7 @@ MODAL EDITAR MÉDICO
                 <label for="editarMediFotoUrl">Foto URL</label>
                 <div class="input-group">
                   <span class="input-group-addon"><i class="fa fa-image"></i></span>
-                  <input
-                    type="text"
-                    class="form-control input-lg"
-                    name="editarMediFotoUrl"
-                    id="editarMediFotoUrl">
+                  <input type="text" class="form-control input-lg" name="editarMediFotoUrl" id="editarMediFotoUrl">
                 </div>
               </div>
             </div>

@@ -4,38 +4,15 @@ if(!isset($_GET['histId'])) {
     header('Location: ?ruta=historias-clinicas');
     exit;
 }
+$token = obtener_token_usuario();
+if ($token !== null){
+  $histId = $_GET['histId'];
 
-$histId = $_GET['histId'];
-
-// Obtener datos de la historia desde la API
-$curl = curl_init();
-
-curl_setopt_array($curl, array(
-  CURLOPT_URL => API_BASE_URL . 'historias/' . $histId,
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'GET',
-  CURLOPT_HTTPHEADER => array(
-    API_AUTH_HEADER
-  ),
-));
-
-$response = curl_exec($curl);
-curl_close($curl);
-
-$historia = json_decode($response, true);
-
-$data = $historia['data'];
-
- /* DOCUMENTOS */
+  // Obtener datos de la historia desde la API
   $curl = curl_init();
 
   curl_setopt_array($curl, array(
-    CURLOPT_URL => API_BASE_URL . 'documentos/historia/' . $histId,
+    CURLOPT_URL => API_BASE_URL . 'historias/' . $histId,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
@@ -44,14 +21,44 @@ $data = $historia['data'];
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => 'GET',
     CURLOPT_HTTPHEADER => array(
-      API_AUTH_HEADER
-    ),
+          'Authorization: ' . $token,
+          'Content-Type: application/json'
+      ),
   ));
 
-  $responsedocumentos = curl_exec($curl);
-
+  $response = curl_exec($curl);
   curl_close($curl);
-  $dataDocumentos = json_decode($responsedocumentos, true);
+
+  $historia = json_decode($response, true);
+
+  $data = $historia['data'];
+
+  $persona = $data['paciente']['persona'] ?? [];
+  $fechaNacimiento = $persona['persDni'] ?? '';
+
+  /* DOCUMENTOS */
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => API_BASE_URL . 'documentos/historia/' . $histId,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'GET',
+      CURLOPT_HTTPHEADER => array(
+          'Authorization: ' . $token,
+          'Content-Type: application/json'
+      ),
+    ));
+
+    $responsedocumentos = curl_exec($curl);
+
+    curl_close($curl);
+    $dataDocumentos = json_decode($responsedocumentos, true);
+}
 
 ?>
 
@@ -86,34 +93,50 @@ $data = $historia['data'];
     <!-- Información del Paciente -->
     <div class="col-md-6 mb-4">
       <div class="card h-100">
-        <div class="card-header bg-info text-white">
-          <h5 class="mb-0"><i class="bi bi-person"></i> Información del Paciente</h5>
+        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <i class="bi bi-person"></i> Información del Paciente
+          </h5>
+
+          <?php if (empty($fechaNacimiento)): ?>
+            <button
+              type="button"
+              class="btn btn-sm btn-light"
+              id="btnCompletarPaciente"
+              data-pacId="<?= htmlspecialchars($data['paciente']['paciId'] ?? '') ?>"
+              data-bs-toggle="modal"
+              data-bs-target="#modalCompletarPaciente"
+            >
+              <i class="bi bi-pencil-square"></i> Completar paciente
+            </button>
+          <?php endif; ?>
         </div>
+
         <div class="card-body">
           <table class="table table-borderless">
             <tr>
               <th width="40%">Nombre:</th>
-              <td><?= htmlspecialchars($data['paciente']['persona']['persNombrecompleto']) ?></td>
+              <td><?= htmlspecialchars($persona['persNombrecompleto'] ?? '') ?></td>
             </tr>
             <tr>
               <th>DNI:</th>
-              <td><?= htmlspecialchars($data['paciente']['persona']['persNroDoc']) ?></td>
+              <td><?= htmlspecialchars($persona['persNroDoc'] ?? '') ?></td>
             </tr>
             <tr>
               <th>Fecha de nacimiento:</th>
-              <td><?= htmlspecialchars($data['paciente']['persona']['persFecNacimiento']) ?></td>
+              <td><?= htmlspecialchars($persona['persFecNacimiento'] ?? '') ?></td>
             </tr>
             <tr>
               <th>Sexo:</th>
-              <td><?= htmlspecialchars($data['paciente']['persona']['persSexo']) ?></td>
+              <td><?= htmlspecialchars($persona['persSexo'] ?? '') ?></td>
             </tr>
             <tr>
               <th>Teléfono:</th>
-              <td><?= htmlspecialchars($data['paciente']['persona']['persTelefono']) ?></td>
+              <td><?= htmlspecialchars($persona['persTelefono'] ?? '') ?></td>
             </tr>
             <tr>
               <th>Email:</th>
-              <td><?= htmlspecialchars($data['paciente']['persona']['persEmail']) ?></td>
+              <td><?= htmlspecialchars($persona['persEmail'] ?? '') ?></td>
             </tr>
           </table>
         </div>
@@ -204,7 +227,7 @@ $data = $historia['data'];
         
         <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
           <h5 class="mb-0">
-            <i class="bi bi-journal-medical"></i> Episodios Clínicos
+            <i class="bi bi-journal-medical"></i> Episodios Clínicos / Consultas
           </h5>
           <!-- Botón Agregar Nuevo Episodio -->
           <button class="btn btn-light btn-sm" id="btnAgregarEpisodio" data-bs-toggle="modal" data-bs-target="#modalAgregarEpisodio">
@@ -235,8 +258,8 @@ $data = $historia['data'];
                         <button class="btn btn-sm btn-info btnVerEpisodio" epclId="<?= $episodio['epclId'] ?>" title="Ver episodio">
                           <i class="bi bi-eye"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger btnEliminarEpisodio" epclId="<?= $episodio['epclId'] ?>" title="Eliminar episodio">
-                          <i class="bi bi-trash"></i>
+                        <button class="btn btn-sm btn-warning btnAgregarReceta" epclId="<?= $episodio['epclId'] ?>" title="Agregar receta">
+                          <i class="bi bi-plus-circle"></i>
                         </button>
                       </td>
                     </tr>
@@ -321,6 +344,114 @@ $data = $historia['data'];
   </div>
 
 </div>
+
+<!-- Modal para Agregar Receta -->
+<div class="modal fade" id="modalAgregarReceta" tabindex="-1" aria-labelledby="modalAgregarRecetaLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header bg-warning text-white">
+        <h5 class="modal-title" id="modalAgregarRecetaLabel">
+          <i class="bi bi-file-earmark-medical"></i> Agregar Receta
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <form id="formAgregarReceta">
+        <div class="modal-body">
+
+          <!-- Campo oculto para almacenar el epclId -->
+          <input type="hidden" name="epclId" id="epclIdReceta" value="">
+
+          <!-- Fila 1: Fecha y Indicaciones -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="receFecha" class="form-label">Fecha de la Receta</label>
+              <input
+                type="datetime-local"
+                class="form-control"
+                name="receFecha"
+                id="receFecha"
+                required>
+            </div>
+
+            <div class="col-md-6">
+              <label for="receIndicaciones" class="form-label">Indicaciones</label>
+              <input
+                type="text"
+                class="form-control"
+                name="receIndicaciones"
+                id="receIndicaciones"
+                required>
+            </div>
+          </div>
+
+          <!-- Fila 2: Estado de la receta -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="receEstado" class="form-label">Estado de la Receta</label>
+              <select name="receEstado" id="receEstado" class="form-control" required>
+                <option value="true">Activa</option>
+                <option value="false">Inactiva</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Fila 3: Detalles de Medicamentos -->
+          <div id="detallesMedicamentos">
+            <div class="row mb-3 medicamento-row">
+              <div class="col-md-4">
+                <label for="redeMedicamento" class="form-label">Medicamento</label>
+                <input type="text" class="form-control" name="redeMedicamento[]" required>
+              </div>
+              <div class="col-md-4">
+                <label for="redePresentacion" class="form-label">Presentación</label>
+                <input type="text" class="form-control" name="redePresentacion[]" required>
+              </div>
+              <div class="col-md-4">
+                <label for="redeDosis" class="form-label">Dosis</label>
+                <input type="text" class="form-control" name="redeDosis[]" required>
+              </div>
+              <div class="col-md-4">
+                <label for="redeFrecuencia" class="form-label">Frecuencia</label>
+                <input type="text" class="form-control" name="redeFrecuencia[]" required>
+              </div>
+              <div class="col-md-4">
+                <label for="redeDuracion" class="form-label">Duración</label>
+                <input type="text" class="form-control" name="redeDuracion[]" required>
+              </div>
+              <div class="col-md-4">
+                <label for="redeViaAdministracion" class="form-label">Vía de administración</label>
+                <input type="text" class="form-control" name="redeViaAdministracion[]" required>
+              </div>
+              <div class="col-md-4">
+                <label for="redeObservaciones" class="form-label">Observaciones</label>
+                <input type="text" class="form-control" name="redeObservaciones[]" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón para agregar más medicamentos -->
+          <div class="mb-3">
+            <button type="button" id="btnAgregarMedicamento" class="btn btn-info">
+              <i class="bi bi-plus-circle"></i> Agregar Otro Medicamento
+            </button>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-warning">
+            <i class="bi bi-save"></i> Guardar Receta
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
 
 <!-- Modal para Iniciar Triaje -->
 <div class="modal fade" id="modalIniciarTriaje" tabindex="-1" aria-labelledby="modalIniciarTriajeLabel" aria-hidden="true">
@@ -948,100 +1079,78 @@ MODAL EDITAR DOCUMENTO
   </div>
 </div>
 
-<!-- Modal para ver Episodio Clínico -->
-  <div class="modal fade" id="modalVerEpisodio" tabindex="-1" aria-labelledby="modalVerEpisodioLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <!-- Modal para ver Episodio Clínico + Recetas -->
+<div class="modal fade" id="modalVerEpisodio" tabindex="-1" aria-labelledby="modalVerEpisodioLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl"> <!-- 🔹 MÁS ANCHO -->
     <div class="modal-content">
 
-      <div class="modal-header bg-info text-white">
-        <h5 class="modal-title" id="modalVerEpisodioLabel">
-          <i class="bi bi-journal-medical"></i> Detalle de Episodio Clínico
+      <div class="modal-header bg-info text-white py-2">
+        <h5 class="modal-title" id="modalVerEpisodioLabel" style="font-size:1rem;">
+          <i class="bi bi-journal-medical"></i> Episodio Clínico
         </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body py-2">
 
-        <!-- Campo oculto para almacenar el epclId -->
         <input type="hidden" id="verEpclId">
 
-        <!-- Fila 1: Fecha, Tipo -->
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="verEpclFecha" class="form-label">Fecha del Episodio</label>
-            <input
-              type="text"
-              class="form-control"
-              id="verEpclFecha"
-              readonly>
+        <!-- Datos del episodio clínico -->
+        <div class="row g-2">
+          <div class="col-md-3">
+            <label class="form-label">Fecha</label>
+            <input type="text" class="form-control" id="verEpclFecha" readonly>
           </div>
-
-          <div class="col-md-6">
-            <label for="verEpclTipo" class="form-label">Tipo de Episodio</label>
-            <input
-              type="text"
-              class="form-control"
-              id="verEpclTipo"
-              readonly>
+          <div class="col-md-3">
+            <label class="form-label">Tipo</label>
+            <input type="text" class="form-control" id="verEpclTipo" readonly>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Estado</label>
+            <input type="text" class="form-control" id="verEpclEstado" readonly>
           </div>
         </div>
 
-        <!-- Motivo de consulta -->
-        <div class="mb-3">
-          <label for="verEpclMotivoConsulta" class="form-label">Motivo de la Consulta</label>
-          <textarea
-            class="form-control"
-            id="verEpclMotivoConsulta"
-            rows="2"
-            readonly></textarea>
-        </div>
-
-        <!-- Fila 2: Diagnóstico y Tratamiento -->
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="verEpclDiagnostico" class="form-label">Diagnóstico</label>
-            <textarea
-              class="form-control"
-              id="verEpclDiagnostico"
-              rows="3"
-              readonly></textarea>
-          </div>
-
-          <div class="col-md-6">
-            <label for="verEpclTratamiento" class="form-label">Tratamiento</label>
-            <textarea
-              class="form-control"
-              id="verEpclTratamiento"
-              rows="3"
-              readonly></textarea>
+        <div class="row g-2 mt-2">
+          <div class="col-md-12">
+            <label class="form-label">Motivo</label>
+            <textarea class="form-control" id="verEpclMotivoConsulta" rows="2" readonly></textarea>
           </div>
         </div>
 
-        <!-- Fila 3: Observaciones y Estado -->
-        <div class="row mb-3">
-          <div class="col-md-8">
-            <label for="verEpclObservaciones" class="form-label">Observaciones</label>
-            <textarea
-              class="form-control"
-              id="verEpclObservaciones"
-              rows="2"
-              readonly></textarea>
+        <div class="row g-2 mt-2">
+          <div class="col-md-6">
+            <label class="form-label">Diagnóstico</label>
+            <textarea class="form-control" id="verEpclDiagnostico" rows="2" readonly></textarea>
           </div>
+          <div class="col-md-6">
+            <label class="form-label">Tratamiento</label>
+            <textarea class="form-control" id="verEpclTratamiento" rows="2" readonly></textarea>
+          </div>
+        </div>
 
-          <div class="col-md-4">
-            <label for="verEpclEstado" class="form-label">Estado</label>
-            <input
-              type="text"
-              class="form-control"
-              id="verEpclEstado"
-              readonly>
+        <div class="row g-2 mt-2 mb-2">
+          <div class="col-md-12">
+            <label class="form-label">Observaciones</label>
+            <textarea class="form-control" id="verEpclObservaciones" rows="2" readonly></textarea>
           </div>
+        </div>
+
+        <!-- RECETAS -->
+        <hr class="my-2">
+
+        <h6 class="mb-2">
+          Recetas y Medicamentos
+        </h6>
+
+        <div id="listaRecetas" class="mt-2">
+          <!-- Renderizado desde JS -->
         </div>
 
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+      <div class="modal-footer py-2">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
           Cerrar
         </button>
       </div>
@@ -1050,8 +1159,126 @@ MODAL EDITAR DOCUMENTO
   </div>
 </div>
 
+<!-- Modal Completar Paciente -->
+<div class="modal fade" id="modalCompletarPaciente" tabindex="-1" aria-labelledby="modalCompletarPacienteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
 
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalCompletarPacienteLabel">
+          <i class="bi bi-pencil-square"></i> Completar Información del Paciente
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
 
+      <form id="formCompletarPaciente">
+        <div class="modal-body">
+
+          <!-- ID oculto del paciente -->
+          <input type="hidden" id="pacIdEditar" name="paciId">
+          <input type="hidden" id="persIdEditar" name="persId">
+
+          <!-- Nombre Completo -->
+          <div class="mb-3">
+            <label class="form-label">Nombre Completo</label>
+            <input type="text" class="form-control" id="editNombreCompleto" name="nombrecompleto" required>
+          </div>
+
+          <!-- Tipo de Documento + Número -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">Tipo de Documento</label>
+              <select class="form-control" id="editTipoDoc" name="tipoDoc" required>
+                <option value="">Seleccione...</option>
+                <option value="DNI">DNI</option>
+                <option value="CE">Carné de Extranjería</option>
+                <option value="PAS">Pasaporte</option>
+              </select>
+            </div>
+
+            <div class="col-md-8">
+              <label class="form-label">Número de Documento</label>
+              <input type="text" class="form-control" id="editNroDoc" name="nroDoc" required>
+            </div>
+          </div>
+
+          <!-- Sexo + Fecha de nacimiento -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Sexo</label>
+              <select class="form-control" id="editSexo" name="sexo" required>
+                <option value="">Seleccione...</option>
+                <option value="MASCULINO">Masculino</option>
+                <option value="FEMENINO">Femenino</option>
+                <option value="OTRO">Otro</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Fecha de Nacimiento</label>
+              <input type="date" class="form-control" id="editFecNacimiento" name="fecNacimiento" required>
+            </div>
+          </div>
+
+          <!-- Estado Civil -->
+          <div class="mb-3">
+            <label class="form-label">Estado Civil</label>
+            <select class="form-control" id="editEstadoCivil" name="estadoCivil" required>
+              <option value="">Seleccione...</option>
+              <option value="SOLTERO">Soltero(a)</option>
+              <option value="CASADO">Casado(a)</option>
+              <option value="VIUDO">Viudo(a)</option>
+              <option value="DIVORCIADO">Divorciado(a)</option>
+              <option value="CONVIVIENTE">Conviviente</option>
+            </select>
+          </div>
+
+          <!-- Teléfono + Email -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Teléfono</label>
+              <input type="text" class="form-control" id="editTelefono" name="telefono">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" id="editEmail" name="email">
+            </div>
+          </div>
+
+          <!-- Dirección -->
+          <div class="mb-3">
+            <label class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="editDireccion" name="direccion">
+          </div>
+
+          <!-- Foto URL (opcional) -->
+          <div class="mb-3">
+            <label class="form-label">Foto (URL)</label>
+            <input type="text" class="form-control" id="editFotoUrl" name="fotoUrl">
+          </div>
+
+          <!-- Apoderado (opcional) -->
+          <div class="mb-3">
+            <label class="form-label">Apoderado (ID Persona)</label>
+            <input type="text" class="form-control" id="editApoderadoId" name="apoderadoPersId">
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save"></i> Guardar Cambios
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancelar
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
 
 <style>
 @media print {

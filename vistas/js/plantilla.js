@@ -30,5 +30,22 @@ $(document).ready(function() {
       this.classList.toggle('moved');
     });
   }
+
+  // Mantener submódulos abiertos si la página actual está en el submódulo
+  $('.sidebar-menu .submenu a').each(function() {
+    if (this.href === url) {
+      $(this).addClass('active');
+      $(this).closest('.has-submenu').addClass('open');
+    }
+  });
   
 });
+
+/**
+ * Toggle de submódulos del menú
+ */
+function toggleSubmenu(event, element) {
+  event.preventDefault();
+  const parentLi = element.closest('li');
+  parentLi.classList.toggle('open');
+}

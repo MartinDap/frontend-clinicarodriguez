@@ -1,0 +1,16 @@
+{
+  "name": "frontend-clinicarodriguez",
+  "version": "1.0.0",
+  "description": "Sistema de Gestión Clínica desarrollado con PHP y Bootstrap 5.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint . --ext .js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0"
+  }
+}

@@ -48,9 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function buscarPacientesPorDni(dni) {
       const url = `${CONFIG.API_BASE_URL}pacientes/buscar/dni?dni=${encodeURIComponent(dni)}`;
-      // Si tu CONFIG.API_BASE_URL ya incluye /api/, entonces queda:
-      // http://localhost:8080/api/pacientes/buscar/dni?dni=...
-
       fetch(url, {
         method: "GET",
         headers: {

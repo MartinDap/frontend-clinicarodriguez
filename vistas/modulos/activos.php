@@ -1,91 +1,98 @@
 <?php
+  $token = obtener_token_usuario();
+  if ($token !== null){
+    $curl = curl_init();
 
-  $curl = curl_init();
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => API_BASE_URL . 'activos-tecnologicos',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'GET',
+      CURLOPT_HTTPHEADER => array(
+          'Authorization: ' . $token,
+          'Content-Type: application/json'
+      ),
+    ));
 
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => API_BASE_URL . 'activos-tecnologicos',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-    CURLOPT_HTTPHEADER => array(
-      API_AUTH_HEADER
-    ),
-  ));
+    $response = curl_exec($curl);
 
-  $response = curl_exec($curl);
+    curl_close($curl);
+    $data = json_decode($response, true);
 
-  curl_close($curl);
-  $data = json_decode($response, true);
+    /* CATEGORIA */
+    $curl = curl_init();
 
-  /* CATEGORIA */
-  $curl = curl_init();
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => API_BASE_URL . 'categorias-activo',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'GET',
+      CURLOPT_HTTPHEADER => array(
+          'Authorization: ' . $token,
+          'Content-Type: application/json'
+      ),
+    ));
 
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => API_BASE_URL . 'categorias-activo',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-    CURLOPT_HTTPHEADER => array(
-      API_AUTH_HEADER
-    ),
-  ));
+    $responsecategoriaactivos = curl_exec($curl);
 
-  $responsecategoriaactivos = curl_exec($curl);
+    curl_close($curl);
+    $dataCategoriaActivos = json_decode($responsecategoriaactivos, true);
 
-  curl_close($curl);
-  $dataCategoriaActivos = json_decode($responsecategoriaactivos, true);
+      /* USUARIOS */
+    $curl = curl_init();
 
-    /* USUARIOS */
-  $curl = curl_init();
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => API_BASE_URL . 'usuarios',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'GET',
+      CURLOPT_HTTPHEADER => array(
+          'Authorization: ' . $token,
+          'Content-Type: application/json'
+      ),
+    ));
 
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => API_BASE_URL . 'usuarios',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-    CURLOPT_HTTPHEADER => array(
-      API_AUTH_HEADER
-    ),
-  ));
+    $responseusuarios = curl_exec($curl);
 
-  $responseusuarios = curl_exec($curl);
+    curl_close($curl);
+    $dataUsuarios = json_decode($responseusuarios, true);
 
-  curl_close($curl);
-  $dataUsuarios = json_decode($responseusuarios, true);
+    /* AREAS */
+    $curl = curl_init();
 
-  /* AREAS */
-  $curl = curl_init();
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => API_BASE_URL . 'areas/normal',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'GET',
+      CURLOPT_HTTPHEADER => array(
+          'Authorization: ' . $token,
+          'Content-Type: application/json'
+      ),
+    ));
 
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => API_BASE_URL . 'areas',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-    CURLOPT_HTTPHEADER => array(
-      API_AUTH_HEADER
-    ),
-  ));
+    $responseareas = curl_exec($curl);
 
-  $responseareas = curl_exec($curl);
-
-  curl_close($curl);
-  $dataAreas = json_decode($responseareas, true);
+    curl_close($curl);
+    $dataAreas = json_decode($responseareas, true);
+  }
+  
 
 ?>
 <link rel="stylesheet" href="vistas/css/activos.css">
@@ -93,9 +100,14 @@
   
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2><i class="bi bi-hdd-network"></i> Gestión de Activos Tecnológicos</h2>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarActivo">
-      <i class="bi bi-plus-circle"></i> Nuevo Activo
-    </button>
+    <div>
+      <button class="btn btn-success me-2" id="btnGenerarReporte">
+        <i class="bi bi-file-earmark-pdf"></i> Generar Reporte PDF
+      </button>
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarActivo">
+        <i class="bi bi-plus-circle"></i> Nuevo Activo
+      </button>
+    </div>
   </div>
   
   <div class="table-container">
@@ -137,8 +149,8 @@
               <td><?= htmlspecialchars($item["usuario"]["persona"]["persNombrecompleto"]) ?></td>
               <td>
                 <button type="button" class="btn btn-info btn-sm btnVerActivo" acteId="<?= $item['acteId'] ?>" tittle="Ver activo">
-                <i class="bi bi-eye"></i>
-              </button>
+                  <i class="bi bi-eye"></i>
+                </button>
                 <button class="btn btn-sm btn-warning btnEditarActivo me-1" acteId="<?= $item["acteId"] ?>" title="Editar activo">
                   <i class="bi bi-pencil"></i>
                 </button>
@@ -242,7 +254,7 @@ MODAL AGREGAR ACTIVO
                 </div>
               </div>
 
-              <!-- NUEVA FILA: ÁREA DEL ORGANIGRAMA -->
+              <!-- ÁREA DEL ORGANIGRAMA -->
             <div class="row">
               <div class="form-group col-md-6">
                 <label for="areaId">Área (Organigrama)</label>
@@ -573,7 +585,6 @@ MODAL EDITAR PACIENTE
   </div>
 </div>
 
-
 <!-- Modal para visualizar y descargar ticket -->
 <div id="modalTicketActivo" class="modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
@@ -594,7 +605,7 @@ MODAL EDITAR PACIENTE
             <p style="margin: 5px 0;"><strong>Código:</strong> <span id="ticketCodigo">202511012147</span></p>
             <p style="margin: 5px 0;"><strong>Activo:</strong> <span id="ticketNombre">Laptop HP ProBook 450 G8</span></p>
             <p style="margin: 5px 0;"><strong>Área:</strong> <span id="ticketUbicacion">Oficina Administrativa</span></p>
-            <p style="margin: 5px 0;">📅 <strong>Adq:</strong> <span id="ticketFechaCompra">2024-06-15</span></p>
+            <p style="margin: 5px 0;"><strong>Adquisición:</strong> <span id="ticketFechaCompra">2024-06-15</span></p>
           </div>
           
           <hr style="border-top: 1px solid #003264; margin: 10px 0;">
@@ -626,6 +637,12 @@ MODAL EDITAR PACIENTE
   </div>
 </div>
 
+<!-- Contenedor oculto para generar tickets en lote -->
+<div id="ticketsParaImprimir" style="display: none;">
+  <!-- Aquí se generarán los tickets dinámicamente -->
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>

@@ -1,3 +1,184 @@
+
+
+document.addEventListener("click", function(event) {
+  const btn = event.target.closest("#btnCompletarPaciente");
+  if (!btn) return;
+
+  const pacId = btn.getAttribute("data-pacId");
+
+  console.log("Cargando datos del paciente con ID:", pacId);
+  // Aquí llamas a tu API para obtener los datos completos del paciente
+  fetch(`${CONFIG.API_BASE_URL}pacientes/${pacId}`, {
+    headers: {
+      "Authorization": CONFIG.API_AUTH_HEADER
+    }
+  })
+    .then(r => r.json())
+    .then(res => {
+      const p = res.data.persona;
+
+      // Rellenar los inputs
+      document.getElementById("pacIdEditar").value = res.data.paciId;
+      document.getElementById("persIdEditar").value = p.persId;
+
+      document.getElementById("editNombreCompleto").value = p.persNombrecompleto ?? "";
+      document.getElementById("editTipoDoc").value = p.persTipoDoc ?? "";
+      document.getElementById("editNroDoc").value = p.persNroDoc ?? "";
+      document.getElementById("editSexo").value = p.persSexo ?? "";
+      document.getElementById("editFecNacimiento").value = p.persFecNacimiento ?? "";
+      document.getElementById("editEstadoCivil").value = p.persEstadoCivil ?? "";
+      document.getElementById("editTelefono").value = p.persTelefono ?? "";
+      document.getElementById("editEmail").value = p.persEmail ?? "";
+      document.getElementById("editDireccion").value = p.persDireccion ?? "";
+      document.getElementById("editFotoUrl").value = p.persFoto ?? "";
+      document.getElementById("editApoderadoId").value = p.apoderadoPersId ?? "";
+    });
+
+});
+
+
+/*=============================================
+  CONFIRMAR EDITAR / COMPLETAR PACIENTE (VANILLA JS)
+=============================================*/
+document.addEventListener("DOMContentLoaded", function () {
+
+  const formCompletar = document.getElementById("formCompletarPaciente");
+  if (!formCompletar) return;
+
+  formCompletar.addEventListener("submit", async function (event) {
+    event.preventDefault(); // Evita recarga
+
+    // 1. Capturar valores del formulario
+    const pacId            = document.getElementById("pacIdEditar")?.value?.trim();
+    const nombrecompleto   = document.getElementById("editNombreCompleto")?.value?.trim();
+    const tipoDoc          = document.getElementById("editTipoDoc")?.value?.trim();
+    const nroDoc           = document.getElementById("editNroDoc")?.value?.trim();
+    const sexo             = document.getElementById("editSexo")?.value?.trim();
+    const fecNacimiento    = document.getElementById("editFecNacimiento")?.value?.trim();
+    const estadoCivil      = document.getElementById("editEstadoCivil")?.value?.trim();
+    const telefono         = document.getElementById("editTelefono")?.value?.trim();
+    const email            = document.getElementById("editEmail")?.value?.trim();
+    const direccion        = document.getElementById("editDireccion")?.value?.trim();
+    const fotoUrlInput     = document.getElementById("editFotoUrl")?.value?.trim();
+    const apoderadoInput   = document.getElementById("editApoderadoId")?.value?.trim();
+
+    const fotoUrl          = fotoUrlInput !== "" ? fotoUrlInput : null;
+    const apoderadoPersId  = apoderadoInput !== "" ? apoderadoInput : null;
+
+    console.log("Paciente a editar / completar:", {
+      pacId,
+      nombrecompleto,
+      tipoDoc,
+      nroDoc,
+      sexo,
+      fecNacimiento,
+      estadoCivil,
+      telefono,
+      email,
+      direccion,
+      fotoUrl,
+      apoderadoPersId
+    });
+
+    if (!pacId) {
+      Swal.fire({
+        icon: "warning",
+        title: "Falta el ID del paciente",
+        text: "No se puede editar sin el identificador del paciente.",
+        confirmButtonText: "Cerrar"
+      });
+      return;
+    }
+
+    // 2. Confirmación antes de enviar
+    const confirmResult = await Swal.fire({
+      icon: "question",
+      title: "¿Guardar cambios del paciente?",
+      text: "Se actualizarán los datos del paciente en el sistema.",
+      showCancelButton: true,
+      confirmButtonText: "Sí, guardar",
+      cancelButtonText: "Cancelar"
+    });
+
+    if (!confirmResult.isConfirmed) {
+      return;
+    }
+
+    // 3. Construir payload según tu API
+    const payload = {
+      nombrecompleto: nombrecompleto,
+      tipoDoc: tipoDoc,
+      nroDoc: nroDoc,
+      sexo: sexo,
+      fecNacimiento: fecNacimiento,
+      estadoCivil: estadoCivil,
+      telefono: telefono,
+      email: email,
+      direccion: direccion,
+      fotoUrl: fotoUrl,
+      apoderadoPersId: apoderadoPersId
+    };
+
+    console.log("Payload enviado a backend:", payload);
+
+    try {
+      const response = await fetch(`${CONFIG.API_BASE_URL}pacientes/editar/${pacId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": CONFIG.API_AUTH_HEADER
+        },
+        body: JSON.stringify(payload)
+      });
+
+      let data = null;
+      try {
+        data = await response.json();
+      } catch (e) {
+        // Si la respuesta no tiene JSON
+        data = null;
+      }
+
+      console.log("Respuesta del servidor (editar paciente):", data);
+
+      if (!response.ok || (data && data.success === false)) {
+        const msg = (data && data.message) || `Error al editar paciente (HTTP ${response.status})`;
+        Swal.fire({
+          icon: "warning",
+          title: "No se pudo editar el paciente",
+          text: msg,
+          confirmButtonText: "Cerrar"
+        });
+        return;
+      }
+
+      // Éxito
+      Swal.fire({
+        icon: "success",
+        title: (data && data.message) || "El paciente ha sido modificado correctamente",
+        confirmButtonText: "Cerrar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Recargar o redirigir a la lista de pacientes
+          window.location.reload();
+        }
+      });
+
+    } catch (error) {
+      console.error("Error al editar paciente:", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "No se pudo editar el paciente",
+        text: error.message || "Ocurrió un error inesperado. Revisa los datos e inténtalo nuevamente.",
+        confirmButtonText: "Cerrar"
+      });
+    }
+
+  });
+});
+
+
 /*=============================================
 INICIAR TRIAJE
 =============================================*/
@@ -381,10 +562,11 @@ document.addEventListener("click", async function (event) {
     return;
   }
 
-  console.log("Ver episodio clínico con ID:", epclId);
+  console.log("Ver recetas del episodio clínico con ID:", epclId);
 
   try {
-    const url = `${CONFIG.API_BASE_URL}episodios-clinicos/${epclId}`;
+    // 🔹 NUEVA URL: recetas por episodio
+    const url = `${CONFIG.API_BASE_URL}recetas/episodio/${epclId}`;
 
     const response = await fetch(url, {
       method: "GET",
@@ -398,25 +580,37 @@ document.addEventListener("click", async function (event) {
       throw new Error(`Error HTTP ${response.status}`);
     }
 
-    let data = await response.json();
-    console.log("Respuesta detalle episodio clínico:", data);
+    let resJson = await response.json();
+    console.log("Respuesta recetas del episodio:", resJson);
 
-    // Puede venir como { data: {...} } o {...}
-    const episodio = data.data ? data.data : data;
+    const recetas = Array.isArray(resJson.data) ? resJson.data : [];
 
-    if (!episodio || typeof episodio !== "object") {
-      throw new Error("La respuesta no contiene datos válidos del episodio clínico");
+    if (recetas.length === 0) {
+      // Si no hay recetas, igual mostramos el modal con solo info del episodio básico
+      Swal.fire({
+        icon: "info",
+        title: "Sin recetas registradas",
+        text: "Este episodio clínico no tiene recetas asociadas.",
+        confirmButtonText: "Cerrar"
+      });
     }
 
-    // Opcional: formatear fecha (epclFecha) a algo más legible
+    // Tomamos el episodio clínico desde la primera receta
+    const episodio = recetas[0]?.episodioClinico;
+    if (!episodio) {
+      throw new Error("No se encontró información del episodio clínico en la respuesta.");
+    }
+
+    // ================================
+    // 1) Llenar datos del episodio
+    // ================================
+
     let fechaTexto = episodio.epclFecha || "";
-    // Si quieres, puedes recortar segundos: "2025-11-16T00:54:00" -> "2025-11-16 00:54"
     if (fechaTexto.includes("T")) {
       const [fecha, hora] = fechaTexto.split("T");
-      fechaTexto = `${fecha} ${hora.substring(0,5)}`; // HH:MM
+      fechaTexto = `${fecha} ${hora.substring(0, 5)}`; // HH:MM
     }
 
-    // Llenar el modal
     const inputEpclId            = document.getElementById("verEpclId");
     const inputEpclFecha         = document.getElementById("verEpclFecha");
     const inputEpclTipo          = document.getElementById("verEpclTipo");
@@ -439,6 +633,98 @@ document.addEventListener("click", async function (event) {
       inputEpclEstado.value = estadoTexto;
     }
 
+    // =======================================
+    // 2) Pintar las recetas y medicamentos
+    // =======================================
+    const contenedorRecetas = document.getElementById("listaRecetas");
+    if (contenedorRecetas) {
+      contenedorRecetas.innerHTML = ""; // limpiar antes de dibujar
+
+      if (recetas.length === 0) {
+        contenedorRecetas.innerHTML = `
+          <div class="alert alert-warning mb-0">
+            No hay recetas registradas para este episodio clínico.
+          </div>
+        `;
+      } else {
+        // Recorremos cada receta
+        recetas.forEach((receta, index) => {
+          let receFechaTexto = receta.receFecha || "";
+          if (receFechaTexto.includes("T")) {
+            const [f, h] = receFechaTexto.split("T");
+            receFechaTexto = `${f} ${h.substring(0, 5)}`;
+          }
+
+          const estadoReceta = receta.receEstado ? "Activa" : "Inactiva";
+
+          // Construimos las filas de medicamentos
+          const filasMedicamentos = (receta.detalles || [])
+            .map(detalle => `
+              <tr>
+                <td>${detalle.redeMedicamento ?? ""}</td>
+                <td>${detalle.redePresentacion ?? ""}</td>
+                <td>${detalle.redeDosis ?? ""}</td>
+                <td>${detalle.redeFrecuencia ?? ""}</td>
+                <td>${detalle.redeDuracion ?? ""}</td>
+                <td>${detalle.redeViaAdministracion ?? ""}</td>
+                <td>${detalle.redeObservaciones ?? ""}</td>
+              </tr>
+            `)
+            .join("");
+
+          const card = document.createElement("div");
+          card.classList.add("card", "mb-3");
+
+          card.innerHTML = `
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <div>
+                <strong>Receta #${receta.receId}</strong>
+              </div>
+              <small class="text-muted">
+                Fecha: ${receFechaTexto}
+              </small>
+            </div>
+            <div class="card-body">
+              <p class="mb-1">
+                <strong>Indicaciones:</strong><br>
+                ${receta.receIndicaciones ?? ""}
+              </p>
+              <p class="mb-2">
+                <strong>Estado de la receta:</strong> ${estadoReceta}
+              </p>
+
+              <div class="table-responsive">
+                <table class="table table-sm table-bordered align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Medicamento</th>
+                      <th>Presentación</th>
+                      <th>Dosis</th>
+                      <th>Frecuencia</th>
+                      <th>Duración</th>
+                      <th>Vía adm.</th>
+                      <th>Observaciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${filasMedicamentos || `
+                      <tr>
+                        <td colspan="7" class="text-center text-muted">
+                          Sin medicamentos registrados.
+                        </td>
+                      </tr>
+                    `}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+
+          contenedorRecetas.appendChild(card);
+        });
+      }
+    }
+
     // Mostrar el modal
     const modalElement = document.getElementById("modalVerEpisodio");
     if (modalElement) {
@@ -449,16 +735,17 @@ document.addEventListener("click", async function (event) {
     }
 
   } catch (error) {
-    console.error("Error al obtener detalle de episodio clínico:", error);
+    console.error("Error al obtener recetas del episodio clínico:", error);
 
     Swal.fire({
       icon: "error",
-      title: "No se pudo cargar el episodio clínico",
+      title: "No se pudo cargar la información",
       text: error.message || "Intente nuevamente o recargue la página.",
       confirmButtonText: "Cerrar"
     });
   }
 });
+
 
 
 /*=============================================
@@ -699,14 +986,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /*=============================================
-GUARDAR CAMBIOS DEL DOCUMENTO
-=============================================*/
-
-
-
-
-
-/*=============================================
 SUBIR DOCUMENTO DEL PACIENTE
 =============================================*/
 document.addEventListener('DOMContentLoaded', function () {
@@ -908,3 +1187,184 @@ document.addEventListener("click", function (event) {
 $('#modalVerDocumento').on('hidden.bs.modal', function () {
   $('#iframeDocumento').attr('src', '');
 });
+
+// Asignar el epclId al campo oculto cuando se abre el modal
+$('.btnAgregarReceta').on('click', function() {
+  const epclId = $(this).attr('epclId');
+  $('#epclIdReceta').val(epclId);
+  $('#modalAgregarReceta').modal('show');
+});
+
+// Agregar más medicamentos al formulario
+$('#btnAgregarMedicamento').on('click', function() {
+  const medicamentoRow = `
+    <div class="row mb-3 medicamento-row">
+      <div class="col-md-4">
+        <label for="redeMedicamento" class="form-label">Medicamento</label>
+        <input type="text" class="form-control" name="redeMedicamento[]" required>
+      </div>
+      <div class="col-md-4">
+        <label for="redePresentacion" class="form-label">Presentación</label>
+        <input type="text" class="form-control" name="redePresentacion[]" required>
+      </div>
+      <div class="col-md-4">
+        <label for="redeDosis" class="form-label">Dosis</label>
+        <input type="text" class="form-control" name="redeDosis[]" required>
+      </div>
+      <div class="col-md-4">
+        <label for="redeFrecuencia" class="form-label">Frecuencia</label>
+        <input type="text" class="form-control" name="redeFrecuencia[]" required>
+      </div>
+      <div class="col-md-4">
+        <label for="redeDuracion" class="form-label">Duración</label>
+        <input type="text" class="form-control" name="redeDuracion[]" required>
+      </div>
+      <div class="col-md-4">
+        <label for="redeViaAdministracion" class="form-label">Vía de administración</label>
+        <input type="text" class="form-control" name="redeViaAdministracion[]" required>
+      </div>
+      <div class="col-md-4">
+        <label for="redeObservaciones" class="form-label">Observaciones</label>
+        <input type="text" class="form-control" name="redeObservaciones[]" required>
+      </div>
+    </div>
+  `;
+  $('#detallesMedicamentos').append(medicamentoRow);
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  // Asignar el epclId al campo oculto cuando se abre el modal
+  $('.btnAgregarReceta').on('click', function() {
+    const epclId = $(this).attr('epclId');
+    $('#epclIdReceta').val(epclId);  // Asigna el epclId al campo oculto
+    $('#modalAgregarReceta').modal('show');
+  });
+
+  const formReceta = document.getElementById("formAgregarReceta");
+
+  if (formReceta) {
+    formReceta.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      Swal.fire({
+        title: "¿Guardar receta y continuar?",
+        html: `
+          <p>Se guardará la receta con los detalles de los medicamentos.</p>
+          <p class="mb-0">
+            <small>Si presionas <strong>Cancelar</strong>, la información registrada se perderá.</small>
+          </p>
+        `,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, guardar y continuar",
+        cancelButtonText: "Cancelar (perder datos)"
+      }).then(async (result) => {
+        const modalRecetaEl = document.getElementById("modalAgregarReceta");
+        const modalReceta = bootstrap.Modal.getInstance(modalRecetaEl);
+
+        if (result.isConfirmed) {
+
+          // Capturar los valores del formulario
+          const epclId = document.getElementById("epclIdReceta").value.trim();
+          const receFecha = document.getElementById("receFecha").value.trim();
+          const receIndicaciones = document.getElementById("receIndicaciones").value.trim();
+          const receEstado = document.getElementById("receEstado").value.trim();
+
+          // Obtener todos los detalles de los medicamentos
+          const detalles = [];
+          const medicamentos = document.getElementsByName("redeMedicamento[]");
+          const presentaciones = document.getElementsByName("redePresentacion[]");
+          const dosis = document.getElementsByName("redeDosis[]");
+          const frecuencias = document.getElementsByName("redeFrecuencia[]");
+          const duraciones = document.getElementsByName("redeDuracion[]");
+          const vias = document.getElementsByName("redeViaAdministracion[]");
+          const observaciones = document.getElementsByName("redeObservaciones[]");
+
+          // Recopilar los datos de cada medicamento en el array detalles
+          for (let i = 0; i < medicamentos.length; i++) {
+            detalles.push({
+              redeMedicamento: medicamentos[i].value.trim(),
+              redePresentacion: presentaciones[i].value.trim(),
+              redeDosis: dosis[i].value.trim(),
+              redeFrecuencia: frecuencias[i].value.trim(),
+              redeDuracion: duraciones[i].value.trim(),
+              redeViaAdministracion: vias[i].value.trim(),
+              redeObservaciones: observaciones[i].value.trim()
+            });
+          }
+
+          // Validar que todos los campos obligatorios estén llenos
+          if (!receFecha || !receIndicaciones || detalles.length === 0) {
+            Swal.fire({
+              icon: "warning",
+              title: "Por favor, complete todos los campos obligatorios.",
+              confirmButtonText: "Cerrar"
+            });
+            return;
+          }
+
+          // Crear el objeto con los datos de la receta
+          const data = {
+            episodioClinico: { epclId: epclId },
+            receFecha: receFecha,
+            receIndicaciones: receIndicaciones,
+            receEstado: receEstado === "true",  // Convertir a booleano
+            detalles: detalles
+          };
+
+          console.log("Enviando receta:", data);
+
+          // Realizar la solicitud POST con fetch
+          fetch(`${CONFIG.API_BASE_URL}recetas`, {
+            method: "POST",
+            headers: {
+              "Authorization": "Bearer your-token",  // Aquí deberías agregar tu token de autorización
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log("Respuesta del servidor (agregar receta):", data);
+
+              Swal.fire({
+                icon: "success",
+                title: "Receta guardada correctamente",
+                confirmButtonText: "Aceptar"
+              }).then(() => {
+                if (modalReceta) modalReceta.hide();
+                formReceta.reset();  // Limpiar el formulario
+
+                // Aquí puedes realizar cualquier acción posterior, como recargar la página o mostrar un mensaje adicional.
+              });
+            })
+            .catch(error => {
+              console.error("Error al agregar receta:", error);
+
+              Swal.fire({
+                icon: "error",
+                title: "No se pudo guardar la receta",
+                text: error.message || "Verifica los datos e inténtalo nuevamente.",
+                confirmButtonText: "Cerrar"
+              });
+            });
+
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          // Canceló: perder datos y cerrar modal
+          formReceta.reset();
+          if (modalReceta) modalReceta.hide();
+
+          Swal.fire({
+            icon: "info",
+            title: "Receta descartada",
+            text: "La información ingresada se ha perdido.",
+            confirmButtonText: "Entendido"
+          });
+        }
+
+      });
+    });
+  }
+});
+

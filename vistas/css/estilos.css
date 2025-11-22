@@ -81,6 +81,56 @@ body {
   font-size: 1.2rem;
 }
 
+/* Submódulos */
+.sidebar-menu .has-submenu > a {
+  position: relative;
+}
+
+.sidebar-menu .has-submenu > a::after {
+  content: "\f282";
+  font-family: "bootstrap-icons";
+  position: absolute;
+  right: 1.5rem;
+  transition: transform 0.3s;
+}
+
+.sidebar-menu .has-submenu.open > a::after {
+  transform: rotate(90deg);
+}
+
+.sidebar-menu .submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  background-color: rgba(0,0,0,0.2);
+}
+
+.sidebar-menu .has-submenu.open .submenu {
+  max-height: 500px;
+  transition: max-height 0.3s ease-in;
+}
+
+.sidebar-menu .submenu li {
+  margin: 0;
+}
+
+.sidebar-menu .submenu a {
+  padding: 0.6rem 1.5rem 0.6rem 3.5rem;
+  font-size: 0.95rem;
+}
+
+.sidebar-menu .submenu a:hover {
+  background-color: rgba(255,255,255,0.1);
+  padding-left: 3.7rem;
+}
+
+.sidebar-menu .submenu i {
+  font-size: 1rem;
+}
+
 /* ===================================
    CONTENIDO PRINCIPAL
    =================================== */

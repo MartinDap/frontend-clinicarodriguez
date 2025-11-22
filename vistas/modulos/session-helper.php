@@ -26,7 +26,8 @@ function obtener_nombre_usuario() {
  * @return string|null ID del perfil del usuario o null si no existe
  */
 function obtener_perfil_usuario() {
-    return isset($_SESSION["perfil"]) ? $_SESSION["perfil"] : null;
+    //return isset($_SESSION["perfil"]) ? $_SESSION["perfil"] : null;
+    return isset($_SESSION["roles"]) ? $_SESSION["roles"] : [];
 }
 
 /**
@@ -38,13 +39,26 @@ function obtener_id_usuario() {
 }
 
 /**
+ * Obtiene el TOKEN de la sesión actual
+ * @return int|null TOKEN del usuario o null si no existe
+ */
+function obtener_token_usuario() {
+    return isset($_SESSION["authHeader"]) ? $_SESSION["authHeader"] : null;
+}
+/**
  * Verifica si el usuario tiene un perfil específico
  * @param string $perfil_id ID del perfil a verificar (1=Administrador, 2=Médico, 3=Recepcionista)
  * @return bool True si el usuario tiene ese perfil
  */
-function es_perfil($perfil_id) {
-    return obtener_perfil_usuario() === $perfil_id;
+function es_perfil($role) {
+    //return obtener_perfil_usuario() === $role;
+    return in_array($role, obtener_perfil_usuario());
 }
+
+function tiene_rol($roles, $rol) {
+    return in_array($rol, $roles);
+}
+
 
 /**
  * Cierra la sesión actual de forma segura

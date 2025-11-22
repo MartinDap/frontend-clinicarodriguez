@@ -1,48 +1,52 @@
 <?php
+$token = obtener_token_usuario();
+  if ($token !== null){
+    $curl = curl_init();
 
-  $curl = curl_init();
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => API_BASE_URL . 'dias-medico',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'GET',
+      CURLOPT_HTTPHEADER => array(
+          'Authorization: ' . $token,
+          'Content-Type: application/json'
+      ),
+    ));
 
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => API_BASE_URL . 'dias-medico',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-    CURLOPT_HTTPHEADER => array(
-      API_AUTH_HEADER
-    ),
-  ));
+    $response = curl_exec($curl);
 
-  $response = curl_exec($curl);
+    curl_close($curl);
+    $data = json_decode($response, true);
 
-  curl_close($curl);
-  $data = json_decode($response, true);
+    /* medicos */
+    $curl = curl_init();
 
-  /* medicos */
-  $curl = curl_init();
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => API_BASE_URL . 'medicos',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'GET',
+      CURLOPT_HTTPHEADER => array(
+          'Authorization: ' . $token,
+          'Content-Type: application/json'
+      ),
+    ));
 
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => API_BASE_URL . 'medicos',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-    CURLOPT_HTTPHEADER => array(
-      API_AUTH_HEADER
-    ),
-  ));
+    $responsemedicos = curl_exec($curl);
 
-  $responsemedicos = curl_exec($curl);
+    curl_close($curl);
+    $dataMedicos = json_decode($responsemedicos, true);
 
-  curl_close($curl);
-  $dataMedicos = json_decode($responsemedicos, true);
-
+  }
 
 ?>
 <div class="container-fluid">

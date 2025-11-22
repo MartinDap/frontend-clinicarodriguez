@@ -264,10 +264,9 @@ function abrirModalTicket(datosActivo) {
 }
 
 // Método para descargar el ticket como imagen
-
 const btnDescargarTicket = document.getElementById('btnDescargarTicket');
 if (btnDescargarTicket) {
-  document.getElementById('btnDescargarTicket').addEventListener('click', function() {
+  btnDescargarTicket.addEventListener('click', function() {
     const ticketContainer = document.getElementById('ticketContainer');
     const codigo = document.getElementById('ticketCodigo').textContent;
     
@@ -281,72 +280,199 @@ if (btnDescargarTicket) {
       }
     });
     
-    // Esperar a que el QR se renderice completamente
-    setTimeout(() => {
-      // Opciones para html2canvas
-      const opciones = {
-        scale: 3, // Mayor calidad (3x)
-        backgroundColor: '#ffffff',
-        logging: false,
-        useCORS: true,
-        allowTaint: true,
-        foreignObjectRendering: false,
-        imageTimeout: 0,
-        // Importante para capturar el canvas del QR
-        onclone: function(clonedDoc) {
-          // Asegurar que el QR canvas esté visible en el clon
-          const qrCanvas = clonedDoc.querySelector('#qrcode canvas');
-          if (qrCanvas) {
-            qrCanvas.style.display = 'block';
-            qrCanvas.style.margin = '0 auto';
-          }
-        }
-      };
+    // Convertir el canvas del QR a imagen antes de capturar
+    const qrCanvas = document.querySelector('#qrcode canvas');
+    
+    if (!qrCanvas) {
+      Swal.close();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se encontró el código QR',
+        showConfirmButton: true
+      });
+      return;
+    }
+    
+    // Crear una imagen del QR
+    const qrImage = new Image();
+    qrImage.src = qrCanvas.toDataURL('image/png');
+    
+    qrImage.onload = function() {
+      // Reemplazar temporalmente el canvas con la imagen
+      const qrContainer = document.getElementById('qrcode');
+      const originalContent = qrContainer.innerHTML;
+      qrContainer.innerHTML = '';
+      qrContainer.appendChild(qrImage);
       
-      // Generar imagen del ticket
-      html2canvas(ticketContainer, opciones)
-        .then(canvas => {
-          // Cerrar loading
-          Swal.close();
-          
-          // Convertir canvas a blob
-          canvas.toBlob(function(blob) {
-            // Crear URL temporal del blob
-            const url = URL.createObjectURL(blob);
+      // Esperar un momento para que se renderice
+      setTimeout(() => {
+        // Opciones para html2canvas
+        const opciones = {
+          scale: 3,
+          backgroundColor: '#ffffff',
+          logging: false,
+          useCORS: true,
+          allowTaint: true
+        };
+        
+        // Generar imagen del ticket
+        html2canvas(ticketContainer, opciones)
+          .then(canvas => {
+            // Restaurar el QR original
+            qrContainer.innerHTML = originalContent;
             
-            // Crear enlace de descarga
-            const link = document.createElement('a');
-            link.download = `sticker_activo_${codigo}.png`;
-            link.href = url;
+            // Cerrar loading
+            Swal.close();
             
-            // Simular click para descargar
-            document.body.appendChild(link);
-            link.click();
-            
-            // Limpiar
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            
-            // Notificación de éxito
+            // Convertir canvas a blob
+            canvas.toBlob(function(blob) {
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.download = `sticker_activo_${codigo}.png`;
+              link.href = url;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              URL.revokeObjectURL(url);
+              
+              Swal.fire({
+                icon: 'success',
+                title: '¡Descarga exitosa!',
+                text: 'El sticker se ha descargado correctamente',
+                timer: 2000,
+                showConfirmButton: false
+              });
+            }, 'image/png', 1.0);
+          })
+          .catch(error => {
+            // Restaurar el QR original en caso de error
+            qrContainer.innerHTML = originalContent;
+            Swal.close();
+            console.error('Error al generar el sticker:', error);
             Swal.fire({
-              icon: 'success',
-              title: '¡Descarga exitosa!',
-              text: 'El sticker se ha descargado correctamente',
-              timer: 2000,
-              showConfirmButton: false
+              icon: 'error',
+              title: 'Error al generar el sticker',
+              text: 'Por favor, intente nuevamente',
+              showConfirmButton: true
             });
-          }, 'image/png', 1.0);
-        })
-        .catch(error => {
-          Swal.close();
-          console.error('Error al generar el sticker:', error);
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al generar el sticker',
-            text: 'Por favor, intente nuevamente',
-            showConfirmButton: true
           });
-        });
-    }, 500); // Esperar 500ms para que el QR se renderice
+      }, 100);
+    };
   });
+}
+
+document.getElementById('btnGenerarReporte')?.addEventListener('click', async function() {
+  Swal.fire({
+    title: 'Preparando impresión...',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+  
+  try {
+    const url = `${CONFIG.API_BASE_URL}activos-tecnologicos`;
+    const headers = {
+      "Authorization": CONFIG.API_AUTH_HEADER,
+      "Content-Type": "application/json"
+    };
+    
+    const response = await fetch(url, { method: 'GET', headers: headers });
+    const data = await response.json();
+    
+    if (!data || !data.data || data.data.length === 0) {
+      throw new Error('No hay activos para imprimir');
+    }
+    
+    // Crear ventana de impresión
+    const ventanaImpresion = window.open('', '_blank');
+    ventanaImpresion.document.write(generarHTMLImpresion(data.data));
+    ventanaImpresion.document.close();
+    
+    // Esperar a que carguen los QR
+    setTimeout(() => {
+      Swal.close();
+      ventanaImpresion.print();
+    }, 2000);
+    
+  } catch (error) {
+    Swal.close();
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: error.message
+    });
+  }
+});
+
+function generarHTMLImpresion(activos) {
+  let ticketsHTML = '';
+  
+  activos.forEach(activo => {
+    const infoQR = `ACTIVO|${activo.acteCodigoActivo}|${activo.acteNombreEquipo}|${activo.acteUbicacion}`;
+    const qrId = `qr_${activo.acteId}`;
+    
+    ticketsHTML += `
+      <div class="ticket">
+        <div class="ticket-info">
+          <p><strong>Código:</strong> ${activo.acteCodigoActivo}</p>
+          <p><strong>Activo:</strong> ${activo.acteNombreEquipo}</p>
+          <p><strong>Área:</strong> ${activo.acteUbicacion}</p>
+          <p><strong>Adquisición:</strong> ${activo.acteFechaCompra}</p>
+        </div>
+        <hr>
+        <div id="${qrId}" class="qr-container"></div>
+        <div class="ticket-footer">Sistema de Gestión de Activos</div>
+      </div>
+    `;
+  });
+  
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Reporte de Activos</title>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+      <style>
+        @page { size: A4; margin: 10mm; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 10px; }
+        .tickets-grid { 
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+        }
+        .ticket {
+          border: 2px dashed #003264;
+          border-radius: 10px;
+          padding: 15px;
+          page-break-inside: avoid;
+          background: white;
+        }
+        .ticket-info { font-size: 12px; line-height: 1.6; }
+        .ticket-info p { margin: 5px 0; }
+        hr { border-top: 1px solid #003264; margin: 10px 0; }
+        .qr-container { text-align: center; margin: 10px 0; }
+        .ticket-footer { text-align: center; font-size: 9px; color: #666; margin-top: 10px; }
+        @media print {
+          .tickets-grid { gap: 5mm; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="tickets-grid">${ticketsHTML}</div>
+      <script>
+        ${activos.map(activo => `
+          new QRCode(document.getElementById('qr_${activo.acteId}'), {
+            text: 'ACTIVO|${activo.acteCodigoActivo}|${activo.acteNombreEquipo}|${activo.acteUbicacion}',
+            width: 100,
+            height: 100,
+            colorDark: '#003264',
+            colorLight: '#ffffff'
+          });
+        `).join('\n')}
+      </script>
+    </body>
+    </html>
+  `;
 }

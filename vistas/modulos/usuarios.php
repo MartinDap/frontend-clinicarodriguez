@@ -1,48 +1,54 @@
 <?php
 
-// Realizar petición GET a la API para obtener todos los usuarios
-$curl = curl_init();
+$token = obtener_token_usuario();
+  if ($token !== null) {
+    // Realizar petición GET a la API para obtener todos los usuarios
+    $curl = curl_init();
 
-curl_setopt_array($curl, array(
-  CURLOPT_URL => API_BASE_URL . 'usuarios',
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'GET',
-  CURLOPT_HTTPHEADER => array(
-    API_AUTH_HEADER
-  ),
-));
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => API_BASE_URL . 'usuarios',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'GET',
+      CURLOPT_HTTPHEADER => array(
+          'Authorization: ' . $token,
+          'Content-Type: application/json'
+      ),
+    ));
 
-$response = curl_exec($curl);
-curl_close($curl);
+    $response = curl_exec($curl);
+    curl_close($curl);
 
-$data = json_decode($response, true);
+    $data = json_decode($response, true);
 
-/* roles */
-  $curl = curl_init();
+    /* roles */
+      $curl = curl_init();
 
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => API_BASE_URL . 'roles',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-    CURLOPT_HTTPHEADER => array(
-      API_AUTH_HEADER
-    ),
-  ));
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => API_BASE_URL . 'roles',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+          'Authorization: ' . $token,
+          'Content-Type: application/json'
+      ),
+      ));
 
-  $roles = curl_exec($curl);
+      $roles = curl_exec($curl);
 
-  curl_close($curl);
-  $dataRoles = json_decode($roles, true);
+      curl_close($curl);
+      $dataRoles = json_decode($roles, true);
+  }
+
 
 ?>
 

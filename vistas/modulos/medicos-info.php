@@ -47,7 +47,7 @@ include 'vistas/modulos/componentes/navbar-publico.php';
   $(document).ready(function() {
     // Configuración de la petición AJAX
     var configuracion = {
-      url: `${CONFIG.API_BASE_URL}medicos`,
+      url: `${CONFIG.API_BASE_URL}medicos/ver-medicos`,
       method: "GET",
       timeout: 0,
       headers: {

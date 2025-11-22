@@ -6,6 +6,18 @@ if (session_status() == PHP_SESSION_NONE) {
 
 // Cargar helper de sesión
 require_once 'vistas/modulos/session-helper.php';
+
+// Verificar si hay variables de sesión
+if (!empty($_SESSION)) {
+    // Convertir el arreglo $_SESSION a formato JSON
+    $sessionData = json_encode($_SESSION);
+    
+    // Enviar las variables de la sesión a la consola de JavaScript
+    echo "<script>console.log('Variables de sesión:', $sessionData);</script>";
+} else {
+    echo "<script>console.log('No hay variables de sesión disponibles.');</script>";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -130,6 +142,8 @@ if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
 ?>
 
 <!-- Scripts personalizados -->
+<script src="vistas/js/config.js"></script>
+<script src="vistas/js/auth-helper.js"></script>
 <script src="vistas/js/plantilla.js"></script>
 <script src="vistas/js/usuarios.js"></script>
 <script src="vistas/js/pacientes.js"></script>
@@ -141,6 +155,5 @@ if(isset($_GET["ruta"]) && $_GET["ruta"] == "login"){
 <script src="vistas/js/historias-clinicas.js"></script>
 <script src="vistas/js/ver-historia.js"></script>
 <script src="vistas/js/api.js"></script>
-<script src="vistas/js/config.js"></script>
 </body>
 </html>

@@ -15,8 +15,24 @@ class ControladorUsuarios {
         $_SESSION["usuario"] = "admin";
         $_SESSION["perfil"] = "1"; // Perfil administrador
         $_SESSION["especialidad"] = "Administración";
+        
+        // Token demo para desarrollo
+        $tokenDemo = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsInVzdWFyaW9JZCI6MSwicm9sIjoiQURNSU4iLCJpYXQiOjE3NjE0NDg3ODcsImV4cCI6MTc5MzAwMDAwMH0.demo_token_admin";
 
-        echo '<script>window.location = "dashboard";</script>';
+        echo '<script>
+            // Guardar token demo en sessionStorage
+            sessionStorage.setItem("authToken", "' . $tokenDemo . '");
+            sessionStorage.setItem("tokenType", "Bearer");
+            sessionStorage.setItem("authHeader", "Bearer ' . $tokenDemo . '");
+            sessionStorage.setItem("userId", "1");
+            sessionStorage.setItem("username", "admin");
+            sessionStorage.setItem("nombre", "Dr. Admin Demo");
+            sessionStorage.setItem("roles", "ADMIN");
+            
+            console.log("✅ Acceso directo - Token demo guardado");
+            
+            window.location = "dashboard";
+        </script>';
         return;
     }
 
@@ -68,23 +84,13 @@ class ControladorUsuarios {
                 // --- Usuario & Persona ---
                 $userId      = $usuario["usuaId"]        ?? null;
                 $username    = $usuario["usuaUsername"]  ?? '';
-                $ultimaSesion= $usuario["usuaUltimaSesion"] ?? null;
-                $usuaEstado  = $usuario["usuaEstado"]    ?? null;
 
                 $persona                 = $usuario["persona"] ?? [];
-                $persId                  = $persona["persId"] ?? null;
                 $nombreCompleto          = $persona["persNombrecompleto"] ?? '';
-                $tipoDoc                 = $persona["persTipoDoc"] ?? '';
-                $nroDoc                  = $persona["persNroDoc"] ?? '';
-                $email                   = $persona["persEmail"] ?? '';
-                $telefono                = $persona["persTelefono"] ?? '';
-                $direccion               = $persona["persDireccion"] ?? '';
-                $fotoUrl                 = $persona["persFotoUrl"] ?? '';
-                $persEsActivo            = $persona["persEsActivo"] ?? false;
+                //$fotoUrl                 = $persona["persFotoUrl"] ?? '';
 
 				 // --- Roles ---
                 $roles        = $responseArray["roles"] ?? [];            // p.ej. ["MEDICO"]
-                $usuariosRoles= $responseArray["usuariosRoles"] ?? [];    // con roleId, roleName, etc.
                 // Iniciar sesión
                 if (session_status() === PHP_SESSION_NONE) session_start();
                 $_SESSION["iniciarSesion"] = "ok";
@@ -92,21 +98,6 @@ class ControladorUsuarios {
                 $_SESSION["usuario"]       = $username;
                 $_SESSION["nombre"]        = $nombreCompleto;
 
-                // Guarda datos de contacto desde PERSONA
-                //$_SESSION["email"]         = $email;
-                //$_SESSION["telefono"]      = $telefono;
-                //$_SESSION["direccion"]     = $direccion;
-                $_SESSION["foto"]          = $fotoUrl;
-
-                // Documento y persona
-                //$_SESSION["persId"]        = $persId;
-                //$_SESSION["tipoDoc"]       = $tipoDoc;
-                //$_SESSION["nroDoc"]        = $nroDoc;
-
-                // Estado/fechas
-                //$_SESSION["usuaEstado"]    = $usuaEstado;
-                //$_SESSION["persEsActivo"]  = $persEsActivo;
-                //$_SESSION["usuaUltimaSesionApi"] = $ultimaSesion; // la que vino de la API
 
                 // Token para Authorization
                 $_SESSION["token"]         = $token;
@@ -114,16 +105,32 @@ class ControladorUsuarios {
                 $_SESSION["authHeader"]    = $token ? ($type . ' ' . $token) : null;
 
                 // Roles
-                $_SESSION["rolesArray"]    = $roles;         // ["MEDICO", ...]
-                $_SESSION["usuariosRoles"] = $usuariosRoles; // objetos con roleId/name
+                $_SESSION["roles"] = $roles;
+
                 $_SESSION["perfil"]        = "1"; // primer rol como "perfil" visible
 
                 // Registrar fecha/hora local de este login (cliente)
                 date_default_timezone_set('America/Lima');
                 $_SESSION["ultima_sesion"] = date('Y-m-d H:i:s');
 
-                // Redirige
-                echo '<script>window.location = "dashboard";</script>';
+                // Guardar token en sessionStorage desde JavaScript
+                echo '<script>
+                    // Guardar datos de sesión en sessionStorage
+                    sessionStorage.setItem("authToken", "' . $token . '");
+                    sessionStorage.setItem("tokenType", "' . $type . '");
+                    sessionStorage.setItem("authHeader", "' . ($type . ' ' . $token) . '");
+                    sessionStorage.setItem("userId", "' . $userId . '");
+                    sessionStorage.setItem("username", "' . $username . '");
+                    sessionStorage.setItem("nombre", "' . addslashes($nombreCompleto) . '");
+                    sessionStorage.setItem("roles", "' . implode(',', $roles) . '");
+                    
+                    console.log("✅ Token guardado en sessionStorage");
+                    console.log("Token:", sessionStorage.getItem("authToken"));
+                    console.log("Auth Header:", sessionStorage.getItem("authHeader"));
+                    
+                    // Redirigir al dashboard
+                    window.location = "dashboard";
+                </script>';
                 exit;
 
             } else {
@@ -133,7 +140,7 @@ class ControladorUsuarios {
             }
         }
     }
-}
+    }
 
 
 }

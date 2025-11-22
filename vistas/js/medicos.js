@@ -51,11 +51,13 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       // 4) Enviar
+      console.log('🚀 Registrando médico...');
+      console.log('🔑 Token usado:', CONFIG.API_AUTH_HEADER);
+      
       const resp = await fetch(`${CONFIG.API_BASE_URL}medicos/registrar`, {
         method: 'POST',
         headers: {
           'Authorization': CONFIG.API_AUTH_HEADER
-          // NO pongas 'Content-Type': multipart lo maneja el navegador
         },
         body: formData
       });
@@ -370,7 +372,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 // Llenar la información del médico en el modal
-                document.getElementById('infoNombre').textContent = `${result.data.mediNombre} ${result.data.mediApellido}`;
+                document.getElementById('infoNombre').textContent = `${result.data.mediNombre}`;
                 
                 // Mostrar la sección de información
                 document.getElementById('infoMedico').style.display = 'block';
