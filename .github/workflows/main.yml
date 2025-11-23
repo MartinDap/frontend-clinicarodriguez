@@ -24,3 +24,13 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint
+      
+      - name: Build & push Docker Image
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with: 
+          image: renzzzoup/clinicarodriguez-frontend-image
+          tags: latest
+          registry: docker.io
+          dockerfile: Dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
