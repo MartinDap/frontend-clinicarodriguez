@@ -28,7 +28,7 @@ jobs:
       - name: Build & push Docker Image
         uses: mr-smithers-excellent/docker-build-push@v6
         with: 
-          image: renzzzoup/clinicarodriguez-frontend-image
+          image: ${{ secrets.DOCKER_USERNAME }}/clinicarodriguez-frontend-image
           tags: latest
           registry: docker.io
           dockerfile: Dockerfile
