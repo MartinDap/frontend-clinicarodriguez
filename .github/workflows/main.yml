@@ -34,3 +34,17 @@ jobs:
           dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+    deploy:
+    - name: Deploy to VPS via ssh
+      uses: appleboy/ssh-actions@v1.5.0
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: 22
+        script: |
+          cd /apps/frontend
+          echo "Pulling new image..."
+          docker compose pull
+          echo "Bringing up containers..."
+          docker compose up -d
