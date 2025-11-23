@@ -2,7 +2,6 @@
 
 $token = obtener_token_usuario();
   if ($token !== null) {
-    // Realizar petición GET a la API para obtener todos los usuarios
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
