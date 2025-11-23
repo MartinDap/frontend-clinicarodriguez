@@ -45,8 +45,8 @@ jobs:
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
+          username: deploy
+          key: ${{ secrets.SSH_PRIVATE_KEY  }}
           port: 22
           script: |
             cd /apps/frontend
