@@ -9,7 +9,7 @@
 
 // URL base del API backend
 #define('API_BASE_URL', 'https://backend-clinicarodriguez.onrender.com/api/');
-define('API_BASE_URL', 'http://localhost:8080/api/');
+define('API_BASE_URL', 'http://69.62.104.84:8080/api/');
 
 // Header de autenticación (Basic Auth codificado en Base64)
 // NOTA: Este valor debe ser reemplazado por variables de entorno en producción

@@ -15,7 +15,7 @@ class ControladorUsuarios {
         $_SESSION["usuario"] = "admin";
         $_SESSION["perfil"] = "1"; // Perfil administrador
         $_SESSION["especialidad"] = "Administración";
-        
+        $_SESSION["roles"] = "SUPERADMIN";
         // Token demo para desarrollo
         $tokenDemo = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsInVzdWFyaW9JZCI6MSwicm9sIjoiQURNSU4iLCJpYXQiOjE3NjE0NDg3ODcsImV4cCI6MTc5MzAwMDAwMH0.demo_token_admin";
 
