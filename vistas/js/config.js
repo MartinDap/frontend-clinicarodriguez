@@ -1,5 +1,4 @@
 const CONFIG = {
-    //API_BASE_URL: 'https://backend-clinicarodriguez.onrender.com/api/',
     API_BASE_URL: 'http://69.62.104.84:8080/api/',
     
     // Obtener token desde sessionStorage (dinámico)
