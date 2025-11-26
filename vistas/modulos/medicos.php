@@ -97,7 +97,7 @@
               <button class="btn btn-sm btn-info btnAsignarEspecialidades" mediId="<?= $medico["mediId"] ?>">
                 <i class="bi bi-eye"></i>
               </button>
-              <button class="btn btn-sm btn-warning btnEditarMedico" mediId="<?= $medico["mediId"] ?>">
+              <button class="btn btn-sm btn-warning btnEditarMedico" mediId="<?= $medico["mediId"] ?>" disabled>
                 <i class="bi bi-pencil"></i>
               </button>
               <button class="btn btn-sm btn-danger btnEliminarMedico" eliminarMediId="<?= $medico["mediId"] ?>">

@@ -82,9 +82,6 @@ $token = obtener_token_usuario();
               <td><?= htmlspecialchars($item["dimeHoraFin"]) ?></td>
               <td><?= htmlspecialchars($item["dimeDuracion"]) ?></td>
               <td>
-                <button class="btn btn-sm btn-warning btnEditarDisponibilidad" dimeId="<?= $item["dimeId"] ?>">
-                  <i class="bi bi-pencil"></i>
-                </button>
                 <button class="btn btn-sm btn-danger btnEliminarDisponibilidad" dimeId="<?= $item["dimeId"] ?>">
                   <i class="bi bi-trash"></i>
                 </button>
@@ -183,7 +180,7 @@ MODAL REGISTRAR HORARIO
               <label for="regDuracion">Duracion de la cita en minutos (aproximado)</label>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-hourglass-half"></i></span>
-                <input type="number" class="form-control input-lg" name="regDuracion" id="regDuracion" min="1" step="0.5" placeholder="Ej: 2" required>
+                <input type="number" class="form-control input-lg" name="regDuracion" id="regDuracion" min="1" step="0.5" placeholder="Ej: 30" required>
               </div>
             </div>
 

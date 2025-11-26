@@ -48,6 +48,11 @@
       <div class="col-md-3 mb-4">
         <img src="vistas/img/logo-fondo-blanco.png" alt="Logo Clínica" class="img-fluid mb-3" style="max-width: 180px;">
         <p class="text-white-50 small"><?php echo idioma_actual() === 'es' ? 'Tu salud, nuestra prioridad' : 'Your health, our priority'; ?></p>
+        <li class="nav-item">
+            <a class="btn btn-outline-primary ms-2" href="login" title="<?php echo t('nav_acceso_personal'); ?>">
+                <i class="bi bi-box-arrow-in-right"></i>
+            </a>
+        </li>
       </div>
       
       <div class="col-md-3">

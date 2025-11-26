@@ -3,7 +3,6 @@
 /*=============================================
 VISUALIZAR HISTORIA
 =============================================*/
-// Ya no se necesita, ahora usamos enlaces directos <a href="">
 
 $(document).on("click", ".btnVerHistoria", function() {
   var histId = $(this).attr("histId");
@@ -186,8 +185,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
 });
-
-
 
 $(document).ready(function() {
   

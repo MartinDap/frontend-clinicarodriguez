@@ -3,16 +3,13 @@
   <!-- Cabecera del menú -->
   <div class="sidebar-header">
     <i class="bi bi-hospital fs-2"></i>
-    <h4 class="mt-2">Clínica Médica</h4>
+    <h4 class="mt-2">Clinica Rodriguez</h4>
     <small class="text-muted">Sistema Integral</small>
   </div>
   
   <!-- Menú de navegación -->
   <ul class="sidebar-menu">
-    
     <?php
-    
-    // Menú para Administrador (perfil 1)
     
 if (isset($_SESSION["roles"]) && is_array($_SESSION["roles"])) {
     $roles = $_SESSION["roles"];  // Obtener todos los roles del usuario
@@ -112,20 +109,7 @@ if (isset($_SESSION["roles"]) && is_array($_SESSION["roles"])) {
             </ul>
         </li>
 
-        <li class="has-submenu">
-            <a href="#" onclick="toggleSubmenu(event, this)">
-                <i class="bi bi-shield-lock"></i>
-                <span>Seguridad</span>
-            </a>
-            <ul class="submenu">
-                <li>
-                    <a href="configuracion">
-                        <i class="bi bi-gear"></i>
-                        <span>Configuración</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
+       
         ';
     } else {
         // Si no es SUPERADMIN, mostrar el menú según los roles del usuario
@@ -228,23 +212,7 @@ if (isset($_SESSION["roles"]) && is_array($_SESSION["roles"])) {
                 </ul>
             </li>';
         }
-
-        // Seguridad (pueden acceder todos los roles)
-        echo '
-        <li class="has-submenu">
-            <a href="#" onclick="toggleSubmenu(event, this)">
-                <i class="bi bi-shield-lock"></i>
-                <span>Seguridad</span>
-            </a>
-            <ul class="submenu">
-                <li>
-                    <a href="configuracion">
-                        <i class="bi bi-gear"></i>
-                        <span>Configuración</span>
-                    </a>
-                </li>
-            </ul>
-        </li>';
+;
     }
 }
     

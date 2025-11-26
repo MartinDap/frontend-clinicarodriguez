@@ -235,6 +235,7 @@ document.addEventListener('click', function(e) {
 });
 
 // Función para abrir el modal y generar el ticket
+// Función para abrir el modal y generar el ticket
 function abrirModalTicket(datosActivo) {
   // Limpiar QR anterior si existe
   document.getElementById('qrcode').innerHTML = '';
@@ -244,6 +245,14 @@ function abrirModalTicket(datosActivo) {
   document.getElementById('ticketNombre').textContent = datosActivo.nombre;
   document.getElementById('ticketUbicacion').textContent = datosActivo.ubicacion;
   document.getElementById('ticketFechaCompra').textContent = datosActivo.fechaCompra;
+  
+  // **NUEVO: Cargar la imagen del logo**
+  const logoImg = document.getElementById('ticketLogo');
+  if (logoImg) {
+    // Ruta de tu logo - ajusta según tu estructura de carpetas
+    logoImg.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBfjRuZYJxb61p54yODVDE1RR57kuLzZfiCg&s'; // O la ruta donde esté tu logo
+    logoImg.alt = 'Logo Clínica';
+  }
   
   // Generar código QR con la información del activo
   const infoQR = `ACTIVO|${datosActivo.codigo}|${datosActivo.nombre}|${datosActivo.ubicacion}`;
@@ -409,12 +418,24 @@ document.getElementById('btnGenerarReporte')?.addEventListener('click', async fu
 function generarHTMLImpresion(activos) {
   let ticketsHTML = '';
   
+  const logoUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBfjRuZYJxb61p54yODVDE1RR57kuLzZfiCg&s';
+  
   activos.forEach(activo => {
     const infoQR = `ACTIVO|${activo.acteCodigoActivo}|${activo.acteNombreEquipo}|${activo.acteUbicacion}`;
     const qrId = `qr_${activo.acteId}`;
     
     ticketsHTML += `
       <div class="ticket">
+        <!-- Logo pequeño en esquina -->
+        <div class="ticket-logo-corner">
+          <img src="${logoUrl}" alt="Logo">
+        </div>
+        
+        <!-- Título -->
+        <div class="ticket-title">
+          <h6>ACTIVO TECNOLÓGICO</h6>
+        </div>
+        
         <div class="ticket-info">
           <p><strong>Código:</strong> ${activo.acteCodigoActivo}</p>
           <p><strong>Activo:</strong> ${activo.acteNombreEquipo}</p>
@@ -448,7 +469,33 @@ function generarHTMLImpresion(activos) {
           padding: 15px;
           page-break-inside: avoid;
           background: white;
+          position: relative;
         }
+        /* Logo en esquina superior derecha */
+        .ticket-logo-corner {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+        }
+        .ticket-logo-corner img {
+          max-width: 50px;
+          height: auto;
+          opacity: 0.9;
+        }
+        /* Título del ticket */
+        .ticket-title {
+          text-align: center;
+          margin-bottom: 15px;
+          padding-bottom: 10px;
+          border-bottom: 2px solid #003264;
+        }
+        .ticket-title h6 {
+          color: #003264;
+          margin: 0;
+          font-size: 14px;
+          font-weight: bold;
+        }
+        
         .ticket-info { font-size: 12px; line-height: 1.6; }
         .ticket-info p { margin: 5px 0; }
         hr { border-top: 1px solid #003264; margin: 10px 0; }

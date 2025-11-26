@@ -19,12 +19,6 @@
             3
           </span>
         </button>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li><h6 class="dropdown-header">Notificaciones</h6></li>
-          <li><a class="dropdown-item" href="#">Nueva cita agendada</a></li>
-          <li><a class="dropdown-item" href="#">Paciente en espera</a></li>
-          <li><a class="dropdown-item" href="#">Reporte generado</a></li>
-        </ul>
       </div>
       
       <!-- Usuario -->

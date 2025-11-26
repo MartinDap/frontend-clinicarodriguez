@@ -13,7 +13,7 @@ $ruta_actual = $_GET['ruta'] ?? '';
 <!-- Navbar Superior -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light-blue fixed-top navbar-fixed-custom">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="http://localhost/pe/">
+    <a class="navbar-brand fw-bold" href="inicio">
       <img src="vistas/img/logo.png" alt="Logo Clínica" style="height: 50px; width: auto;" class="me-2">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -58,11 +58,6 @@ $ruta_actual = $_GET['ruta'] ?? '';
           </ul>
         </li>
         
-        <li class="nav-item">
-          <a class="btn btn-primary ms-2" href="login">
-            <i class="bi bi-box-arrow-in-right"></i> <?php echo t('nav_acceso_personal'); ?>
-          </a>
-        </li>
       </ul>
     </div>
   </div>

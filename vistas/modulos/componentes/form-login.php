@@ -1,11 +1,4 @@
 <?php
-/**
- * Componente Formulario de Login
- * Formulario reutilizable para login
- * 
- * @param bool $mostrar_volver - Si muestra el enlace "Volver al inicio"
- */
-
 $mostrar_volver = $mostrar_volver ?? false;
 ?>
 <div class="login-container">
@@ -39,7 +32,7 @@ $mostrar_volver = $mostrar_volver ?? false;
       
       <div class="d-grid mb-3">
         <button type="submit" class="btn btn-primary btn-custom">
-          <i class="bi bi-box-arrow-in-right"></i> <?php echo t('login_btn_ingresar'); ?>
+          <i class="bi bi-box-arrow-in-right"></i> <?php echo t('Iniciar sesión'); ?>
         </button>
       </div>
       
@@ -52,30 +45,16 @@ $mostrar_volver = $mostrar_volver ?? false;
     
     <hr>
     
-    <!-- Formulario de acceso directo -->
-    <form method="post">
-      <input type="hidden" name="acceso_directo" value="1">
-      <div class="d-grid">
-        <button type="submit" class="btn btn-success btn-custom">
-          <i class="bi bi-unlock"></i> <?php echo t('login_btn_demo'); ?>
-        </button>
-      </div>
-      <?php
-        $loginDirecto = new ControladorUsuarios();
-        $loginDirecto->ctrLoginUsuario();
-      ?>
-    </form>
-    
     <?php if($mostrar_volver): ?>
     <div class="text-center mt-4">
-      <a href="/" class="text-muted">
+      <a href="inicio" class="text-muted">
         <i class="bi bi-arrow-left"></i> <?php echo idioma_actual() === 'es' ? 'Volver al Inicio' : 'Back to Home'; ?>
       </a>
     </div>
     <?php endif; ?>
     
     <div class="text-center mt-<?php echo $mostrar_volver ? '2' : '4'; ?>">
-      <small class="text-muted">&copy; 2024 <?php echo t('login_footer'); ?></small>
+      <small class="text-muted">&copy; 2025 CR</small>
     </div>
     
   </div>

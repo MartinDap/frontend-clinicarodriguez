@@ -151,9 +151,6 @@
                 <button type="button" class="btn btn-info btn-sm btnVerActivo" acteId="<?= $item['acteId'] ?>" tittle="Ver activo">
                   <i class="bi bi-eye"></i>
                 </button>
-                <button class="btn btn-sm btn-warning btnEditarActivo me-1" acteId="<?= $item["acteId"] ?>" title="Editar activo">
-                  <i class="bi bi-pencil"></i>
-                </button>
                 <button class="btn btn-sm btn-danger btnEliminarActivo" acteId="<?= $item["acteId"] ?>" title="Eliminar activo">
                   <i class="bi bi-trash"></i>
                 </button>
@@ -599,27 +596,36 @@ MODAL EDITAR PACIENTE
       <!-- Cuerpo del Modal -->
       <div class="modal-body text-center" style="padding: 20px;">
         <!-- Contenedor del ticket -->
-        <div id="ticketContainer" style="background: white; border: 2px dashed #003264; border-radius: 10px; padding: 20px; max-width: 350px; margin: 0 auto;">
-          <!-- Información del activo -->
-          <div style="text-align: left; font-size: 13px; line-height: 1.8;">
-            <p style="margin: 5px 0;"><strong>Código:</strong> <span id="ticketCodigo">202511012147</span></p>
-            <p style="margin: 5px 0;"><strong>Activo:</strong> <span id="ticketNombre">Laptop HP ProBook 450 G8</span></p>
-            <p style="margin: 5px 0;"><strong>Área:</strong> <span id="ticketUbicacion">Oficina Administrativa</span></p>
-            <p style="margin: 5px 0;"><strong>Adquisición:</strong> <span id="ticketFechaCompra">2024-06-15</span></p>
+        <div id="ticketContainer" style="background: white; padding: 20px; border: 2px solid #003264; border-radius: 10px; max-width: 400px; margin: 0 auto; position: relative;">
+  
+          <!-- **LOGO PEQUEÑO EN ESQUINA SUPERIOR DERECHA** -->
+          <div style="position: absolute; top: 10px; right: 10px;">
+            <img id="ticketLogo" src="" alt="Logo" style="max-width: 60px; height: auto; opacity: 0.9;">
           </div>
           
-          <hr style="border-top: 1px solid #003264; margin: 10px 0;">
+          <!-- Título del ticket -->
+          <div style="text-align: center; margin-bottom: 20px; padding-top: 10px;">
+            <h5 style="color: #003264; margin: 0; font-size: 18px;">ACTIVO TECNOLÓGICO</h5>
+            <hr style="border-top: 2px solid #003264; margin: 10px 0;">
+          </div>
+          
+          <!-- Información del ticket -->
+          <div style="margin-bottom: 15px;">
+            <p style="margin: 8px 0;"><strong>Código:</strong> <span id="ticketCodigo"></span></p>
+            <p style="margin: 8px 0;"><strong>Activo:</strong> <span id="ticketNombre"></span></p>
+            <p style="margin: 8px 0;"><strong>Ubicación:</strong> <span id="ticketUbicacion"></span></p>
+            <p style="margin: 8px 0;"><strong>Fecha Compra:</strong> <span id="ticketFechaCompra"></span></p>
+          </div>
           
           <!-- Código QR -->
-          <div style="margin-top: 15px;">
-            <div id="qrcode" style="display: inline-block; padding: 10px; background: white;"></div>
+          <div style="text-align: center; margin: 15px 0;">
+            <div id="qrcode"></div>
           </div>
           
-          <!-- Pie del ticket -->
-          <div style="margin-top: 10px; font-size: 10px; color: #666;">
-            <p style="margin: 5px 0;">Sistema de Gestión de Activos</p>
+          <!-- Footer -->
+          <div style="text-align: center; font-size: 11px; color: #666; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
+            Sistema de Gestión de Activos
           </div>
-          
         </div>
         
         <!-- Botón de descarga -->

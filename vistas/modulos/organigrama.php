@@ -25,8 +25,6 @@
 
     $responsecategoriaactivos = curl_exec($curl);
   }
-  
-
 ?>
 <div class="container-fluid">
   
@@ -105,17 +103,7 @@
                     </div>
                     <div class="col-md-4 text-end">
                       <div class="btn-group" role="group">
-                        <button type="button" 
-                                class="btn btn-info btn-sm btnVerArea" 
-                                areaId="<?= $area['areaId'] ?>" 
-                                title="Ver área">
-                          <i class="bi bi-eye"></i> Ver
-                        </button>
-                        <button class="btn btn-warning btn-sm btnEditarArea" 
-                                areaId="<?= $area["areaId"] ?>" 
-                                title="Editar área">
-                          <i class="bi bi-pencil"></i> Editar
-                        </button>
+                        
                         <button class="btn btn-danger btn-sm btnEliminarArea" 
                                 areaId="<?= $area["areaId"] ?>" 
                                 title="Eliminar área">

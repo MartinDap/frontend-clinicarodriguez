@@ -107,12 +107,6 @@ $token = obtener_token_usuario();
                 <button class="btn btn-sm btn-info btnAsignarRoles me-1" usuaId="<?= $usuario["usuaId"] ?>" title="Ver">
                   <i class="bi bi-eye"></i>
                 </button>
-                <button class="btn btn-sm btn-warning btnEditarUsuario me-1" usuaId="<?= $usuario["usuaId"] ?>" title="Editar">
-                  <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-sm btn-danger btnEliminarUsuario" eliminarUsuaId="<?= $usuario["usuaId"] ?>" title="Eliminar">
-                  <i class="bi bi-trash"></i>
-                </button>
               </td>
             </tr>
           <?php endforeach; ?>

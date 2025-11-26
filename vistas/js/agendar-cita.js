@@ -270,7 +270,7 @@ function generarSlots(horario, slotsOcupados = []) {
   const duracionMinutos = horario.duracion;
   
   // Obtener las próximas 4 fechas para este día
-  const proximasFechas = obtenerProximasFechas(horario.diaNombre, 4);
+  const proximasFechas = obtenerProximasFechas(horario.diaNombre, 2);
   
   // Convertir horas a minutos
   const [horaInicioH, horaInicioM] = horario.horaInicio.split(':').map(Number);

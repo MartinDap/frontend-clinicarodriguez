@@ -4,20 +4,13 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Cargar helper de sesión
 require_once 'vistas/modulos/session-helper.php';
 
 // Verificar si hay variables de sesión
 if (!empty($_SESSION)) {
     // Convertir el arreglo $_SESSION a formato JSON
     $sessionData = json_encode($_SESSION);
-    
-    // Enviar las variables de la sesión a la consola de JavaScript
-    echo "<script>console.log('Variables de sesión:', $sessionData);</script>";
-} else {
-    echo "<script>console.log('No hay variables de sesión disponibles.');</script>";
-}
-
+} 
 ?>
 
 <!DOCTYPE html>
@@ -41,8 +34,6 @@ if (!empty($_SESSION)) {
   <!-- DataTables Bootstrap 5 -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
-  
-  
   
   <!-- Estilos personalizados -->
   <link rel="stylesheet" href="vistas/css/estilos.css">

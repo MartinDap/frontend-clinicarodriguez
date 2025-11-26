@@ -48,7 +48,6 @@ require_once 'vistas/modulos/idiomas.php';
           </div>
         </div>
         <div class="col-lg-6">
-          <img src="https://via.placeholder.com/500x400/87CEEB/FFFFFF?text=Clinica+Medica" alt="Clínica" class="img-fluid rounded shadow-lg">
         </div>
       </div>
     </div>
@@ -142,323 +141,190 @@ require_once 'vistas/modulos/idiomas.php';
       
       <!-- Carrusel de Especialidades -->
       <div id="especialidadesCarousel" class="carousel slide" data-bs-ride="false">
-        <div class="carousel-inner">
-          
-          <!-- Slide 1: Primeras 4 especialidades -->
-          <div class="carousel-item active">
-            <div class="row g-4">
-        
-              <!-- Neurocirugía -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-cpu text-primary"></i>
-                    </div>
-                    <h5 class="card-title"><?php echo t('especialidad_neurocirugia'); ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo t('especialidad_neurocirugia_desc'); ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-primary">1+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
+            <div class="carousel-inner">
               
-              <!-- Ginecología -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-gender-female text-danger"></i>
+                <!-- Slide 1: Primeras 4 especialidades -->
+                <div class="carousel-item active">
+                    <div class="row g-4">
+                        <!-- Neurocirugía -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card especialidad-card text-center h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="especialidad-icon mb-3">
+                                        <i class="bi bi-cpu text-primary"></i>
+                                    </div>
+                                    <h5 class="card-title">Neurocirugía</h5>
+                                    <p class="card-text flex-grow-1">Diagnóstico y tratamiento quirúrgico de enfermedades del sistema nervioso.</p>
+                                    <div class="mt-3">
+                                        <span class="badge bg-light text-primary">1+ Doctores</span>
+                                    </div>
+                                    <a href="especialidades-info" class="btn-arrow">
+                                        <i class="bi bi-arrow-right-circle-fill"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ginecología y Obstetricia -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card especialidad-card text-center h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="especialidad-icon mb-3">
+                                        <i class="bi bi-gender-female text-danger"></i>
+                                    </div>
+                                    <h5 class="card-title">Ginecología y Obstetricia</h5>
+                                    <p class="card-text flex-grow-1">Cuidado integral de la salud femenina, embarazo y parto.</p>
+                                    <div class="mt-3">
+                                        <span class="badge bg-light text-danger">1+ Doctores</span>
+                                    </div>
+                                    <a href="especialidades-info" class="btn-arrow">
+                                        <i class="bi bi-arrow-right-circle-fill"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Neurología -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card especialidad-card text-center h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="especialidad-icon mb-3">
+                                        <i class="bi bi-activity text-info"></i>
+                                    </div>
+                                    <h5 class="card-title">Neurología</h5>
+                                    <p class="card-text flex-grow-1">Diagnóstico y tratamiento de enfermedades del sistema nervioso.</p>
+                                    <div class="mt-3">
+                                        <span class="badge bg-light text-info">1+ Doctores</span>
+                                    </div>
+                                    <a href="especialidades-info" class="btn-arrow">
+                                        <i class="bi bi-arrow-right-circle-fill"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Cardiología -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card especialidad-card text-center h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="especialidad-icon mb-3">
+                                        <i class="bi bi-heart-pulse text-danger"></i>
+                                    </div>
+                                    <h5 class="card-title">Cardiología</h5>
+                                    <p class="card-text flex-grow-1">Diagnóstico y tratamiento de enfermedades del corazón y sistema circulatorio.</p>
+                                    <div class="mt-3">
+                                        <span class="badge bg-light text-danger">2+ Doctores</span>
+                                    </div>
+                                    <a href="especialidades-info" class="btn-arrow">
+                                        <i class="bi bi-arrow-right-circle-fill"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <h5 class="card-title"><?php echo t('especialidad_ginecologia'); ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo t('especialidad_ginecologia_desc'); ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-danger">1+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
                 </div>
-              </div>
-              
-              <!-- Neurología -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-activity text-info"></i>
+                
+                <!-- Slide 2: Siguientes 4 especialidades -->
+                <div class="carousel-item">
+                    <div class="row g-4">
+                        <!-- Cirugía General -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card especialidad-card text-center h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="especialidad-icon mb-3">
+                                        <i class="bi bi-scissors text-secondary"></i>
+                                    </div>
+                                    <h5 class="card-title">Cirugía General</h5>
+                                    <p class="card-text flex-grow-1">Tratamiento quirúrgico de diversas enfermedades y condiciones médicas.</p>
+                                    <div class="mt-3">
+                                        <span class="badge bg-light text-secondary">2+ Doctores</span>
+                                    </div>
+                                    <a href="especialidades-info" class="btn-arrow">
+                                        <i class="bi bi-arrow-right-circle-fill"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dermatología -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card especialidad-card text-center h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="especialidad-icon mb-3">
+                                        <i class="bi bi-person-check text-warning"></i>
+                                    </div>
+                                    <h5 class="card-title">Dermatología</h5>
+                                    <p class="card-text flex-grow-1">Diagnóstico y tratamiento de enfermedades de la piel, cabello y uñas.</p>
+                                    <div class="mt-3">
+                                        <span class="badge bg-light text-warning">1+ Doctores</span>
+                                    </div>
+                                    <a href="especialidades-info" class="btn-arrow">
+                                        <i class="bi bi-arrow-right-circle-fill"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pediatría -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card especialidad-card text-center h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="especialidad-icon mb-3">
+                                        <i class="bi bi-emoji-smile text-success"></i>
+                                    </div>
+                                    <h5 class="card-title">Pediatría</h5>
+                                    <p class="card-text flex-grow-1">Cuidado integral de la salud de niños y adolescentes.</p>
+                                    <div class="mt-3">
+                                        <span class="badge bg-light text-success">1+ Doctores</span>
+                                    </div>
+                                    <a href="especialidades-info" class="btn-arrow">
+                                        <i class="bi bi-arrow-right-circle-fill"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Endocrinología -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card especialidad-card text-center h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="especialidad-icon mb-3">
+                                        <i class="bi bi-capsule text-success"></i>
+                                    </div>
+                                    <h5 class="card-title">Endocrinología</h5>
+                                    <p class="card-text flex-grow-1">Diagnóstico y tratamiento de trastornos hormonales y metabólicos.</p>
+                                    <div class="mt-3">
+                                        <span class="badge bg-light text-success">6+ Doctores</span>
+                                    </div>
+                                    <a href="especialidades-info" class="btn-arrow">
+                                        <i class="bi bi-arrow-right-circle-fill"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <h5 class="card-title"><?php echo t('especialidad_neurologia'); ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo t('especialidad_neurologia_desc'); ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-info">1+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
                 </div>
-              </div>
-              
-              <!-- Endocronología -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-capsule text-success"></i>
-                    </div>
-                    <h5 class="card-title"><?php echo t('especialidad_endocrinologia'); ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo t('especialidad_endocrinologia_desc'); ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-success">6+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
-          
-          <!-- Slide 2: Siguientes 4 especialidades -->
-          <div class="carousel-item">
-            <div class="row g-4">
-              
-              <!-- Cardiología -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-heart-pulse text-danger"></i>
-                    </div>
-                    <h5 class="card-title"><?php echo t('footer_cardiologia'); ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'Especialidad dedicada al diagnóstico y tratamiento de enfermedades del corazón.' : 'Specialty dedicated to the diagnosis and treatment of heart diseases.'; ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-danger">2+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Anestesiología -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-droplet text-info"></i>
-                    </div>
-                    <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Anestesiología' : 'Anesthesiology'; ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'La anestesiología es la especialidad encargada de brindar seguridad y confort al paciente durante procedimientos quirúrgicos.' : 'Anesthesiology is the specialty responsible for providing safety and comfort to the patient during surgical procedures.'; ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-info">3+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Alergología -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-flower1 text-warning"></i>
-                    </div>
-                    <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Alergología' : 'Allergology'; ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'La alergología es la especialidad médica dedicada al estudio, diagnóstico y tratamiento de las enfermedades causadas por reacciones alérgicas.' : 'Allergology is the medical specialty dedicated to the study, diagnosis and treatment of diseases caused by allergic reactions.'; ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-warning">2+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Cirugía General -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-scissors text-secondary"></i>
-                    </div>
-                    <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Cirugía General' : 'General Surgery'; ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'La cirugía general es la especialidad médica encargada de la prevención, diagnóstico y tratamiento quirúrgico de un amplio rango de enfermedades.' : 'General surgery is the medical specialty responsible for the prevention, diagnosis and surgical treatment of a wide range of diseases.'; ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-secondary">2+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
+            
+            <!-- Controles del carrusel -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#especialidadesCarousel" data-bs-slide="prev">
+                <span class="carousel-control-icon">
+                    <i class="bi bi-chevron-left"></i>
+                </span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#especialidadesCarousel" data-bs-slide="next">
+                <span class="carousel-control-icon">
+                    <i class="bi bi-chevron-right"></i>
+                </span>
+            </button>
+            
+            <!-- Indicadores -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#especialidadesCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#especialidadesCarousel" data-bs-slide-to="1"></button>
             </div>
-          </div>
-          
-          <!-- Slide 3: Especialidades adicionales -->
-          <div class="carousel-item">
-            <div class="row g-4">
-              
-              <!-- Cirugía Cardiovascular y de Tórax -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-heart text-danger"></i>
-                    </div>
-                    <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Cirugía Cardiovascular y de Tórax' : 'Cardiovascular and Thoracic Surgery'; ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'La cirugía cardiovascular y de tórax es la especialidad médica dedicada al diagnóstico y tratamiento quirúrgico de enfermedades que afectan al corazón, grandes vasos y estructuras del tórax.' : 'Cardiovascular and thoracic surgery is the medical specialty dedicated to the diagnosis and surgical treatment of diseases affecting the heart, large vessels and thoracic structures.'; ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-danger">0+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Cirugía de Cabeza y Cuello -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-person-circle text-primary"></i>
-                    </div>
-                    <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Cirugía de Cabeza y Cuello' : 'Head and Neck Surgery'; ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'La cirugía de cabeza y cuello es la especialidad médica encargada del diagnóstico y tratamiento quirúrgico de enfermedades benignas y malignas que afectan las estructuras de la cara, cuello, glándulas y vías respiratorias superiores.' : 'Head and neck surgery is the medical specialty responsible for the diagnosis and surgical treatment of benign and malignant diseases affecting the face, neck, glands and upper respiratory tract.'; ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-primary">0+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Medicina General -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-clipboard2-pulse text-success"></i>
-                    </div>
-                    <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Medicina General' : 'General Medicine'; ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'La medicina general es la puerta de entrada al cuidado de la salud. La especialidad encargada de la atención integral del paciente, enfocándose en la prevención, diagnóstico y tratamiento de las enfermedades más comunes.' : 'General medicine is the gateway to health care. The specialty responsible for comprehensive patient care, focusing on prevention, diagnosis and treatment of the most common diseases.'; ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-success">0+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Neumología -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-lungs text-info"></i>
-                    </div>
-                    <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Neumología' : 'Pulmonology'; ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'La neumología es la especialidad médica dedicada al estudio, diagnóstico y tratamiento de las enfermedades del sistema respiratorio.' : 'Pulmonology is the medical specialty dedicated to the study, diagnosis and treatment of respiratory system diseases.'; ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-info">1+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
-            </div>
-          </div>
-          
-          <!-- Slide 4: Últimas especialidades -->
-          <div class="carousel-item">
-            <div class="row g-4">
-              
-              <!-- Dermatología -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-person-check text-warning"></i>
-                    </div>
-                    <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Dermatología' : 'Dermatology'; ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'La dermatología es la especialidad médica que se ocupa del estudio, diagnóstico y tratamiento de las enfermedades de la piel, el cabello y las uñas.' : 'Dermatology is the medical specialty that deals with the study, diagnosis and treatment of diseases of the skin, hair and nails.'; ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-warning">1+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Pediatría -->
-              <div class="col-md-6 col-lg-3">
-                <div class="card especialidad-card text-center h-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="especialidad-icon mb-3">
-                      <i class="bi bi-emoji-smile text-success"></i>
-                    </div>
-                    <h5 class="card-title"><?php echo idioma_actual() === 'es' ? 'Pediatría' : 'Pediatrics'; ?></h5>
-                    <p class="card-text flex-grow-1"><?php echo idioma_actual() === 'es' ? 'La pediatría es la especialidad médica dedicada al cuidado integral de la salud de los niños, desde el nacimiento hasta la adolescencia.' : 'Pediatrics is the medical specialty dedicated to comprehensive health care for children, from birth to adolescence.'; ?></p>
-                    <div class="mt-3">
-                      <span class="badge bg-light text-success">1+ <?php echo t('especialidad_doctor'); ?></span>
-                    </div>
-                    <a href="especialidades-info" class="btn-arrow">
-                      <i class="bi bi-arrow-right-circle-fill"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              
-            </div>
-          </div>
-          
         </div>
-        
-        <!-- Controles del carrusel -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#especialidadesCarousel" data-bs-slide="prev">
-          <span class="carousel-control-icon">
-            <i class="bi bi-chevron-left"></i>
-          </span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#especialidadesCarousel" data-bs-slide="next">
-          <span class="carousel-control-icon">
-            <i class="bi bi-chevron-right"></i>
-          </span>
-        </button>
-        
-        <!-- Indicadores -->
-        <div class="carousel-indicators">
-          <button type="button" data-bs-target="#especialidadesCarousel" data-bs-slide-to="0" class="active"></button>
-          <button type="button" data-bs-target="#especialidadesCarousel" data-bs-slide-to="1"></button>
-          <button type="button" data-bs-target="#especialidadesCarousel" data-bs-slide-to="2"></button>
-          <button type="button" data-bs-target="#especialidadesCarousel" data-bs-slide-to="3"></button>
-        </div>
-      </div>
+    </div>
       
       <div class="text-center mt-5">
         <a href="especialidades-info" class="btn btn-primary btn-lg rounded-pill px-5">
