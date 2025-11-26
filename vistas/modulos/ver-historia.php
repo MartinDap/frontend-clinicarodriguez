@@ -202,9 +202,6 @@ if ($token !== null){
                         <button class="btn btn-sm btn-info btnVerTriaje" triaId="<?= $triaje['triaId'] ?>" title="Ver triaje">
                           <i class="bi bi-eye"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger btnEliminarTriaje" triaId="<?= $triaje['triaId'] ?>" title="Eliminar triaje">
-                          <i class="bi bi-trash"></i>
-                        </button>
                       </td>
                     </tr>
                   <?php endforeach; ?>

@@ -30,36 +30,6 @@
   <!-- Información importante del sistema -->
   <div class="row g-4">
     
-    <!-- Accesos Rápidos -->
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title"><i class="bi bi-lightning"></i> Accesos Rápidos</h5>
-          <div class="row g-3">
-            <div class="col-6">
-              <a href="pacientes" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center p-3">
-                <i class="bi bi-people fs-4 me-2"></i>
-                <div>
-                  <small>Gestión de</small><br>
-                  <strong>Pacientes</strong>
-                </div>
-              </a>
-            </div>
-            <div class="col-6">
-              <a href="citas" class="btn btn-outline-success w-100 d-flex align-items-center justify-content-center p-3">
-                <i class="bi bi-calendar-check fs-4 me-2"></i>
-                <div>
-                  <small>Gestión de</small><br>
-                  <strong>Citas</strong>
-                </div>
-              </a>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-    </div>
-    
     <!-- Información del Sistema -->
     <div class="col-md-6">
       <div class="card">

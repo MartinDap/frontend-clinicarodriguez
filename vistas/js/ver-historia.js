@@ -1319,7 +1319,7 @@ document.addEventListener('DOMContentLoaded', function () {
           fetch(`${CONFIG.API_BASE_URL}recetas`, {
             method: "POST",
             headers: {
-              "Authorization": "Bearer your-token",  // Aquí deberías agregar tu token de autorización
+              "Authorization": CONFIG.API_AUTH_HEADER,
               "Content-Type": "application/json"
             },
             body: JSON.stringify(data)
