@@ -78,7 +78,7 @@
 
 /* ===================================
    RESPONSIVE
-   =================================== */
+   ===================================
 @media (max-width: 768px) {
   .icon-box {
     width: 50px;
@@ -88,5 +88,12 @@
   .footer-contact-icon {
     width: 60px;
     height: 60px;
+  }
+}
+
+/* En móvil, navbar sin topbar */
+@media (max-width: 575px) {
+  .navbar-fixed-custom {
+    top: 0 !important;
   }
 }
